@@ -6,12 +6,15 @@ const app = (s) => {
     strokeColor: "#000000",
     strokeOpacity: 100,
     size: 15,
+    shape: ["circle", "square"],
   };
 
   s.setup = function () {
     s.createCanvas(s.windowWidth, s.windowHeight);
     s.background(0);
-    const gui = s.createGui(this);
+    s.rectMode(s.CENTER);
+
+    const gui = s.createGui("paintbrush options", this);
     gui.addObject(guiParams);
 
     socket.on("update", (paintProperties) => {
@@ -27,6 +30,7 @@ const app = (s) => {
     strokeColor,
     strokeOpacity,
     size,
+    shape,
   }) => {
     const stroke = s.color(strokeColor);
     stroke.setAlpha(strokeOpacity);
@@ -37,7 +41,17 @@ const app = (s) => {
     s.stroke(stroke);
     s.fill(fill);
 
-    s.circle(x, y, size);
+    s.renderShape(x, y, size, shape);
+  };
+
+  s.renderShape = (x, y, size, shape) => {
+    switch (shape) {
+      case "circle":
+        s.circle(x, y, size);
+        break;
+      case "square":
+        s.square(x, y, size);
+    }
   };
 
   s.mouseDragged = () => {
@@ -49,6 +63,7 @@ const app = (s) => {
       strokeColor: guiParams.strokeColor,
       strokeOpacity: guiParams.strokeOpacity,
       size: guiParams.size,
+      shape: guiParams.shape,
     };
 
     s.updateDrawing(paintProperties);
