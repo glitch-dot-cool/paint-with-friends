@@ -6,17 +6,17 @@ const app = (s) => {
     s.background(0);
 
     socket.on("mouseMoved", ({ x, y }) => {
-      s.updateDrawing(x, y);
+      s.updateDrawing(x, y, s.color(255, 0, 40));
     });
   };
 
-  s.updateDrawing = (x, y) => {
-    s.fill(40, 0, 255);
+  s.updateDrawing = (x, y, color) => {
+    s.fill(color);
     s.circle(x, y, 20);
   };
 
   s.mouseDragged = () => {
-    s.updateDrawing(s.mouseX, s.mouseY);
+    s.updateDrawing(s.mouseX, s.mouseY, s.color(40, 0, 255));
 
     const mouseCoords = {
       x: s.mouseX,
