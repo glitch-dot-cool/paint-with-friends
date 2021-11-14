@@ -15,4 +15,8 @@ const io = socket(server);
 
 io.sockets.on("connection", (socket) => {
   console.log(`client connected: ${socket.id}`);
+
+  socket.on("mouseMoved", (data) => {
+    socket.broadcast.emit("mouseMoved", data);
+  });
 });
