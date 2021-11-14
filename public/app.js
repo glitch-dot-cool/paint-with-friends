@@ -1,28 +1,73 @@
 const app = (s) => {
   const socket = io.connect("http://localhost:3000");
+  const guiParams = {
+    fillColor: "#349beb",
+    fillOpacity: 100,
+    strokeColor: "#000000",
+    strokeOpacity: 100,
+    size: 15,
+    shape: ["circle", "square"],
+  };
 
-  s.setup = () => {
+  s.setup = function () {
     s.createCanvas(s.windowWidth, s.windowHeight);
     s.background(0);
+    s.rectMode(s.CENTER);
 
-    socket.on("mouseMoved", ({ x, y }) => {
-      s.updateDrawing(x, y);
+    const gui = s.createGui("paintbrush options", this);
+    gui.addObject(guiParams);
+
+    socket.on("update", (paintProperties) => {
+      s.updateDrawing(paintProperties);
     });
   };
 
-  s.updateDrawing = (x, y) => {
-    s.fill(40, 0, 255);
-    s.circle(x, y, 20);
+  s.updateDrawing = ({
+    x,
+    y,
+    fillColor,
+    fillOpacity,
+    strokeColor,
+    strokeOpacity,
+    size,
+    shape,
+  }) => {
+    const stroke = s.color(strokeColor);
+    stroke.setAlpha(strokeOpacity);
+
+    const fill = s.color(fillColor);
+    fill.setAlpha(fillOpacity);
+
+    s.stroke(stroke);
+    s.fill(fill);
+
+    s.renderShape(x, y, size, shape);
+  };
+
+  s.renderShape = (x, y, size, shape) => {
+    switch (shape) {
+      case "circle":
+        s.circle(x, y, size);
+        break;
+      case "square":
+        s.square(x, y, size);
+    }
   };
 
   s.mouseDragged = () => {
-    s.updateDrawing(s.mouseX, s.mouseY);
-
-    const mouseCoords = {
+    const paintProperties = {
       x: s.mouseX,
       y: s.mouseY,
+      fillColor: guiParams.fillColor,
+      fillOpacity: guiParams.fillOpacity,
+      strokeColor: guiParams.strokeColor,
+      strokeOpacity: guiParams.strokeOpacity,
+      size: guiParams.size,
+      shape: guiParams.shape,
     };
-    socket.emit("mouseMoved", mouseCoords);
+
+    s.updateDrawing(paintProperties);
+    socket.emit("update", paintProperties);
   };
 
   s.windowResized = () => {
