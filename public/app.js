@@ -7,6 +7,7 @@ const app = (s) => {
     strokeOpacity: 100,
     size: 15,
     shape: ["circle", "square"],
+    mirror: false,
   };
 
   s.setup = function () {
@@ -47,10 +48,18 @@ const app = (s) => {
   s.renderShape = (x, y, size, shape) => {
     switch (shape) {
       case "circle":
-        s.circle(x, y, size);
+        s.handleMirrorMode(s.circle.bind(s), x, y, size);
         break;
       case "square":
-        s.square(x, y, size);
+        s.handleMirrorMode(s.square.bind(s), x, y, size);
+        break;
+    }
+  };
+
+  s.handleMirrorMode = (shape, x, y, size) => {
+    shape(x, y, size);
+    if (guiParams.mirror) {
+      shape(s.windowWidth - x, s.windowHeight - y, size);
     }
   };
 
