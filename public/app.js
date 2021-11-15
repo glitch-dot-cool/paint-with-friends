@@ -32,6 +32,7 @@ const app = (s) => {
     strokeOpacity,
     size,
     shape,
+    mirror,
   }) => {
     const stroke = s.color(strokeColor);
     stroke.setAlpha(strokeOpacity);
@@ -42,23 +43,23 @@ const app = (s) => {
     s.stroke(stroke);
     s.fill(fill);
 
-    s.renderShape(x, y, size, shape);
+    s.renderShape(x, y, size, shape, mirror);
   };
 
-  s.renderShape = (x, y, size, shape) => {
+  s.renderShape = (x, y, size, shape, mirror) => {
     switch (shape) {
       case "circle":
-        s.handleMirrorMode(s.circle.bind(s), x, y, size);
+        s.handleMirrorMode(s.circle.bind(s), x, y, size, mirror);
         break;
       case "square":
-        s.handleMirrorMode(s.square.bind(s), x, y, size);
+        s.handleMirrorMode(s.square.bind(s), x, y, size, mirror);
         break;
     }
   };
 
-  s.handleMirrorMode = (shape, x, y, size) => {
+  s.handleMirrorMode = (shape, x, y, size, mirror) => {
     shape(x, y, size);
-    if (guiParams.mirror) {
+    if (mirror) {
       shape(s.windowWidth - x, s.windowHeight - y, size);
     }
   };
@@ -73,6 +74,7 @@ const app = (s) => {
       strokeOpacity: guiParams.strokeOpacity,
       size: guiParams.size,
       shape: guiParams.shape,
+      mirror: guiParams.mirror,
     };
 
     s.updateDrawing(paintProperties);
