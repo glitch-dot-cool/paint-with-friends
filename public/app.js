@@ -7,7 +7,8 @@ const app = (s) => {
     strokeOpacity: 100,
     size: 15,
     shape: ["circle", "square"],
-    mirror: false,
+    mirrorX: false,
+    mirrorY: false,
   };
 
   s.setup = function () {
@@ -32,7 +33,8 @@ const app = (s) => {
     strokeOpacity,
     size,
     shape,
-    mirror,
+    mirrorX,
+    mirrorY,
   }) => {
     const stroke = s.color(strokeColor);
     stroke.setAlpha(strokeOpacity);
@@ -43,24 +45,29 @@ const app = (s) => {
     s.stroke(stroke);
     s.fill(fill);
 
-    s.renderShape(x, y, size, shape, mirror);
+    s.renderShape(x, y, size, shape, mirrorX, mirrorY);
   };
 
-  s.renderShape = (x, y, size, shape, mirror) => {
+  s.renderShape = (x, y, size, shape, mirrorX, mirrorY) => {
     switch (shape) {
       case "circle":
-        s.handleMirrorMode(s.circle.bind(s), x, y, size, mirror);
+        s.handleMirrorMode(s.circle.bind(s), x, y, size, mirrorX, mirrorY);
         break;
       case "square":
-        s.handleMirrorMode(s.square.bind(s), x, y, size, mirror);
+        s.handleMirrorMode(s.square.bind(s), x, y, size, mirrorX, mirrorY);
         break;
     }
   };
 
-  s.handleMirrorMode = (shape, x, y, size, mirror) => {
+  s.handleMirrorMode = (shape, x, y, size, mirrorX, mirrorY) => {
     shape(x, y, size);
-    if (mirror) {
+
+    if (mirrorX && mirrorY) {
       shape(s.windowWidth - x, s.windowHeight - y, size);
+    } else if (mirrorX) {
+      shape(s.windowWidth - x, y, size);
+    } else if (mirrorY) {
+      shape(x, s.windowHeight - y, size);
     }
   };
 
@@ -74,7 +81,8 @@ const app = (s) => {
       strokeOpacity: guiParams.strokeOpacity,
       size: guiParams.size,
       shape: guiParams.shape,
-      mirror: guiParams.mirror,
+      mirrorX: guiParams.mirrorX,
+      mirrorY: guiParams.mirrorY,
     };
 
     s.updateDrawing(paintProperties);
