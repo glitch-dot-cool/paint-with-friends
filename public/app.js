@@ -15,11 +15,21 @@ const app = (s) => {
     rainbowSpeedMin: 0,
     rainbowSpeedMax: 1,
     rainbowSpeedStep: 0.01,
+    isSizeOscillating: false,
+    sizeOscSpeed: 0.001,
+    sizeOscSpeedMin: 0,
+    sizeOscSpeedMax: 0.2,
+    sizeOscSpeedStep: 0.001,
+    sizeOscAmount: 1,
+    sizeOscAmountMin: 0,
+    sizeOscAmountMax: 100,
+    sizeOscAmountStep: 0.01,
   };
 
   const state = {
     guiParams,
     rainbowCounter: 0,
+    sizeOsc: 0,
   };
 
   s.setup = function () {
@@ -142,7 +152,7 @@ const app = (s) => {
       fillOpacity: guiParams.fillOpacity,
       strokeColor: guiParams.strokeColor,
       strokeOpacity: guiParams.strokeOpacity,
-      size: guiParams.size,
+      size: s.modulateSize(guiParams.size),
       shape: guiParams.shape,
       mirrorX: guiParams.mirrorX,
       mirrorY: guiParams.mirrorY,
@@ -154,6 +164,15 @@ const app = (s) => {
 
     s.updateDrawing(paintProperties);
     socket.emit("update", paintProperties);
+  };
+
+  s.modulateSize = (size) => {
+    if (guiParams.isSizeOscillating) {
+      state.sizeOsc += guiParams.sizeOscSpeed;
+      return size + (s.sin(state.sizeOsc) + 1) * guiParams.sizeOscAmount;
+    }
+
+    return size;
   };
 
   s.windowResized = () => {
