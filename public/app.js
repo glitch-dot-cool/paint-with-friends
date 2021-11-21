@@ -52,13 +52,15 @@ const app = (s) => {
   };
 
   s.renderShape = (x, y, size, shape, mirrorX, mirrorY) => {
-    switch (shape) {
-      case "circle":
-        s.handleMirrorMode(s.circle.bind(s), x, y, size, mirrorX, mirrorY);
-        break;
-      case "square":
-        s.handleMirrorMode(s.square.bind(s), x, y, size, mirrorX, mirrorY);
-        break;
+    if (x > 0 && x < s.windowWidth && y > 0 && y < s.windowHeight) {
+      switch (shape) {
+        case "circle":
+          s.handleMirrorMode(s.circle.bind(s), x, y, size, mirrorX, mirrorY);
+          break;
+        case "square":
+          s.handleMirrorMode(s.square.bind(s), x, y, size, mirrorX, mirrorY);
+          break;
+      }
     }
   };
 
