@@ -9,8 +9,9 @@ const app = (s) => {
     shape: ["circle", "square"],
     mirrorX: false,
     mirrorY: false,
-    rainbowToggle: false,
-    rainbowSpeed: 1,
+    isRainbowFill: false,
+    isRainbowStroke: false,
+    rainbowSpeed: 0.5,
     rainbowSpeedMin: 0,
     rainbowSpeedMax: 1,
     rainbowSpeedStep: 0.01,
@@ -45,19 +46,23 @@ const app = (s) => {
     shape,
     mirrorX,
     mirrorY,
-    rainbowToggle,
-    rainbowColor,
+    isRainbowFill,
+    isRainbowStroke,
+    rainbowFill,
+    rainbowStroke,
   }) => {
     s.handleColor(
       fillColor,
       fillOpacity,
       strokeColor,
       strokeOpacity,
-      rainbowToggle,
-      rainbowColor
+      isRainbowFill,
+      isRainbowStroke,
+      rainbowFill,
+      rainbowStroke
     );
 
-    s.renderShape(x, y, size, shape, mirrorX, mirrorY, rainbowToggle);
+    s.renderShape(x, y, size, shape, mirrorX, mirrorY);
   };
 
   s.renderShape = (x, y, size, shape, mirrorX, mirrorY) => {
@@ -89,21 +94,29 @@ const app = (s) => {
     fillOpacity,
     strokeColor,
     strokeOpacity,
-    rainbowToggle,
-    rainbowColor
+    isRainbowFill,
+    isRainbowStroke,
+    rainbowFill,
+    rainbowStroke
   ) => {
-    if (!rainbowToggle) {
-      const stroke = s.color(strokeColor);
-      stroke.setAlpha(strokeOpacity);
+    const stroke = s.color(strokeColor);
+    stroke.setAlpha(strokeOpacity);
 
-      const fill = s.color(fillColor);
-      fill.setAlpha(fillOpacity);
+    const fill = s.color(fillColor);
+    fill.setAlpha(fillOpacity);
 
+    if (isRainbowFill && isRainbowStroke) {
+      s.stroke(rainbowStroke);
+      s.fill(rainbowFill);
+    } else if (isRainbowFill) {
+      s.fill(rainbowFill);
+      s.stroke(stroke);
+    } else if (isRainbowStroke) {
+      s.fill(fill);
+      s.stroke(rainbowStroke);
+    } else {
       s.stroke(stroke);
       s.fill(fill);
-    } else {
-      s.stroke(rainbowColor);
-      s.fill(rainbowColor);
     }
   };
 
@@ -114,8 +127,13 @@ const app = (s) => {
     const saturation = s.map(s.mouseY, 0, s.windowHeight, 100, 75);
     const brightness = s.map(s.mouseY, 0, s.windowHeight, 100, 50);
 
-    const rainbow = s.color(`hsb(${hue}, ${saturation}%, ${brightness}%)`);
-    rainbow.setAlpha(guiParams.fillOpacity);
+    const rainbowFill = s.color(`hsb(${hue}, ${saturation}%, ${brightness}%)`);
+    rainbowFill.setAlpha(guiParams.fillOpacity);
+
+    const rainbowStroke = s.color(
+      `hsb(${hue}, ${saturation}%, ${brightness}%)`
+    );
+    rainbowStroke.setAlpha(guiParams.strokeOpacity);
 
     const paintProperties = {
       x: s.mouseX,
@@ -128,8 +146,10 @@ const app = (s) => {
       shape: guiParams.shape,
       mirrorX: guiParams.mirrorX,
       mirrorY: guiParams.mirrorY,
-      rainbowToggle: guiParams.rainbowToggle,
-      rainbowColor: rainbow.toString(),
+      isRainbowFill: guiParams.isRainbowFill,
+      isRainbowStroke: guiParams.isRainbowStroke,
+      rainbowFill: rainbowFill.toString(),
+      rainbowStroke: rainbowStroke.toString(),
     };
 
     s.updateDrawing(paintProperties);
