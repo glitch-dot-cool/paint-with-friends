@@ -10,6 +10,15 @@ const app = (s) => {
     mirrorX: false,
     mirrorY: false,
     rainbowToggle: false,
+    rainbowSpeed: 1,
+    rainbowSpeedMin: 0,
+    rainbowSpeedMax: 1,
+    rainbowSpeedStep: 0.01,
+  };
+
+  const state = {
+    guiParams,
+    rainbowCounter: 0,
   };
 
   s.setup = function () {
@@ -99,7 +108,9 @@ const app = (s) => {
   };
 
   s.mouseDragged = () => {
-    const hue = s.floor(s.map(s.mouseX, 0, s.windowWidth, 0, 360));
+    state.rainbowCounter += 1 * guiParams.rainbowSpeed;
+
+    const hue = Math.floor(state.rainbowCounter % 360);
     const saturation = s.map(s.mouseY, 0, s.windowHeight, 100, 75);
     const brightness = s.map(s.mouseY, 0, s.windowHeight, 100, 50);
 
