@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+canvas {
+  display: block;
+}
+
 .qs_content *,
 .qs_title_bar {
   font-family: monospace;

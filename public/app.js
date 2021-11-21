@@ -91,6 +91,7 @@ const app = (s) => {
 
   s.windowResized = () => {
     s.resizeCanvas(s.windowWidth, s.windowHeight);
+    s.background(0);
   };
 };
 
