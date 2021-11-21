@@ -38,14 +38,15 @@ const app = (s) => {
     mirrorY,
     rainbowToggle,
   }) => {
-    const stroke = s.color(strokeColor);
-    stroke.setAlpha(strokeOpacity);
-
-    const fill = s.color(fillColor);
-    fill.setAlpha(fillOpacity);
-
-    s.stroke(stroke);
-    s.fill(fill);
+    s.handleColor(
+      x,
+      y,
+      fillColor,
+      fillOpacity,
+      strokeColor,
+      strokeOpacity,
+      rainbowToggle
+    );
 
     s.renderShape(x, y, size, shape, mirrorX, mirrorY, rainbowToggle);
   };
@@ -53,15 +54,15 @@ const app = (s) => {
   s.renderShape = (x, y, size, shape, mirrorX, mirrorY) => {
     switch (shape) {
       case "circle":
-        s.handleAltModes(s.circle.bind(s), x, y, size, mirrorX, mirrorY);
+        s.handleMirrorMode(s.circle.bind(s), x, y, size, mirrorX, mirrorY);
         break;
       case "square":
-        s.handleAltModes(s.square.bind(s), x, y, size, mirrorX, mirrorY);
+        s.handleMirrorMode(s.square.bind(s), x, y, size, mirrorX, mirrorY);
         break;
     }
   };
 
-  s.handleAltModes = (shape, x, y, size, mirrorX, mirrorY, RainbowToggle) => {
+  s.handleMirrorMode = (shape, x, y, size, mirrorX, mirrorY) => {
     shape(x, y, size);
     if (mirrorX && mirrorY) {
       shape(s.windowWidth - x, s.windowHeight - y, size);
@@ -69,6 +70,37 @@ const app = (s) => {
       shape(s.windowWidth - x, y, size);
     } else if (mirrorY) {
       shape(x, s.windowHeight - y, size);
+    }
+  };
+
+  s.handleColor = (
+    x,
+    y,
+    fillColor,
+    fillOpacity,
+    strokeColor,
+    strokeOpacity,
+    rainbowToggle
+  ) => {
+    if (!rainbowToggle) {
+      const stroke = s.color(strokeColor);
+      stroke.setAlpha(strokeOpacity);
+
+      const fill = s.color(fillColor);
+      fill.setAlpha(fillOpacity);
+
+      s.stroke(stroke);
+      s.fill(fill);
+    } else {
+      const hue = s.floor(s.map(x, 0, s.windowWidth, 0, 360));
+      const saturation = s.map(y, 0, s.windowHeight, 100, 75);
+      const brightness = s.map(y, 0, s.windowHeight, 100, 50);
+
+      const rainbow = s.color(`hsb(${hue}, ${saturation}%, ${brightness}%)`);
+      rainbow.setAlpha(fillOpacity);
+
+      s.stroke(rainbow);
+      s.fill(rainbow);
     }
   };
 
