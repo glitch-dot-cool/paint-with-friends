@@ -37,15 +37,15 @@ const app = (s) => {
     mirrorX,
     mirrorY,
     rainbowToggle,
+    rainbowColor,
   }) => {
     s.handleColor(
-      x,
-      y,
       fillColor,
       fillOpacity,
       strokeColor,
       strokeOpacity,
-      rainbowToggle
+      rainbowToggle,
+      rainbowColor
     );
 
     s.renderShape(x, y, size, shape, mirrorX, mirrorY, rainbowToggle);
@@ -74,13 +74,12 @@ const app = (s) => {
   };
 
   s.handleColor = (
-    x,
-    y,
     fillColor,
     fillOpacity,
     strokeColor,
     strokeOpacity,
-    rainbowToggle
+    rainbowToggle,
+    rainbowColor
   ) => {
     if (!rainbowToggle) {
       const stroke = s.color(strokeColor);
@@ -92,19 +91,19 @@ const app = (s) => {
       s.stroke(stroke);
       s.fill(fill);
     } else {
-      const hue = s.floor(s.map(x, 0, s.windowWidth, 0, 360));
-      const saturation = s.map(y, 0, s.windowHeight, 100, 75);
-      const brightness = s.map(y, 0, s.windowHeight, 100, 50);
-
-      const rainbow = s.color(`hsb(${hue}, ${saturation}%, ${brightness}%)`);
-      rainbow.setAlpha(fillOpacity);
-
-      s.stroke(rainbow);
-      s.fill(rainbow);
+      s.stroke(rainbowColor);
+      s.fill(rainbowColor);
     }
   };
 
   s.mouseDragged = () => {
+    const hue = s.floor(s.map(s.mouseX, 0, s.windowWidth, 0, 360));
+    const saturation = s.map(s.mouseY, 0, s.windowHeight, 100, 75);
+    const brightness = s.map(s.mouseY, 0, s.windowHeight, 100, 50);
+
+    const rainbow = s.color(`hsb(${hue}, ${saturation}%, ${brightness}%)`);
+    rainbow.setAlpha(guiParams.fillOpacity);
+
     const paintProperties = {
       x: s.mouseX,
       y: s.mouseY,
@@ -117,6 +116,7 @@ const app = (s) => {
       mirrorX: guiParams.mirrorX,
       mirrorY: guiParams.mirrorY,
       rainbowToggle: guiParams.rainbowToggle,
+      rainbowColor: rainbow.toString(),
     };
 
     s.updateDrawing(paintProperties);
