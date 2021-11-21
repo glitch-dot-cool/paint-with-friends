@@ -9,6 +9,7 @@ const app = (s) => {
     shape: ["circle", "square"],
     mirrorX: false,
     mirrorY: false,
+    rainbowToggle: false,
   };
 
   s.setup = function () {
@@ -35,6 +36,7 @@ const app = (s) => {
     shape,
     mirrorX,
     mirrorY,
+    rainbowToggle,
   }) => {
     const stroke = s.color(strokeColor);
     stroke.setAlpha(strokeOpacity);
@@ -45,23 +47,22 @@ const app = (s) => {
     s.stroke(stroke);
     s.fill(fill);
 
-    s.renderShape(x, y, size, shape, mirrorX, mirrorY);
+    s.renderShape(x, y, size, shape, mirrorX, mirrorY, rainbowToggle);
   };
 
   s.renderShape = (x, y, size, shape, mirrorX, mirrorY) => {
     switch (shape) {
       case "circle":
-        s.handleMirrorMode(s.circle.bind(s), x, y, size, mirrorX, mirrorY);
+        s.handleAltModes(s.circle.bind(s), x, y, size, mirrorX, mirrorY);
         break;
       case "square":
-        s.handleMirrorMode(s.square.bind(s), x, y, size, mirrorX, mirrorY);
+        s.handleAltModes(s.square.bind(s), x, y, size, mirrorX, mirrorY);
         break;
     }
   };
 
-  s.handleMirrorMode = (shape, x, y, size, mirrorX, mirrorY) => {
+  s.handleAltModes = (shape, x, y, size, mirrorX, mirrorY, RainbowToggle) => {
     shape(x, y, size);
-
     if (mirrorX && mirrorY) {
       shape(s.windowWidth - x, s.windowHeight - y, size);
     } else if (mirrorX) {
@@ -83,6 +84,7 @@ const app = (s) => {
       shape: guiParams.shape,
       mirrorX: guiParams.mirrorX,
       mirrorY: guiParams.mirrorY,
+      rainbowToggle: guiParams.rainbowToggle,
     };
 
     s.updateDrawing(paintProperties);
