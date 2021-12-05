@@ -1,4 +1,5 @@
 const app = (s) => {
+  const dimensions = { width: 1920, height: 1000 };
   const socket = io.connect("http://localhost:3000");
   const guiParams = {
     fillColor: "#349beb",
@@ -35,7 +36,7 @@ const app = (s) => {
   };
 
   s.setup = function () {
-    s.createCanvas(s.windowWidth, s.windowHeight);
+    s.createCanvas(dimensions.width, dimensions.height); // 1080p-friendly
     s.background(0);
     s.rectMode(s.CENTER);
 
@@ -78,7 +79,7 @@ const app = (s) => {
   };
 
   s.renderShape = (x, y, size, shape, mirrorX, mirrorY) => {
-    if (x > 0 && x < s.windowWidth && y > 0 && y < s.windowHeight) {
+    if (x > 0 && x < dimensions.width && y > 0 && y < dimensions.height) {
       switch (shape) {
         case "circle":
           s.handleMirrorMode(s.circle.bind(s), x, y, size, mirrorX, mirrorY);
@@ -175,11 +176,6 @@ const app = (s) => {
     }
 
     return size;
-  };
-
-  s.windowResized = () => {
-    s.resizeCanvas(s.windowWidth, s.windowHeight);
-    s.background(0);
   };
 
   s.keyPressed = () => {
