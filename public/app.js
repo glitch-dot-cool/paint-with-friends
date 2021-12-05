@@ -2,10 +2,12 @@ const app = (s) => {
   const socket = io.connect("http://localhost:3000");
   const guiParams = {
     fillColor: "#349beb",
-    fillOpacity: 100,
+    fillOpacity: 255,
     strokeColor: "#000000",
-    strokeOpacity: 100,
+    strokeOpacity: 255,
     size: 15,
+    sizeMin: 5,
+    sizeMax: 300,
     shape: ["circle", "square"],
     mirrorX: false,
     mirrorY: false,
