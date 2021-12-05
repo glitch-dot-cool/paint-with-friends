@@ -51,6 +51,12 @@
       if (QuickSettings) {
         console.log("Creating p5.gui powered by QuickSettings.");
         gui = new QSGui(label, parent, sketch);
+
+        const uiPanel = document.querySelector(".qs_main");
+        uiPanel.addEventListener("mousedown", (e) => {
+          // prevent mouse events passing through the UI and into the canvas
+          e.stopPropagation();
+        });
       } else {
         console.log(
           "QuickSettings not found. Is the script included in your HTML?"
