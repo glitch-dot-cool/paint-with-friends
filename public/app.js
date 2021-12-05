@@ -181,6 +181,13 @@ const app = (s) => {
     s.resizeCanvas(s.windowWidth, s.windowHeight);
     s.background(0);
   };
+
+  s.keyPressed = () => {
+    // p key
+    if (s.keyCode === 80) {
+      s.save("paint with friends.png", false); // false prevents canvas from being cleared
+    }
+  };
 };
 
 new p5(app);
