@@ -1,0 +1,33 @@
+const guiParams = {
+  fillColor: "#349beb",
+  fillOpacity: 255,
+  strokeColor: "#000000",
+  strokeOpacity: 255,
+  size: 15,
+  sizeMin: 5,
+  sizeMax: 300,
+  shape: ["circle", "square"],
+  mirrorX: false,
+  mirrorY: false,
+  isRainbowFill: false,
+  isRainbowStroke: false,
+  rainbowSpeed: 0.5,
+  rainbowSpeedMin: 0,
+  rainbowSpeedMax: 1,
+  rainbowSpeedStep: 0.01,
+  isSizeOscillating: false,
+  sizeOscSpeed: 0.001,
+  sizeOscSpeedMin: 0,
+  sizeOscSpeedMax: 0.2,
+  sizeOscSpeedStep: 0.001,
+  sizeOscAmount: 1,
+  sizeOscAmountMin: 0,
+  sizeOscAmountMax: 100,
+  sizeOscAmountStep: 0.01,
+};
+
+export const state = {
+  gui: guiParams,
+  rainbowCounter: 0,
+  sizeOsc: 0,
+};

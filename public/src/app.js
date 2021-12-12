@@ -1,39 +1,8 @@
-const app = (s) => {
-  const dimensions = { width: 1920, height: 1000 };
-  const socket = io.connect("http://localhost:3000");
-  const guiParams = {
-    fillColor: "#349beb",
-    fillOpacity: 255,
-    strokeColor: "#000000",
-    strokeOpacity: 255,
-    size: 15,
-    sizeMin: 5,
-    sizeMax: 300,
-    shape: ["circle", "square"],
-    mirrorX: false,
-    mirrorY: false,
-    isRainbowFill: false,
-    isRainbowStroke: false,
-    rainbowSpeed: 0.5,
-    rainbowSpeedMin: 0,
-    rainbowSpeedMax: 1,
-    rainbowSpeedStep: 0.01,
-    isSizeOscillating: false,
-    sizeOscSpeed: 0.001,
-    sizeOscSpeedMin: 0,
-    sizeOscSpeedMax: 0.2,
-    sizeOscSpeedStep: 0.001,
-    sizeOscAmount: 1,
-    sizeOscAmountMin: 0,
-    sizeOscAmountMax: 100,
-    sizeOscAmountStep: 0.01,
-  };
+import { state } from "./initialState.js";
+import { dimensions } from "./constants.js";
 
-  const state = {
-    guiParams,
-    rainbowCounter: 0,
-    sizeOsc: 0,
-  };
+const app = (s) => {
+  const socket = io.connect("http://localhost:3000");
 
   s.setup = function () {
     s.createCanvas(dimensions.width, dimensions.height); // 1080p-friendly
@@ -41,7 +10,7 @@ const app = (s) => {
     s.rectMode(s.CENTER);
 
     const gui = s.createGui("paintbrush options", this);
-    gui.addObject(guiParams);
+    gui.addObject(state.gui);
 
     socket.on("update", (paintProperties) => {
       s.updateDrawing(paintProperties);
@@ -134,33 +103,33 @@ const app = (s) => {
   };
 
   s.mouseDragged = () => {
-    state.rainbowCounter += 1 * guiParams.rainbowSpeed;
+    state.rainbowCounter += 1 * state.gui.rainbowSpeed;
 
     const hue = Math.floor(state.rainbowCounter % 360);
     const saturation = s.map(s.mouseY, 0, s.windowHeight, 100, 75);
     const brightness = s.map(s.mouseY, 0, s.windowHeight, 100, 50);
 
     const rainbowFill = s.color(`hsb(${hue}, ${saturation}%, ${brightness}%)`);
-    rainbowFill.setAlpha(guiParams.fillOpacity);
+    rainbowFill.setAlpha(state.gui.fillOpacity);
 
     const rainbowStroke = s.color(
       `hsb(${hue}, ${saturation}%, ${brightness}%)`
     );
-    rainbowStroke.setAlpha(guiParams.strokeOpacity);
+    rainbowStroke.setAlpha(state.gui.strokeOpacity);
 
     const paintProperties = {
       x: s.mouseX,
       y: s.mouseY,
-      fillColor: guiParams.fillColor,
-      fillOpacity: guiParams.fillOpacity,
-      strokeColor: guiParams.strokeColor,
-      strokeOpacity: guiParams.strokeOpacity,
-      size: s.modulateSize(guiParams.size),
-      shape: guiParams.shape,
-      mirrorX: guiParams.mirrorX,
-      mirrorY: guiParams.mirrorY,
-      isRainbowFill: guiParams.isRainbowFill,
-      isRainbowStroke: guiParams.isRainbowStroke,
+      fillColor: state.gui.fillColor,
+      fillOpacity: state.gui.fillOpacity,
+      strokeColor: state.gui.strokeColor,
+      strokeOpacity: state.gui.strokeOpacity,
+      size: s.modulateSize(state.gui.size),
+      shape: state.gui.shape,
+      mirrorX: state.gui.mirrorX,
+      mirrorY: state.gui.mirrorY,
+      isRainbowFill: state.gui.isRainbowFill,
+      isRainbowStroke: state.gui.isRainbowStroke,
       rainbowFill: rainbowFill.toString(),
       rainbowStroke: rainbowStroke.toString(),
     };
@@ -170,9 +139,9 @@ const app = (s) => {
   };
 
   s.modulateSize = (size) => {
-    if (guiParams.isSizeOscillating) {
-      state.sizeOsc += guiParams.sizeOscSpeed;
-      return size + (s.sin(state.sizeOsc) + 1) * guiParams.sizeOscAmount;
+    if (state.gui.isSizeOscillating) {
+      state.sizeOsc += state.gui.sizeOscSpeed;
+      return size + (s.sin(state.sizeOsc) + 1) * state.gui.sizeOscAmount;
     }
 
     return size;
