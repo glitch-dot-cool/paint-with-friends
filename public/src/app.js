@@ -17,6 +17,10 @@ const app = (s) => {
     socket.on("update", (paintProperties) => {
       updateDrawing(s, paintProperties);
     });
+
+    socket.on("members", (payload) => {
+      console.log("members", payload);
+    });
   };
 
   s.mouseDragged = () => {
