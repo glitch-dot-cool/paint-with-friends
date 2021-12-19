@@ -6,6 +6,8 @@ const updateUsernameBtn = document.querySelector("#update-username");
 
 updateUsernameBtn.addEventListener("click", (e) => {
   e.preventDefault(); // prevent page refresh on submit
+  const username = nameInput.value;
   const socketID = LocalStorage.get("pwf_socket");
-  Fetch.post("update-username", { id: socketID, username: nameInput.value });
+  LocalStorage.set("pwf_username", username);
+  Fetch.post("update-username", { id: socketID, username });
 });
