@@ -2,6 +2,7 @@ import { state } from "./initialState.js";
 import { dimensions } from "./constants.js";
 import { setupPaintProperties } from "./utils/setupPaintProperties.js";
 import { updateDrawing } from "./utils/drawing.js";
+import { LocalStorage } from "./utils/LocalStorage.js";
 
 const app = (s) => {
   const socket = io.connect("http://localhost:3000");
@@ -13,6 +14,10 @@ const app = (s) => {
 
     const gui = s.createGui("paintbrush options", this);
     gui.addObject(state.gui);
+
+    socket.on("connected", (socketID) => {
+      LocalStorage.set("pwf_socket", socketID);
+    });
 
     socket.on("update", (paintProperties) => {
       updateDrawing(s, paintProperties);
