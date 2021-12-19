@@ -18,14 +18,14 @@ const app = (s) => {
 
     socket.on("connected", (socketID) => {
       LocalStorage.set("pwf_socket", socketID);
-    });
 
-    socket.on("update", (paintProperties) => {
-      updateDrawing(s, paintProperties);
-    });
+      socket.on("update", (paintProperties) => {
+        updateDrawing(s, paintProperties);
+      });
 
-    socket.on("members", (users) => {
-      userList(users);
+      socket.on("members", (users) => {
+        userList(users);
+      });
     });
   };
 
