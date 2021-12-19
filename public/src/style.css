@@ -89,6 +89,26 @@ input {
   margin-left: 4px;
 }
 
+#username-list-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+
+#username-list {
+  list-style-type: none;
+}
+
+#username-list-title {
+  color: var(--gray4);
+  text-align: right;
+}
+
+#username-list li p {
+  color: var(--white);
+  text-align: right;
+}
+
 /* p5.GUI STYLES */
 
 .qs_content *,

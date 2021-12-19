@@ -3,6 +3,7 @@ import { dimensions } from "./constants.js";
 import { setupPaintProperties } from "./utils/setupPaintProperties.js";
 import { updateDrawing } from "./utils/drawing.js";
 import { LocalStorage } from "./utils/LocalStorage.js";
+import { userList } from "./components/userList.js";
 
 const app = (s) => {
   const socket = io.connect("http://localhost:3000");
@@ -23,8 +24,8 @@ const app = (s) => {
       updateDrawing(s, paintProperties);
     });
 
-    socket.on("members", (payload) => {
-      console.log("members", payload);
+    socket.on("members", (users) => {
+      userList(users);
     });
   };
 
