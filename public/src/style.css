@@ -81,7 +81,6 @@ input {
 .backdrop {
   padding: 10px;
   background-color: rgba(17, 17, 17, 0.75);
-  /* opacity: 0.75; */
   border-radius: 2px;
 }
 
@@ -90,8 +89,8 @@ input {
 #username-form {
   max-width: 200px;
   position: fixed;
-  bottom: 10px;
-  left: 10px;
+  bottom: 20px;
+  left: 20px;
 }
 
 #username-form button {
@@ -101,7 +100,7 @@ input {
 
 #username-list-container {
   position: fixed;
-  bottom: 10px;
+  bottom: 20px;
   right: 10px;
 }
 
