@@ -22,7 +22,7 @@ body {
   background: var(--gray1);
 }
 
-main {
+body {
   display: flex;
   justify-content: center;
   align-items: center;
