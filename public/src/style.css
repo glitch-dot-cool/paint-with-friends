@@ -6,6 +6,8 @@
   --gray2: #2c2c2c;
   --gray3: #3c3c3c;
   --gray4: #4c4c4c;
+  --gray6: #6c6c6c;
+  --gray8: #8c8c8c;
   --white: #eee;
 }
 
@@ -20,7 +22,7 @@
 html,
 body {
   height: 100%;
-  background: var(--gray1);
+  background: var(--black);
 }
 
 body {
@@ -76,13 +78,20 @@ input {
   align-items: center;
 }
 
+.backdrop {
+  padding: 10px;
+  background-color: rgba(17, 17, 17, 0.75);
+  /* opacity: 0.75; */
+  border-radius: 2px;
+}
+
 /* COMPONENT STYLES */
 
 #username-form {
   max-width: 200px;
   position: fixed;
-  bottom: 20px;
-  left: 20px;
+  bottom: 10px;
+  left: 10px;
 }
 
 #username-form button {
@@ -92,8 +101,8 @@ input {
 
 #username-list-container {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 10px;
+  right: 10px;
 }
 
 #username-list {
@@ -101,7 +110,7 @@ input {
 }
 
 #username-list-title {
-  color: var(--gray4);
+  color: var(--gray8);
   text-align: right;
 }
 

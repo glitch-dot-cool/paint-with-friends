@@ -10,7 +10,7 @@ const app = (s) => {
   const socket = io.connect("http://localhost:3000");
 
   s.setup = function () {
-    s.createCanvas(dimensions.width, dimensions.height); // 1080p-friendly
+    s.createCanvas(dimensions.width, dimensions.height);
     s.background(0);
     s.rectMode(s.CENTER);
 
@@ -38,6 +38,7 @@ const app = (s) => {
   };
 
   s.keyPressed = () => {
+    console.log(s.keyCode);
     // p key
     if (s.keyCode === 80) {
       s.save("paint with friends.png", false); // false prevents canvas from being cleared
