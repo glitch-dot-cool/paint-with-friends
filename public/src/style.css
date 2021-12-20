@@ -60,6 +60,10 @@ input {
   padding: 4px 8px;
 }
 
+ul {
+  list-style-type: none;
+}
+
 /* UTILITY CLASSES */
 
 .flex {
@@ -85,7 +89,8 @@ input {
 }
 
 .fade-out {
-  animation: fadeOut 60s ease-in forwards;
+  animation: fadeOut 5s ease-in forwards;
+  animation-delay: 55s;
 }
 
 /* COMPONENT STYLES */
@@ -118,13 +123,16 @@ input {
 }
 
 .chat-list-item {
-  margin-bottom: 4px;
   overflow-wrap: break-word;
   hyphens: auto;
 }
 
+.chat-list-item:not(:last-of-type) {
+  margin-bottom: 4px;
+}
+
 .chat-message-author {
-  color: var(--gray6);
+  color: var(--gray8);
 }
 
 .chat-message-author:after {
@@ -142,10 +150,6 @@ input {
   position: fixed;
   bottom: 20px;
   right: 10px;
-}
-
-#username-list {
-  list-style-type: none;
 }
 
 #username-list-title {
