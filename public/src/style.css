@@ -93,9 +93,17 @@ input {
   left: 20px;
 }
 
-#username-form button {
+#username-form button,
+#chat-form button {
   align-self: flex-end;
   margin-left: 4px;
+}
+
+#chat-form {
+  max-width: 200px;
+  position: fixed;
+  bottom: 20px;
+  left: 350px;
 }
 
 #username-list-container {

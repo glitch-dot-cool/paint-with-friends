@@ -28,6 +28,10 @@ const app = (s) => {
       socket.on("members", (users) => {
         userList(users);
       });
+
+      socket.on("message", (message) => {
+        console.log(message);
+      });
     });
   };
 
@@ -38,7 +42,6 @@ const app = (s) => {
   };
 
   s.keyPressed = () => {
-    console.log(s.keyCode);
     // p key
     if (s.keyCode === 80) {
       s.save("paint with friends.png", false); // false prevents canvas from being cleared
