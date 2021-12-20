@@ -84,6 +84,10 @@ input {
   border-radius: 2px;
 }
 
+.fade-out {
+  animation: fadeOut 60s ease-in forwards;
+}
+
 /* COMPONENT STYLES */
 
 #username-form {
@@ -152,6 +156,18 @@ input {
 #username-list li p {
   color: var(--white);
   text-align: right;
+}
+
+/* ANIMATIONS */
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
 }
 
 /* p5.GUI STYLES */

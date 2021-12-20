@@ -2,8 +2,6 @@
 const messages = [];
 
 export const chatMessages = (message) => {
-  console.log(messages, messages.length);
-
   // max 10 messages at a time
   if (messages.length > 9) {
     messages.splice(0, 1);
@@ -11,13 +9,17 @@ export const chatMessages = (message) => {
 
   messages.push(message);
 
+  // create new unordered list to replace old one
   const ul = document.createElement("ul");
+  ul.classList.add("backdrop", "fade-out");
   ul.setAttribute("id", "chat-list");
 
+  // append list elements for each message
   messages.forEach((message) => {
     createMessageMarkup(message, ul);
   });
 
+  // replace the old list w/ the new one
   const currentList = document.querySelector("#chat-list");
   currentList.replaceWith(ul);
 };
