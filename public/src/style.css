@@ -111,7 +111,7 @@ input {
 }
 
 #message-container {
-  max-width: 225px;
+  width: 225px;
   position: fixed;
   bottom: 65px;
   left: 350px;
