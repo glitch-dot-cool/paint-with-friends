@@ -5,6 +5,7 @@ import { updateDrawing } from "./utils/drawing.js";
 import { LocalStorage } from "./utils/LocalStorage.js";
 import { userList } from "./components/userList.js";
 import { initUsername } from "./utils/initUsername.js";
+import { chatMessages } from "./components/chatMessages.js";
 
 const app = (s) => {
   const socket = io.connect("http://localhost:3000");
@@ -30,7 +31,7 @@ const app = (s) => {
       });
 
       socket.on("message", (message) => {
-        console.log(message);
+        chatMessages(message);
       });
     });
   };

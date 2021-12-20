@@ -106,6 +106,34 @@ input {
   left: 350px;
 }
 
+#message-container {
+  max-width: 225px;
+  position: fixed;
+  bottom: 65px;
+  left: 350px;
+}
+
+.chat-list-item {
+  margin-bottom: 4px;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.chat-message-author {
+  color: var(--gray6);
+}
+
+.chat-message-author:after {
+  content: ":";
+  margin-right: 5px;
+}
+
+.chat-message {
+  color: var(--white);
+  display: inline;
+  overflow-wrap: break-word;
+}
+
 #username-list-container {
   position: fixed;
   bottom: 20px;
