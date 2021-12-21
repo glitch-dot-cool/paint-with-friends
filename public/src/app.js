@@ -14,6 +14,10 @@ const app = (s) => {
     const gui = s.createGui("paintbrush options", this);
     gui.addObject(state.gui);
 
+    const lfoGui = s.createGui("lfo options", this);
+    lfoGui.setPosition(s.windowWidth - 240, 20);
+    lfoGui.addObject(state.lfo);
+
     socket.on("update", (paintProperties) => {
       updateDrawing(s, paintProperties);
     });
