@@ -52,10 +52,13 @@
         console.log("Creating p5.gui powered by QuickSettings.");
         gui = new QSGui(label, parent, sketch);
 
-        const uiPanel = document.querySelector(".qs_main");
-        uiPanel.addEventListener("mousedown", (e) => {
-          // prevent mouse events passing through the UI and into the canvas
-          e.stopPropagation();
+        const uiPanels = document.querySelectorAll(".qs_main");
+
+        uiPanels.forEach((panel) => {
+          panel.addEventListener("mousedown", (e) => {
+            // prevent mouse events passing through the UI and into the canvas
+            e.stopPropagation();
+          });
         });
       } else {
         console.log(
