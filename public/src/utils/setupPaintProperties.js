@@ -1,24 +1,33 @@
 import { Waveforms } from "./Waveforms.js";
 
 export const setupPaintProperties = (p5, state) => {
-  const { size, fillOpacity, strokeOpacity, fill, stroke } = useLfo(p5, state);
+  const { gui } = state;
+  const lfo1 = useLfo(p5, state.gui, state.lfo1);
+  const lfo2 = useLfo(p5, state.gui, state.lfo2);
 
   return {
     x: p5.mouseX,
     y: p5.mouseY,
-    fillColor: fill,
-    strokeColor: stroke,
-    size,
-    fillOpacity,
-    strokeOpacity,
-    shape: state.gui.shape,
-    mirrorX: state.gui.mirrorX,
-    mirrorY: state.gui.mirrorY,
+    fillColor: handleLfoValue(lfo1, lfo2, gui, "fillColor"),
+    strokeColor: handleLfoValue(lfo1, lfo2, gui, "strokeColor"),
+    size: handleLfoValue(lfo1, lfo2, gui, "size"),
+    fillOpacity: handleLfoValue(lfo1, lfo2, gui, "fillOpacity"),
+    strokeOpacity: handleLfoValue(lfo1, lfo2, gui, "strokeOpacity"),
+    shape: gui.shape,
+    mirrorX: gui.mirrorX,
+    mirrorY: gui.mirrorY,
   };
 };
 
-export const useLfo = (p5, state) => {
-  const { gui, lfo } = state;
+// default to the values from the GUI if no LFO stuff is enabled
+// if any are enabled, they will be overwritten by their LFO'd values
+const handleLfoValue = (lfo1, lfo2, gui, value) => {
+  if (lfo2[value]) return lfo2[value];
+  if (lfo1[value]) return lfo1[value];
+  else return gui[value];
+};
+
+export const useLfo = (p5, gui, lfo) => {
   const {
     speed,
     amount,
@@ -26,64 +35,56 @@ export const useLfo = (p5, state) => {
     fillOpacity,
     strokeOpacity,
     size,
-    fill,
-    stroke,
-  } = lfo;
+    fillColor,
+    strokeColor,
+  } = lfo.gui;
 
-  // default to the values from the GUI, if no LFO stuff is enabled, return untouched
-  // if any are enabled, they will be overwritten by their LFO'd values
-  const values = {
-    fillOpacity: gui.fillOpacity,
-    strokeOpacity: gui.strokeOpacity,
-    size: gui.size,
-    fill: gui.fillColor,
-    stroke: gui.strokeColor,
-  };
+  const values = {};
 
   // if any of the LFO targetable params are enabled, advance the lfo
-  if (fillOpacity || strokeOpacity || size || fill || stroke) {
-    state.lfoValue += speed;
+  if (fillOpacity || strokeOpacity || size || fillColor || strokeColor) {
+    lfo.value += speed;
     // up to PI * 2 because geometry
-    state.lfoValue %= Math.PI * 2;
+    lfo.value %= Math.PI * 2;
   }
 
   if (fillOpacity) {
     // scale color values by 2.55x: 100 * 2.55 = 255
     const lfoValue =
-      gui.fillOpacity + Waveforms[shape](state.lfoValue) * (amount * 2.55);
+      gui.fillOpacity + Waveforms[shape](lfo.value) * (amount * 2.55);
 
     const scaledValue = scaleLfoValue(p5, lfoValue, gui.fillOpacity, 0, 255);
 
     values.fillOpacity = scaledValue;
   }
 
-  if (fill) {
+  if (fillColor) {
     // scale amount to 360 (degrees) for rotating through HSL colorspace
     // scale lfoValue by half because the range is -360 to 360 and we use the absolute value
     // i.e. the rotation speed is 2x other values tracking the LFO, so halve the speed
-    const lfoValue = Waveforms[shape](state.lfoValue * 0.5) * (amount * 3.6);
+    const lfoValue = Waveforms[shape](lfo.value * 0.5) * (amount * 3.6);
     const rainbow = useRainbow(p5, lfoValue, values.fillOpacity);
-    values.fill = rainbow;
+    values.fillColor = rainbow;
   }
 
   if (strokeOpacity) {
     const lfoValue =
-      gui.strokeOpacity + Waveforms[shape](state.lfoValue) * (amount * 2.55);
+      gui.strokeOpacity + Waveforms[shape](lfo.value) * (amount * 2.55);
 
     const scaledValue = scaleLfoValue(p5, lfoValue, gui.strokeOpacity, 0, 255);
 
     values.strokeOpacity = scaledValue;
   }
 
-  if (stroke) {
-    const lfoValue = Waveforms[shape](state.lfoValue * 0.5) * (amount * 3.6);
+  if (strokeColor) {
+    const lfoValue = Waveforms[shape](lfo.value * 0.5) * (amount * 3.6);
     const rainbow = useRainbow(p5, lfoValue, values.strokeOpacity);
-    values.stroke = rainbow;
+    values.strokeColor = rainbow;
   }
 
   if (size) {
     // +1 so the oscillation never goes below the minimum/default size set in paintbrush options
-    values.size = gui.size + (Waveforms[shape](state.lfoValue) + 1) * amount;
+    values.size = gui.size + (Waveforms[shape](lfo.value) + 1) * amount;
   }
 
   return values;

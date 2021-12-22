@@ -15,8 +15,8 @@ const lfoControllableParams = [
   "fillOpacity",
   "strokeOpacity",
   "size",
-  "fill",
-  "stroke",
+  "fillColor",
+  "strokeColor",
 ];
 
 const lfoParams = {
@@ -36,7 +36,6 @@ lfoControllableParams.forEach((param) => (lfoParams[param] = false));
 
 export const state = {
   gui: guiParams,
-  lfo: lfoParams,
-  sizeOsc: 0,
-  lfoValue: 0,
+  lfo1: { gui: { ...lfoParams }, value: 0 },
+  lfo2: { gui: { ...lfoParams }, value: 0 },
 };

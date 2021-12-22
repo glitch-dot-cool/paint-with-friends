@@ -11,12 +11,16 @@ const app = (s) => {
     s.background(0);
     s.rectMode(s.CENTER);
 
-    const gui = s.createGui("paintbrush options", this);
+    const gui = s.createGui("paintbrush", this);
     gui.addObject(state.gui);
 
-    const lfoGui = s.createGui("lfo options", this);
-    lfoGui.setPosition(s.windowWidth - 240, 20);
-    lfoGui.addObject(state.lfo);
+    const lfo1Gui = s.createGui("lfo1", this);
+    lfo1Gui.setPosition(s.windowWidth - 240, 20);
+    lfo1Gui.addObject(state.lfo1.gui);
+
+    const lfo2Gui = s.createGui("lfo2", this);
+    lfo2Gui.setPosition(s.windowWidth - 240, 380);
+    lfo2Gui.addObject(state.lfo2.gui);
 
     socket.on("update", (paintProperties) => {
       updateDrawing(s, paintProperties);
