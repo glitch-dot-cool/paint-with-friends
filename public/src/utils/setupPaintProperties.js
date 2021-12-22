@@ -29,6 +29,9 @@ export const useLfo = (p5, state) => {
     fill,
     stroke,
   } = lfo;
+
+  // default to the values from the GUI, if no LFO stuff is enabled, return untouched
+  // if any are enabled, they will be overwritten by their LFO'd values
   const values = {
     fillOpacity: gui.fillOpacity,
     strokeOpacity: gui.strokeOpacity,
@@ -37,8 +40,10 @@ export const useLfo = (p5, state) => {
     stroke: gui.strokeColor,
   };
 
+  // if any of the LFO targetable params are enabled, advance the lfo
   if (fillOpacity || strokeOpacity || size || fill || stroke) {
     state.lfoValue += speed;
+    // up to PI * 2 because geometry
     state.lfoValue %= Math.PI * 2;
   }
 
@@ -77,18 +82,26 @@ export const useLfo = (p5, state) => {
   }
 
   if (size) {
+    // +1 so the oscillation never goes below the minimum/default size set in paintbrush options
     values.size = gui.size + (Waveforms[shape](state.lfoValue) + 1) * amount;
   }
 
   return values;
 };
 
+// this function handles bias/offset from GUI-derived values applied to the LFO
+// note: this function does not work w/ colors, just raw numbers
 const scaleLfoValue = (p5, lfoValue, guiValue, min, max) => {
   return p5.map(lfoValue, -max + guiValue, max + guiValue, min, max);
 };
 
 const useRainbow = (p5, value, opacity) => {
+  // values range from -360 to 360 so we use the absolute value
+  // this makes the colors loop 2x as fast, so that is accounted for by halving the raw LFO value
   const hue = Math.abs(Math.floor(value));
+
+  // TODO: add GUI sliders for these values - the values should override
+  // the default color selection (i.e. even if not using useRainbow) but also effect this function
   const saturation = p5.map(p5.mouseY, 0, p5.windowHeight, 100, 75);
   const brightness = p5.map(p5.mouseY, 0, p5.windowHeight, 100, 50);
 
