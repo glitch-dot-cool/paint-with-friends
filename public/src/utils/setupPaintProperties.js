@@ -1,7 +1,7 @@
 import { Waveforms } from "./Waveforms.js";
 
 export const setupPaintProperties = (p5, state) => {
-  const { size, fillOpacity, strokeOpacity } = useLfo(state);
+  const { size, fillOpacity, strokeOpacity } = useLfo(p5, state);
   const { rainbowFill, rainbowStroke } = useRainbow(
     p5,
     state,
@@ -27,7 +27,7 @@ export const setupPaintProperties = (p5, state) => {
   };
 };
 
-export const useLfo = (state) => {
+export const useLfo = (p5, state) => {
   const { gui, lfo } = state;
   const { speed, amount, shape, fillOpacity, strokeOpacity, size } = lfo;
   const values = {
@@ -43,13 +43,21 @@ export const useLfo = (state) => {
 
   if (fillOpacity) {
     // scale color values by 2.55x: 100 * 2.55 = 255
-    values.fillOpacity =
+    const lfoValue =
       gui.fillOpacity + Waveforms[shape](state.lfoValue) * (amount * 2.55);
+
+    const scaledValue = scaleLfoValue(p5, lfoValue, gui.fillOpacity, 0, 255);
+
+    values.fillOpacity = scaledValue;
   }
 
   if (strokeOpacity) {
-    values.strokeOpacity =
+    const lfoValue =
       gui.strokeOpacity + Waveforms[shape](state.lfoValue) * (amount * 2.55);
+
+    const scaledValue = scaleLfoValue(p5, lfoValue, gui.strokeOpacity, 0, 255);
+
+    values.strokeOpacity = scaledValue;
   }
 
   if (size) {
@@ -59,15 +67,8 @@ export const useLfo = (state) => {
   return values;
 };
 
-const modulateSize = (p5, state) => {
-  const { isSizeOscillating, sizeOscSpeed, sizeOscAmount, size } = state.gui;
-
-  if (isSizeOscillating) {
-    state.sizeOsc += sizeOscSpeed;
-    return size + (p5.sin(state.sizeOsc) + 1) * sizeOscAmount;
-  }
-
-  return size;
+const scaleLfoValue = (p5, lfoValue, guiValue, min, max) => {
+  return p5.map(lfoValue, -max + guiValue, max + guiValue, min, max);
 };
 
 const useRainbow = (p5, state, fillOpacity, strokeOpacity) => {
