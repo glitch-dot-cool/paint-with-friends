@@ -26,7 +26,13 @@ const guiParams = {
   sizeOscAmountStep: 0.01,
 };
 
-const lfoControllableParams = ["fillOpacity", "strokeOpacity", "size"];
+const lfoControllableParams = [
+  "fillOpacity",
+  "strokeOpacity",
+  "size",
+  "fill",
+  "stroke",
+];
 
 const lfoParams = {
   speed: 0.001,
