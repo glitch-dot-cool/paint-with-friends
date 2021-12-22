@@ -20,11 +20,11 @@ const lfoControllableParams = [
 ];
 
 const lfoParams = {
-  speed: 0.001,
-  speedMin: 0,
-  speedMax: 0.2,
-  speedStep: 0.001,
-  amount: 1,
+  speed: 0.00005,
+  speedMin: 0.00001,
+  speedMax: 0.5,
+  speedStep: 0.00001,
+  amount: 50,
   amountMin: 0,
   amountMax: 100,
   amountStep: 0.01,
