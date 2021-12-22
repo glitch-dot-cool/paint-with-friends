@@ -1,22 +1,24 @@
+import { paintProperties as p } from "./constants.js";
+
 const guiParams = {
-  fillColor: "#349beb",
-  fillOpacity: 255,
-  strokeColor: "#000000",
-  strokeOpacity: 255,
-  size: 15,
+  [p.FILL_COLOR]: "#349beb",
+  [p.FILL_OPACITY]: 255,
+  [p.STROKE_COLOR]: "#000000",
+  [p.STROKE_OPACITY]: 255,
+  [p.SIZE]: 15,
   sizeMin: 5,
   sizeMax: 300,
-  shape: ["circle", "square"],
-  mirrorX: false,
-  mirrorY: false,
+  [p.SHAPE]: ["circle", "square"],
+  [p.MIRROR_X]: false,
+  [p.MIRROR_Y]: false,
 };
 
 const lfoControllableParams = [
-  "fillOpacity",
-  "strokeOpacity",
-  "size",
-  "fillColor",
-  "strokeColor",
+  p.FILL_OPACITY,
+  p.STROKE_OPACITY,
+  p.SIZE,
+  p.FILL_COLOR,
+  p.STROKE_COLOR,
 ];
 
 const lfoParams = {

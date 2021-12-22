@@ -1,20 +1,22 @@
 import { Waveforms } from "./Waveforms.js";
+import { paintProperties as p } from "../constants.js";
 
 export const setupPaintProperties = (p5, state) => {
   const { gui } = state;
   const lfo1 = useLfo(p5, state.gui, state.lfo1);
   const lfo2 = useLfo(p5, state.gui, state.lfo2);
   const lfo3 = useLfo(p5, state.gui, state.lfo3);
+  // pack lfos in reverse order so subsequent LFOs override previous ones
   const lfos = [lfo3, lfo2, lfo1];
 
   return {
     x: p5.mouseX,
     y: p5.mouseY,
-    fillColor: handleLfoValue(lfos, gui, "fillColor"),
-    strokeColor: handleLfoValue(lfos, gui, "strokeColor"),
-    size: handleLfoValue(lfos, gui, "size"),
-    fillOpacity: handleLfoValue(lfos, gui, "fillOpacity"),
-    strokeOpacity: handleLfoValue(lfos, gui, "strokeOpacity"),
+    fillColor: handleLfoValue(lfos, gui, p.FILL_COLOR),
+    strokeColor: handleLfoValue(lfos, gui, p.STROKE_COLOR),
+    size: handleLfoValue(lfos, gui, p.SIZE),
+    fillOpacity: handleLfoValue(lfos, gui, p.FILL_OPACITY),
+    strokeOpacity: handleLfoValue(lfos, gui, p.STROKE_OPACITY),
     shape: gui.shape,
     mirrorX: gui.mirrorX,
     mirrorY: gui.mirrorY,
@@ -59,7 +61,7 @@ export const useLfo = (p5, gui, lfo) => {
 
     const scaledValue = scaleLfoValue(p5, lfoValue, gui.fillOpacity, 0, 255);
 
-    values.fillOpacity = scaledValue;
+    values[p.FILL_OPACITY] = scaledValue;
   }
 
   if (fillColor) {
@@ -68,7 +70,7 @@ export const useLfo = (p5, gui, lfo) => {
     // i.e. the rotation speed is 2x other values tracking the LFO, so halve the speed
     const lfoValue = Waveforms[shape](lfo.value * 0.5) * (amount * 3.6);
     const rainbow = useRainbow(p5, lfoValue, values.fillOpacity);
-    values.fillColor = rainbow;
+    values[p.FILL_COLOR] = rainbow;
   }
 
   if (strokeOpacity) {
@@ -83,12 +85,12 @@ export const useLfo = (p5, gui, lfo) => {
   if (strokeColor) {
     const lfoValue = Waveforms[shape](lfo.value * 0.5) * (amount * 3.6);
     const rainbow = useRainbow(p5, lfoValue, values.strokeOpacity);
-    values.strokeColor = rainbow;
+    values[p.STROKE_COLOR] = rainbow;
   }
 
   if (size) {
     // +1 so the oscillation never goes below the minimum/default size set in paintbrush options
-    values.size = gui.size + (Waveforms[shape](lfo.value) + 1) * amount;
+    values[p.SIZE] = gui.size + (Waveforms[shape](lfo.value) + 1) * amount;
   }
 
   return values;
