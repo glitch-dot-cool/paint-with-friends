@@ -21,6 +21,12 @@ const app = (s) => {
     const lfo2Gui = s.createGui("lfo2", this);
     lfo2Gui.setPosition(s.windowWidth - 240, 380);
     lfo2Gui.addObject(state.lfo2.gui);
+    lfo2Gui.collapse();
+
+    const lfo3Gui = s.createGui("lfo3", this);
+    lfo3Gui.setPosition(s.windowWidth - 240, 420);
+    lfo3Gui.addObject(state.lfo3.gui);
+    lfo3Gui.collapse();
 
     socket.on("update", (paintProperties) => {
       updateDrawing(s, paintProperties);

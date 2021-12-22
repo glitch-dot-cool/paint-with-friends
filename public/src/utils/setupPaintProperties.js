@@ -4,15 +4,16 @@ export const setupPaintProperties = (p5, state) => {
   const { gui } = state;
   const lfo1 = useLfo(p5, state.gui, state.lfo1);
   const lfo2 = useLfo(p5, state.gui, state.lfo2);
+  const lfo3 = useLfo(p5, state.gui, state.lfo3);
 
   return {
     x: p5.mouseX,
     y: p5.mouseY,
-    fillColor: handleLfoValue(lfo1, lfo2, gui, "fillColor"),
-    strokeColor: handleLfoValue(lfo1, lfo2, gui, "strokeColor"),
-    size: handleLfoValue(lfo1, lfo2, gui, "size"),
-    fillOpacity: handleLfoValue(lfo1, lfo2, gui, "fillOpacity"),
-    strokeOpacity: handleLfoValue(lfo1, lfo2, gui, "strokeOpacity"),
+    fillColor: handleLfoValue(lfo1, lfo2, lfo3, gui, "fillColor"),
+    strokeColor: handleLfoValue(lfo1, lfo2, lfo3, gui, "strokeColor"),
+    size: handleLfoValue(lfo1, lfo2, lfo3, gui, "size"),
+    fillOpacity: handleLfoValue(lfo1, lfo2, lfo3, gui, "fillOpacity"),
+    strokeOpacity: handleLfoValue(lfo1, lfo2, lfo3, gui, "strokeOpacity"),
     shape: gui.shape,
     mirrorX: gui.mirrorX,
     mirrorY: gui.mirrorY,
@@ -21,7 +22,8 @@ export const setupPaintProperties = (p5, state) => {
 
 // default to the values from the GUI if no LFO stuff is enabled
 // if any are enabled, they will be overwritten by their LFO'd values
-const handleLfoValue = (lfo1, lfo2, gui, value) => {
+const handleLfoValue = (lfo1, lfo2, lfo3, gui, value) => {
+  if (lfo3[value]) return lfo3[value];
   if (lfo2[value]) return lfo2[value];
   if (lfo1[value]) return lfo1[value];
   else return gui[value];

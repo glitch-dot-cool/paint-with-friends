@@ -38,4 +38,5 @@ export const state = {
   gui: guiParams,
   lfo1: { gui: { ...lfoParams }, value: 0 },
   lfo2: { gui: { ...lfoParams }, value: 0 },
+  lfo3: { gui: { ...lfoParams }, value: 0 },
 };
