@@ -160,6 +160,12 @@
     this.toggleVisibility = function () {
       qs.toggleVisibility();
     };
+    this.collapse = function () {
+      qs.collapse();
+    };
+    this.expand = function () {
+      qs.expand();
+    };
     this.setPosition = function (x, y) {
       qs.setPosition(x, y);
       return this;
