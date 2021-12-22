@@ -2,12 +2,6 @@ import { Waveforms } from "./Waveforms.js";
 
 export const setupPaintProperties = (p5, state) => {
   const { size, fillOpacity, strokeOpacity, fill, stroke } = useLfo(p5, state);
-  const { rainbowFill, rainbowStroke } = useRainbow(
-    p5,
-    state,
-    fillOpacity,
-    strokeOpacity
-  );
 
   return {
     x: p5.mouseX,
@@ -20,10 +14,6 @@ export const setupPaintProperties = (p5, state) => {
     shape: state.gui.shape,
     mirrorX: state.gui.mirrorX,
     mirrorY: state.gui.mirrorY,
-    isRainbowFill: state.gui.isRainbowFill,
-    isRainbowStroke: state.gui.isRainbowStroke,
-    rainbowFill: rainbowFill.toString(),
-    rainbowStroke: rainbowStroke.toString(),
   };
 };
 
@@ -67,7 +57,7 @@ export const useLfo = (p5, state) => {
     // scale lfoValue by half because the range is -360 to 360 and we use the absolute value
     // i.e. the rotation speed is 2x other values tracking the LFO, so halve the speed
     const lfoValue = Waveforms[shape](state.lfoValue * 0.5) * (amount * 3.6);
-    const rainbow = newUseRainbow(p5, lfoValue, values.fillOpacity);
+    const rainbow = useRainbow(p5, lfoValue, values.fillOpacity);
     values.fill = rainbow;
   }
 
@@ -82,7 +72,7 @@ export const useLfo = (p5, state) => {
 
   if (stroke) {
     const lfoValue = Waveforms[shape](state.lfoValue * 0.5) * (amount * 3.6);
-    const rainbow = newUseRainbow(p5, lfoValue, values.strokeOpacity);
+    const rainbow = useRainbow(p5, lfoValue, values.strokeOpacity);
     values.stroke = rainbow;
   }
 
@@ -97,7 +87,7 @@ const scaleLfoValue = (p5, lfoValue, guiValue, min, max) => {
   return p5.map(lfoValue, -max + guiValue, max + guiValue, min, max);
 };
 
-const newUseRainbow = (p5, value, opacity) => {
+const useRainbow = (p5, value, opacity) => {
   const hue = Math.abs(Math.floor(value));
   const saturation = p5.map(p5.mouseY, 0, p5.windowHeight, 100, 75);
   const brightness = p5.map(p5.mouseY, 0, p5.windowHeight, 100, 50);
@@ -106,20 +96,4 @@ const newUseRainbow = (p5, value, opacity) => {
   rainbow.setAlpha(Math.ceil(opacity));
 
   return rainbow.toString("#rrggbb");
-};
-
-const useRainbow = (p5, state, fillOpacity, strokeOpacity) => {
-  state.rainbowCounter += 1 * state.gui.rainbowSpeed;
-
-  const hue = Math.floor(state.rainbowCounter % 360);
-  const saturation = p5.map(p5.mouseY, 0, p5.windowHeight, 100, 75);
-  const brightness = p5.map(p5.mouseY, 0, p5.windowHeight, 100, 50);
-
-  const rainbowFill = p5.color(`hsb(${hue}, ${saturation}%, ${brightness}%)`);
-  rainbowFill.setAlpha(Math.ceil(fillOpacity));
-
-  const rainbowStroke = p5.color(`hsb(${hue}, ${saturation}%, ${brightness}%)`);
-  rainbowStroke.setAlpha(Math.ceil(strokeOpacity));
-
-  return { rainbowFill, rainbowStroke };
 };

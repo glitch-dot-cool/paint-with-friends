@@ -9,21 +9,6 @@ const guiParams = {
   shape: ["circle", "square"],
   mirrorX: false,
   mirrorY: false,
-  isRainbowFill: false,
-  isRainbowStroke: false,
-  rainbowSpeed: 0.5,
-  rainbowSpeedMin: 0,
-  rainbowSpeedMax: 1,
-  rainbowSpeedStep: 0.01,
-  isSizeOscillating: false,
-  sizeOscSpeed: 0.001,
-  sizeOscSpeedMin: 0,
-  sizeOscSpeedMax: 0.2,
-  sizeOscSpeedStep: 0.001,
-  sizeOscAmount: 1,
-  sizeOscAmountMin: 0,
-  sizeOscAmountMax: 100,
-  sizeOscAmountStep: 0.01,
 };
 
 const lfoControllableParams = [
@@ -52,7 +37,6 @@ lfoControllableParams.forEach((param) => (lfoParams[param] = false));
 export const state = {
   gui: guiParams,
   lfo: lfoParams,
-  rainbowCounter: 0,
   sizeOsc: 0,
   lfoValue: 0,
 };
