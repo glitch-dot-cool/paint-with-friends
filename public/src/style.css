@@ -15,8 +15,9 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: monospace;
+  font-family: "JetBrains Mono", monospace;
   user-select: none;
+  font-size: 95%;
 }
 
 html,
@@ -175,11 +176,6 @@ ul {
 }
 
 /* p5.GUI STYLES */
-
-.qs_content *,
-.qs_title_bar {
-  font-family: monospace;
-}
 
 .qs_container {
   background-color: var(--gray3) !important;
