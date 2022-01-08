@@ -7,16 +7,7 @@ export const updateDrawing = (p5, paintProperties) => {
 
 const handleColor = (
   p5,
-  {
-    fillColor,
-    fillOpacity,
-    strokeColor,
-    strokeOpacity,
-    isRainbowFill,
-    isRainbowStroke,
-    rainbowFill,
-    rainbowStroke,
-  }
+  { fillColor, fillOpacity, strokeColor, strokeOpacity }
 ) => {
   const stroke = p5.color(strokeColor);
   stroke.setAlpha(strokeOpacity);
@@ -24,19 +15,8 @@ const handleColor = (
   const fill = p5.color(fillColor);
   fill.setAlpha(fillOpacity);
 
-  if (isRainbowFill && isRainbowStroke) {
-    p5.stroke(rainbowStroke);
-    p5.fill(rainbowFill);
-  } else if (isRainbowFill) {
-    p5.fill(rainbowFill);
-    p5.stroke(stroke);
-  } else if (isRainbowStroke) {
-    p5.fill(fill);
-    p5.stroke(rainbowStroke);
-  } else {
-    p5.stroke(stroke);
-    p5.fill(fill);
-  }
+  p5.stroke(stroke);
+  p5.fill(fill);
 };
 
 const renderShape = (
