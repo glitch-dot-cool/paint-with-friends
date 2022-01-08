@@ -5,6 +5,7 @@ import { updateDrawing } from "./utils/drawing.js";
 import { LocalStorage } from "./utils/LocalStorage.js";
 import { userList } from "./components/userList.js";
 import { initUsername } from "./utils/initUsername.js";
+import { chatMessages } from "./components/chatMessages.js";
 
 const app = (s) => {
   const socket = io.connect("http://localhost:3000");
@@ -28,6 +29,10 @@ const app = (s) => {
       socket.on("members", (users) => {
         userList(users);
       });
+
+      socket.on("message", (message) => {
+        chatMessages(message);
+      });
     });
   };
 
@@ -38,7 +43,6 @@ const app = (s) => {
   };
 
   s.keyPressed = () => {
-    console.log(s.keyCode);
     // p key
     if (s.keyCode === 80) {
       s.save("paint with friends.png", false); // false prevents canvas from being cleared

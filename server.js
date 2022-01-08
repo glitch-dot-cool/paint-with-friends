@@ -34,3 +34,9 @@ app.post("/update-username", async (req, res) => {
   connectedUsers.renameConnection(id, username);
   res.sendStatus(200);
 });
+
+app.post("/message", async (req, res) => {
+  const { id, message } = req.body;
+  connectedUsers.message(id, message);
+  res.sendStatus(200);
+});
