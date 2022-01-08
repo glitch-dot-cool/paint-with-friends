@@ -6,6 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>paint with friends</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.min.js"></script>
     <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"
         integrity="sha384-KAZ4DtjNhLChOB/hxXuKqhMLYvx3b5MlT55xPEiNmREKRzeEm+RVPlTnAn0ajQNs"
@@ -14,9 +17,45 @@
     <script src="./lib/quicksettings.js"></script>
     <link rel="stylesheet" href="./src/style.css">
     <script src="./src/app.js" type="module"></script>
+    <script src="./src/ui.js" type="module"></script>
 </head>
 
 <body>
+
+    <form id="username-form" class="flex">
+        <label class="flex column">
+            username
+            <input id="name-input" type="text">
+        </label>
+        <button id="update-username">update</button>
+    </form>
+
+    <form id="chat-form" class="flex">
+        <label class="flex column">
+            message
+            <input id="message-input" type="text">
+        </label>
+        <button id="send-message">send</button>
+    </form>
+
+    <div id="message-container">
+        <ul id="chat-list">
+            <!-- chat messages go here -->
+        </ul>
+    </div>
+
+
+    <div id="username-list-container" class="backdrop">
+        <h4 id="username-list-title">connected users:</h4>
+        <ul id="username-list">
+            <template id="connected-users-template">
+                <li class="username-list-item">
+                    <p class="username"></p>
+                </li>
+            </template>
+        </ul>
+    </div>
+
 
 </body>
 

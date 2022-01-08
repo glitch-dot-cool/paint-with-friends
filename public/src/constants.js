@@ -1,5 +1,3 @@
-export const dimensions = { width: 1920, height: 1000 };
-
 export const paintProperties = {
   FILL_COLOR: "fillColor",
   STROKE_COLOR: "strokeColor",
@@ -10,3 +8,5 @@ export const paintProperties = {
   MIRROR_X: "mirrorX",
   MIRROR_Y: "mirrorY",
 };
+
+export const dimensions = { width: 1920, height: 930 }; // 1080p-friendly

@@ -2,12 +2,16 @@ import { state } from "./initialState.js";
 import { dimensions } from "./constants.js";
 import { setupPaintProperties } from "./utils/setupPaintProperties.js";
 import { updateDrawing } from "./utils/drawing.js";
+import { LocalStorage } from "./utils/LocalStorage.js";
+import { userList } from "./components/userList.js";
+import { initUsername } from "./utils/initUsername.js";
+import { chatMessages } from "./components/chatMessages.js";
 
 const app = (s) => {
   const socket = io.connect("http://localhost:3000");
 
   s.setup = function () {
-    s.createCanvas(dimensions.width, dimensions.height); // 1080p-friendly
+    s.createCanvas(dimensions.width, dimensions.height);
     s.background(0);
     s.rectMode(s.CENTER);
 
@@ -28,8 +32,21 @@ const app = (s) => {
     lfo3Gui.addObject(state.lfo3.gui);
     lfo3Gui.collapse();
 
-    socket.on("update", (paintProperties) => {
-      updateDrawing(s, paintProperties);
+    socket.on("connected", (socketID) => {
+      LocalStorage.set("pwf_socket", socketID);
+      initUsername(socketID);
+
+      socket.on("update", (paintProperties) => {
+        updateDrawing(s, paintProperties);
+      });
+
+      socket.on("members", (users) => {
+        userList(users);
+      });
+
+      socket.on("message", (message) => {
+        chatMessages(message);
+      });
     });
   };
 
