@@ -2,20 +2,32 @@ import { state } from "./initialState.js";
 import { dimensions } from "./constants.js";
 import { setupPaintProperties } from "./utils/setupPaintProperties.js";
 import { updateDrawing } from "./utils/drawing.js";
+import { LocalStorage } from "./utils/LocalStorage.js";
+import { userList } from "./components/userList.js";
+import { initUsername } from "./utils/initUsername.js";
 
 const app = (s) => {
   const socket = io.connect("http://localhost:3000");
 
   s.setup = function () {
-    s.createCanvas(dimensions.width, dimensions.height); // 1080p-friendly
+    s.createCanvas(dimensions.width, dimensions.height);
     s.background(0);
     s.rectMode(s.CENTER);
 
     const gui = s.createGui("paintbrush options", this);
     gui.addObject(state.gui);
 
-    socket.on("update", (paintProperties) => {
-      updateDrawing(s, paintProperties);
+    socket.on("connected", (socketID) => {
+      LocalStorage.set("pwf_socket", socketID);
+      initUsername(socketID);
+
+      socket.on("update", (paintProperties) => {
+        updateDrawing(s, paintProperties);
+      });
+
+      socket.on("members", (users) => {
+        userList(users);
+      });
     });
   };
 
@@ -26,6 +38,7 @@ const app = (s) => {
   };
 
   s.keyPressed = () => {
+    console.log(s.keyCode);
     // p key
     if (s.keyCode === 80) {
       s.save("paint with friends.png", false); // false prevents canvas from being cleared
