@@ -1,3 +1,5 @@
+import { LocalStorage } from "../utils/LocalStorage.js";
+
 export const userList = (users) => {
   // grab the existing list & template
   const ul = document.getElementById("username-list");
@@ -11,7 +13,15 @@ export const userList = (users) => {
   // create updated list
   Object.values(users).forEach((username) => {
     const listItem = document.importNode(template.content, true);
-    listItem.querySelector(".username").textContent = username;
+    let text = "";
+
+    if (username === LocalStorage.get("pwf_username")) {
+      text = `${username} (you)`;
+    } else {
+      text = username;
+    }
+
+    listItem.querySelector(".username").textContent = text;
     newList.appendChild(listItem);
   });
 

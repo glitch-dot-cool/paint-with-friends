@@ -94,6 +94,10 @@ ul {
   animation-delay: 55s;
 }
 
+.hide {
+  display: none;
+}
+
 /* COMPONENT STYLES */
 
 #username-form {
@@ -161,6 +165,12 @@ ul {
 #username-list li p {
   color: var(--white);
   text-align: right;
+}
+
+#change-username {
+  float: right;
+  font-size: 10px;
+  margin-top: 10px;
 }
 
 /* ANIMATIONS */
