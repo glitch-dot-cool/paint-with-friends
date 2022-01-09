@@ -18,12 +18,12 @@ export const userList = (users) => {
     let text = "";
 
     if (username === storedUsername || username === socketID) {
-      text = `${username} (you)`;
+      text = `${username} <span class="dim">(you)</span>`;
     } else {
       text = username;
     }
 
-    listItem.querySelector(".username").textContent = text;
+    listItem.querySelector(".username").innerHTML = text;
     newList.appendChild(listItem);
   });
 
