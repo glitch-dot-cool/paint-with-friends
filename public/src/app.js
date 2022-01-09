@@ -8,9 +8,11 @@ import { initUsername } from "./utils/initUsername.js";
 import { chatMessages } from "./components/chatMessages.js";
 
 const app = (s) => {
-  const socket = io.connect("http://localhost:3000");
+  let socket;
 
   s.setup = function () {
+    socket = io.connect("http://localhost:3000");
+
     s.createCanvas(dimensions.width, dimensions.height);
     s.background(0);
     s.rectMode(s.CENTER);
@@ -35,18 +37,18 @@ const app = (s) => {
     socket.on("connected", (socketID) => {
       LocalStorage.set("pwf_socket", socketID);
       initUsername(socketID);
+    });
 
-      socket.on("update", (paintProperties) => {
-        updateDrawing(s, paintProperties);
-      });
+    socket.on("update", (paintProperties) => {
+      updateDrawing(s, paintProperties);
+    });
 
-      socket.on("members", (users) => {
-        userList(users);
-      });
+    socket.on("members", (users) => {
+      userList(users);
+    });
 
-      socket.on("message", (message) => {
-        chatMessages(message);
-      });
+    socket.on("message", (message) => {
+      chatMessages(message);
     });
   };
 
