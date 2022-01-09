@@ -11,6 +11,7 @@ updateUsernameBtn.addEventListener("click", (e) => {
   const username = nameInput.value;
   const socketID = LocalStorage.get("pwf_socket");
   LocalStorage.set("pwf_username", username);
+  nameInput.value = "";
   Fetch.post("update-username", { id: socketID, username });
 });
 
