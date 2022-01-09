@@ -13,9 +13,11 @@ export const userList = (users) => {
   // create updated list
   Object.values(users).forEach((username) => {
     const listItem = document.importNode(template.content, true);
+    const storedUsername = LocalStorage.get("pwf_username");
+    const socketID = LocalStorage.get("pwf_socket");
     let text = "";
 
-    if (username === LocalStorage.get("pwf_username")) {
+    if (username === storedUsername || username === socketID) {
       text = `${username} (you)`;
     } else {
       text = username;
