@@ -1,3 +1,4 @@
+// todo rework all oscillators to output values between 0-1
 export class Waveforms {
   static sine(x) {
     return Math.sin(x);
@@ -7,7 +8,7 @@ export class Waveforms {
     if (x <= Math.PI) {
       return -1;
     }
-    return 1;
+    return 0;
   }
 
   static triangle(x) {
@@ -22,6 +23,6 @@ export class Waveforms {
   }
 
   static random() {
-    return Math.random() * 2 - 1;
+    return Math.random();
   }
 }

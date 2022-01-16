@@ -12,11 +12,11 @@ export const setupPaintProperties = (p5, state) => {
   return {
     x: p5.mouseX,
     y: p5.mouseY,
-    fillColor: handleLfoValue(lfos, gui, p.FILL_COLOR),
-    strokeColor: handleLfoValue(lfos, gui, p.STROKE_COLOR),
-    size: handleLfoValue(lfos, gui, p.SIZE),
-    fillOpacity: handleLfoValue(lfos, gui, p.FILL_OPACITY),
-    strokeOpacity: handleLfoValue(lfos, gui, p.STROKE_OPACITY),
+    fillColor: handleLfoValue(p5, lfos, gui, p.FILL_COLOR),
+    strokeColor: handleLfoValue(p5, lfos, gui, p.STROKE_COLOR),
+    size: handleLfoValue(p5, lfos, gui, p.SIZE),
+    fillOpacity: handleLfoValue(p5, lfos, gui, p.FILL_OPACITY),
+    strokeOpacity: handleLfoValue(p5, lfos, gui, p.STROKE_OPACITY),
     shape: gui.shape,
     mirrorX: gui.mirrorX,
     mirrorY: gui.mirrorY,
@@ -25,12 +25,40 @@ export const setupPaintProperties = (p5, state) => {
 
 // default to the values from the GUI if no LFO stuff is enabled
 // if any are enabled, they will be overwritten by their LFO'd values
-const handleLfoValue = (lfos, gui, value) => {
+const handleLfoValue = (p5, lfos, gui, value) => {
+  let lfoCount = 0;
+  let runningValue = 0;
+  let isColor = false;
+  let colorsArray = [0, 0, 0];
+
   for (const lfo of lfos) {
-    if (lfo[value]) return lfo[value];
+    if (lfo[value]) {
+      lfoCount++;
+
+      // if we're dealing with a color
+      if ([p.FILL_COLOR, p.STROKE_COLOR].includes(value)) {
+        isColor = true;
+        const levels = lfo[value].levels;
+
+        // sum & average rgb values from lfos
+        for (let i = 0; i < 3; i++) {
+          colorsArray[i] += levels[i];
+        }
+
+        colorsArray = colorsArray.map((colorChannel) =>
+          p5.map(colorChannel, 0, 255 * lfoCount, 0, 255)
+        );
+      } else {
+        runningValue += lfo[value];
+      }
+    }
   }
 
-  return gui[value];
+  // if a color, return a hex string
+  if (isColor) return p5.color(colorsArray).toString("#rrggbb");
+
+  // otherwise return the value as a number (default to GUI if no active lfo for given param)
+  return lfoCount > 0 ? runningValue / lfoCount : gui[value];
 };
 
 export const useLfo = (p5, gui, lfo) => {
@@ -67,8 +95,8 @@ export const useLfo = (p5, gui, lfo) => {
   if (fillColor) {
     // scale amount to 360 (degrees) for rotating through HSL colorspace
     // scale lfoValue by half because the range is -360 to 360 and we use the absolute value
-    // i.e. the rotation speed is 2x other values tracking the LFO, so halve the speed
-    const lfoValue = Waveforms[shape](lfo.value * 0.5) * (amount * 3.6);
+    // i.e. speed is 2x other values tracking the LFO, so halve the speed
+    const lfoValue = Waveforms[shape](lfo.value) * (amount * 3.6);
     const rainbow = useRainbow(p5, lfoValue, values.fillOpacity);
     values[p.FILL_COLOR] = rainbow;
   }
@@ -90,6 +118,7 @@ export const useLfo = (p5, gui, lfo) => {
 
   if (size) {
     // +1 so the oscillation never goes below the minimum/default size set in paintbrush options
+    // todo remove the +1 offset once waveforms have been reworked
     values[p.SIZE] = gui.size + (Waveforms[shape](lfo.value) + 1) * amount;
   }
 
@@ -115,5 +144,5 @@ const useRainbow = (p5, value, opacity) => {
   const rainbow = p5.color(`hsb(${hue}, ${saturation}%, ${brightness}%)`);
   rainbow.setAlpha(Math.ceil(opacity));
 
-  return rainbow.toString("#rrggbb");
+  return rainbow;
 };
