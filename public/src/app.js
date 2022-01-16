@@ -6,9 +6,11 @@ import { LocalStorage } from "./utils/LocalStorage.js";
 import { userList } from "./components/userList.js";
 import { initUsername } from "./utils/initUsername.js";
 import { chatMessages } from "./components/chatMessages.js";
+import { KeyManager } from "./utils/KeyManager.js";
 
 const app = (s) => {
   let socket;
+  const keysPressed = new KeyManager(s);
 
   s.setup = function () {
     socket = io.connect("http://localhost:3000");
@@ -59,10 +61,11 @@ const app = (s) => {
   };
 
   s.keyPressed = () => {
-    // p key
-    if (s.keyCode === 80) {
-      s.save("paint with friends.png", false); // false prevents canvas from being cleared
-    }
+    keysPressed.addKey(s.keyCode);
+  };
+
+  s.keyReleased = () => {
+    keysPressed.removeKey(s.keyCode);
   };
 };
 
