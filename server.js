@@ -1,6 +1,6 @@
-const express = require("express");
-const socket = require("socket.io");
-const Connections = require("./Connections.js");
+import express from "express";
+import { Server } from "socket.io";
+import { Connections } from "./Connections.js";
 
 const port = 3000;
 
@@ -13,7 +13,7 @@ const server = app.listen(port, () =>
   console.log(`server listening on port ${port}`)
 );
 
-const io = socket(server);
+const io = new Server(server);
 const connectedUsers = new Connections(io);
 
 io.sockets.on("connection", (socket) => {
