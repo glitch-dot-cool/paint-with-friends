@@ -9,8 +9,12 @@ import { chatMessages } from "./components/chatMessages.js";
 import { KeyManager } from "./utils/KeyManager.js";
 
 const app = (s) => {
-  let socket;
   const keysPressed = new KeyManager(s);
+  const GUI_WIDTH = 200;
+  const GUI_GUTTER = 20;
+  const GUI_OFFSET = 0 + 2 * GUI_GUTTER + GUI_WIDTH;
+
+  let socket;
 
   s.setup = function () {
     socket = io.connect("http://localhost:3000");
@@ -20,19 +24,21 @@ const app = (s) => {
     s.rectMode(s.CENTER);
 
     const gui = s.createGui("paintbrush", this);
+    gui.id = "paintbrush-options";
     gui.addObject(state.gui);
 
     const lfo1Gui = s.createGui("lfo1", this);
-    lfo1Gui.setPosition(s.windowWidth - 240, 20);
+    lfo1Gui.setPosition(GUI_OFFSET);
     lfo1Gui.addObject(state.lfo1.gui);
+    lfo1Gui.collapse();
 
     const lfo2Gui = s.createGui("lfo2", this);
-    lfo2Gui.setPosition(s.windowWidth - 240, 380);
+    lfo2Gui.setPosition(2 * GUI_OFFSET - GUI_GUTTER);
     lfo2Gui.addObject(state.lfo2.gui);
     lfo2Gui.collapse();
 
     const lfo3Gui = s.createGui("lfo3", this);
-    lfo3Gui.setPosition(s.windowWidth - 240, 420);
+    lfo3Gui.setPosition(3 * GUI_OFFSET - 2 * GUI_GUTTER);
     lfo3Gui.addObject(state.lfo3.gui);
     lfo3Gui.collapse();
 
