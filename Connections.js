@@ -1,4 +1,4 @@
-class Connections {
+export class Connections {
   constructor(io) {
     this.io = io;
     this.connections = {};
@@ -33,5 +33,3 @@ class Connections {
     return this.connections[id];
   };
 }
-
-module.exports = Connections;
