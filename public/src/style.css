@@ -94,13 +94,21 @@ ul {
   animation-delay: 55s;
 }
 
+.hide {
+  display: none;
+}
+
+.dim {
+  opacity: 0.5;
+}
+
 /* COMPONENT STYLES */
 
 #username-form {
   max-width: 200px;
   position: fixed;
   bottom: 20px;
-  left: 20px;
+  left: 350px;
 }
 
 #username-form button,
@@ -113,14 +121,14 @@ ul {
   max-width: 200px;
   position: fixed;
   bottom: 20px;
-  left: 350px;
+  left: 20px;
 }
 
 #message-container {
-  width: 225px;
+  width: 250px;
   position: fixed;
-  bottom: 65px;
-  left: 350px;
+  bottom: 70px;
+  left: 20px;
 }
 
 .chat-list-item {
@@ -161,6 +169,12 @@ ul {
 #username-list li p {
   color: var(--white);
   text-align: right;
+}
+
+#change-username {
+  float: right;
+  font-size: 10px;
+  margin-top: 10px;
 }
 
 /* ANIMATIONS */
