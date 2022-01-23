@@ -1,28 +1,34 @@
 export class Waveforms {
-  static sine(x) {
-    return this._normalize(Math.sin(x));
+  static sine(min, x) {
+    const expression = Math.sin(x);
+    return this._normalize(expression, min);
   }
 
-  static square(x) {
+  static square(min, x) {
     if (x <= Math.PI) {
-      return 0;
+      return this._normalize(-1, min);
     }
-    return 1;
+    return this._normalize(1, min);
   }
 
-  static triangle(x) {
+  static triangle(min, x) {
     if (x <= Math.PI) {
-      return this._normalize(x / (Math.PI * 0.5) - 1);
+      const expression = x / (Math.PI * 0.5) - 1;
+      return this._normalize(expression, min);
     }
-    return this._normalize((x - Math.PI) / (-Math.PI * 0.5) + 1);
+
+    const expression = (x - Math.PI) / (-Math.PI * 0.5) + 1;
+    return this._normalize(expression, min);
   }
 
-  static saw(x) {
-    return this._normalize(x / Math.PI - 1);
+  static saw(min, x) {
+    const expression = x / Math.PI - 1;
+    return this._normalize(expression, min);
   }
 
-  static random() {
-    return Math.random();
+  static random(min) {
+    const expression = Math.random() * 2 - 1;
+    return this._normalize(expression, min);
   }
 
   /**
@@ -31,7 +37,8 @@ export class Waveforms {
    * @param {number} x
    * @returns {number} - 0-1 range
    */
-  static _normalize(x) {
-    return window.p5.prototype.map(x, -1, 1, 0, 1);
+  static _normalize(x, min) {
+    const scaledMin = min * 0.01;
+    return window.p5.prototype.map(x, -1, 1, scaledMin, 1);
   }
 }

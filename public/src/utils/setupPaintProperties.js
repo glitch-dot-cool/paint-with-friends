@@ -71,6 +71,7 @@ export const useLfo = (p5, gui, lfo) => {
     size,
     fillColor,
     strokeColor,
+    floor,
   } = lfo.gui;
 
   const values = {};
@@ -85,7 +86,7 @@ export const useLfo = (p5, gui, lfo) => {
   if (fillOpacity) {
     // scale color values by 2.55x: 100 * 2.55 = 255
     const lfoValue =
-      gui.fillOpacity + Waveforms[shape](lfo.value) * (amount * 2.55);
+      gui.fillOpacity + Waveforms[shape](floor, lfo.value) * (amount * 2.55);
 
     const scaledValue = scaleLfoValue(p5, lfoValue, gui.fillOpacity, 0, 255);
 
@@ -94,14 +95,14 @@ export const useLfo = (p5, gui, lfo) => {
 
   if (fillColor) {
     // scale amount to 360 (degrees) for rotating through HSL colorspace
-    const lfoValue = Waveforms[shape](lfo.value) * (amount * 3.6);
+    const lfoValue = Waveforms[shape](floor, lfo.value) * (amount * 3.6);
     const rainbow = useRainbow(p5, lfoValue, values.fillOpacity);
     values[p.FILL_COLOR] = rainbow;
   }
 
   if (strokeOpacity) {
     const lfoValue =
-      gui.strokeOpacity + Waveforms[shape](lfo.value) * (amount * 2.55);
+      gui.strokeOpacity + Waveforms[shape](floor, lfo.value) * (amount * 2.55);
 
     const scaledValue = scaleLfoValue(p5, lfoValue, gui.strokeOpacity, 0, 255);
 
@@ -109,13 +110,13 @@ export const useLfo = (p5, gui, lfo) => {
   }
 
   if (strokeColor) {
-    const lfoValue = Waveforms[shape](lfo.value) * (amount * 3.6);
+    const lfoValue = Waveforms[shape](floor, lfo.value) * (amount * 3.6);
     const rainbow = useRainbow(p5, lfoValue, values.strokeOpacity);
     values[p.STROKE_COLOR] = rainbow;
   }
 
   if (size) {
-    values[p.SIZE] = gui.size + Waveforms[shape](lfo.value) * amount;
+    values[p.SIZE] = gui.size + Waveforms[shape](floor, lfo.value) * amount;
   }
 
   return values;
