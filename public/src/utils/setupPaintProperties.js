@@ -96,7 +96,7 @@ export const useLfo = (p5, gui, lfo) => {
   if (fillColor) {
     // scale amount to 360 (degrees) for rotating through HSL colorspace
     const lfoValue = Waveforms[shape](floor, lfo.value) * (amount * 3.6);
-    const rainbow = useRainbow(p5, lfoValue, values.fillOpacity);
+    const rainbow = useRainbow(p5, lfoValue, lfo.gui, values.fillOpacity);
     values[p.FILL_COLOR] = rainbow;
   }
 
@@ -111,7 +111,7 @@ export const useLfo = (p5, gui, lfo) => {
 
   if (strokeColor) {
     const lfoValue = Waveforms[shape](floor, lfo.value) * (amount * 3.6);
-    const rainbow = useRainbow(p5, lfoValue, values.strokeOpacity);
+    const rainbow = useRainbow(p5, lfoValue, lfo.gui, values.strokeOpacity);
     values[p.STROKE_COLOR] = rainbow;
   }
 
@@ -128,13 +128,10 @@ const scaleLfoValue = (p5, lfoValue, guiValue, min, max) => {
   return p5.map(lfoValue, -max + guiValue, max + guiValue, min, max);
 };
 
-const useRainbow = (p5, value, opacity) => {
-  const hue = Math.floor(value);
-
-  // TODO: add GUI sliders for these values - the values should override
-  // the default color selection (i.e. even if not using useRainbow) but also effect this function
-  const saturation = p5.map(p5.mouseY, 0, p5.windowHeight, 100, 75);
-  const brightness = p5.map(p5.mouseY, 0, p5.windowHeight, 100, 50);
+const useRainbow = (p5, lfoValue, lfoGui, opacity) => {
+  const hue = Math.floor(lfoValue);
+  const saturation = lfoGui.saturation;
+  const brightness = lfoGui.brightness;
 
   const rainbow = p5.color(`hsb(${hue}, ${saturation}%, ${brightness}%)`);
   rainbow.setAlpha(Math.ceil(opacity));
