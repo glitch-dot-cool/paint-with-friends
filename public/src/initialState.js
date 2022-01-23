@@ -34,7 +34,7 @@ const lfoParams = {
   amountMin: 0,
   amountMax: 100,
   amountStep: 0.01,
-  shape: ["sine", "triangle", "square", "saw", "random"],
+  shape: ["sine", "triangle", "square", "saw", "random", "noise"],
 };
 
 // add toggle controls for each available LFO target

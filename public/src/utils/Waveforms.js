@@ -31,6 +31,11 @@ export class Waveforms {
     return this._normalize(expression, min);
   }
 
+  static noise(min, x) {
+    const expression = window.p5.prototype.noise(x);
+    return this._normalize(expression, min);
+  }
+
   /**
    * Normalizes a range of -1 to 1 to 0 to 1.
    *
