@@ -19,6 +19,8 @@ const lfoControllableParams = [
   p.SIZE,
   p.FILL_COLOR,
   p.STROKE_COLOR,
+  p.X,
+  p.Y,
 ];
 
 const lfoParams = {

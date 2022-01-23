@@ -10,8 +10,8 @@ export const setupPaintProperties = (p5, state) => {
   const lfos = [lfo3, lfo2, lfo1];
 
   return {
-    x: p5.mouseX,
-    y: p5.mouseY,
+    x: handleLfoValue(p5, lfos, gui, p.X),
+    y: handleLfoValue(p5, lfos, gui, p.Y),
     fillColor: handleLfoValue(p5, lfos, gui, p.FILL_COLOR),
     strokeColor: handleLfoValue(p5, lfos, gui, p.STROKE_COLOR),
     size: handleLfoValue(p5, lfos, gui, p.SIZE),
@@ -72,15 +72,43 @@ export const useLfo = (p5, gui, lfo) => {
     fillColor,
     strokeColor,
     floor,
+    x,
+    y,
   } = lfo.gui;
 
-  const values = {};
+  // x & y don't have default values from GUI, so prepopulate w/ current mouse X/Y
+  const values = {
+    x: p5.mouseX,
+    y: p5.mouseY,
+  };
 
   // if any of the LFO targetable params are enabled, advance the lfo
-  if (fillOpacity || strokeOpacity || size || fillColor || strokeColor) {
+  if (
+    fillOpacity ||
+    strokeOpacity ||
+    size ||
+    fillColor ||
+    strokeColor ||
+    x ||
+    y
+  ) {
     lfo.value += speed;
     // up to 2 * PI (see Waveforms.js implementation)
     lfo.value %= Math.PI * 2;
+  }
+
+  if (x) {
+    const lfoValue =
+      p5.mouseX + (Waveforms[shape](floor, lfo.value) * 2 - 1) * amount;
+
+    values[p.X] = lfoValue;
+  }
+
+  if (y) {
+    const lfoValue =
+      p5.mouseX + (Waveforms[shape](floor, lfo.value) * 2 - 1) * amount;
+
+    values[p.Y] = lfoValue;
   }
 
   if (fillOpacity) {
