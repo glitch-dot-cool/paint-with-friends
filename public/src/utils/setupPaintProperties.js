@@ -40,7 +40,7 @@ const handleLfoValue = (p5, lfos, gui, value) => {
         isColor = true;
         const levels = lfo[value].levels;
 
-        // sum & average rgb values from lfos
+        // sum rgb values from lfos
         for (let i = 0; i < 3; i++) {
           colorsArray[i] += levels[i];
         }
@@ -78,7 +78,7 @@ export const useLfo = (p5, gui, lfo) => {
   // if any of the LFO targetable params are enabled, advance the lfo
   if (fillOpacity || strokeOpacity || size || fillColor || strokeColor) {
     lfo.value += speed;
-    // up to PI * 2 because geometry
+    // up to 2 * PI (see Waveforms.js implementation)
     lfo.value %= Math.PI * 2;
   }
 
@@ -94,8 +94,6 @@ export const useLfo = (p5, gui, lfo) => {
 
   if (fillColor) {
     // scale amount to 360 (degrees) for rotating through HSL colorspace
-    // scale lfoValue by half because the range is -360 to 360 and we use the absolute value
-    // i.e. speed is 2x other values tracking the LFO, so halve the speed
     const lfoValue = Waveforms[shape](lfo.value) * (amount * 3.6);
     const rainbow = useRainbow(p5, lfoValue, values.fillOpacity);
     values[p.FILL_COLOR] = rainbow;
@@ -107,19 +105,17 @@ export const useLfo = (p5, gui, lfo) => {
 
     const scaledValue = scaleLfoValue(p5, lfoValue, gui.strokeOpacity, 0, 255);
 
-    values.strokeOpacity = scaledValue;
+    values[p.STROKE_OPACITY] = scaledValue;
   }
 
   if (strokeColor) {
-    const lfoValue = Waveforms[shape](lfo.value * 0.5) * (amount * 3.6);
+    const lfoValue = Waveforms[shape](lfo.value) * (amount * 3.6);
     const rainbow = useRainbow(p5, lfoValue, values.strokeOpacity);
     values[p.STROKE_COLOR] = rainbow;
   }
 
   if (size) {
-    // +1 so the oscillation never goes below the minimum/default size set in paintbrush options
-    // todo remove the +1 offset once waveforms have been reworked
-    values[p.SIZE] = gui.size + (Waveforms[shape](lfo.value) + 1) * amount;
+    values[p.SIZE] = gui.size + Waveforms[shape](lfo.value) * amount;
   }
 
   return values;
@@ -132,9 +128,7 @@ const scaleLfoValue = (p5, lfoValue, guiValue, min, max) => {
 };
 
 const useRainbow = (p5, value, opacity) => {
-  // values range from -360 to 360 so we use the absolute value
-  // this makes the colors loop 2x as fast, so that is accounted for by halving the raw LFO value
-  const hue = Math.abs(Math.floor(value));
+  const hue = Math.floor(value);
 
   // TODO: add GUI sliders for these values - the values should override
   // the default color selection (i.e. even if not using useRainbow) but also effect this function
