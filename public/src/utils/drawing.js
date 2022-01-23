@@ -27,22 +27,22 @@ const renderShape = (
   if (x > 0 && x < dimensions.width && y > 0 && y < dimensions.height) {
     switch (shape) {
       case "circle":
-        handleMirrorMode(p5, p5.circle.bind(p5), x, y, size, mirrorX, mirrorY);
+        handleMirrorMode(p5.circle.bind(p5), x, y, size, mirrorX, mirrorY);
         break;
       case "square":
-        handleMirrorMode(p5, p5.square.bind(p5), x, y, size, mirrorX, mirrorY);
+        handleMirrorMode(p5.square.bind(p5), x, y, size, mirrorX, mirrorY);
         break;
     }
   }
 };
 
-const handleMirrorMode = (p5, shape, x, y, size, mirrorX, mirrorY) => {
+const handleMirrorMode = (shape, x, y, size, mirrorX, mirrorY) => {
   shape(x, y, size);
   if (mirrorX && mirrorY) {
-    shape(p5.windowWidth - x, p5.windowHeight - y, size);
+    shape(dimensions.width - x, dimensions.height - y, size);
   } else if (mirrorX) {
-    shape(p5.windowWidth - x, y, size);
+    shape(dimensions.width - x, y, size);
   } else if (mirrorY) {
-    shape(x, p5.windowHeight - y, size);
+    shape(x, dimensions.height - y, size);
   }
 };
