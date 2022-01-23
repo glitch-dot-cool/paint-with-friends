@@ -1,27 +1,49 @@
 export class Waveforms {
-  static sine(x) {
-    return Math.sin(x);
+  static sine(min, x) {
+    const expression = Math.sin(x);
+    return this._normalize(expression, min);
   }
 
-  static square(x) {
+  static square(min, x) {
     if (x <= Math.PI) {
-      return -1;
+      return this._normalize(-1, min);
     }
-    return 1;
+    return this._normalize(1, min);
   }
 
-  static triangle(x) {
+  static triangle(min, x) {
     if (x <= Math.PI) {
-      return x / (Math.PI * 0.5) - 1;
+      const expression = x / (Math.PI * 0.5) - 1;
+      return this._normalize(expression, min);
     }
-    return (x - Math.PI) / (-Math.PI * 0.5) + 1;
+
+    const expression = (x - Math.PI) / (-Math.PI * 0.5) + 1;
+    return this._normalize(expression, min);
   }
 
-  static saw(x) {
-    return x / Math.PI - 1;
+  static saw(min, x) {
+    const expression = x / Math.PI - 1;
+    return this._normalize(expression, min);
   }
 
-  static random() {
-    return Math.random() * 2 - 1;
+  static random(min) {
+    const expression = Math.random() * 2 - 1;
+    return this._normalize(expression, min);
+  }
+
+  static noise(min, x) {
+    const expression = window.p5.prototype.noise(x);
+    return this._normalize(expression, min);
+  }
+
+  /**
+   * Normalizes a range of -1 to 1 to 0 to 1.
+   *
+   * @param {number} x
+   * @returns {number} - 0-1 range
+   */
+  static _normalize(x, min) {
+    const scaledMin = min * 0.01;
+    return window.p5.prototype.map(x, -1, 1, scaledMin, 1);
   }
 }

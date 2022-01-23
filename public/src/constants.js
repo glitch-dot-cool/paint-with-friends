@@ -7,6 +7,8 @@ export const paintProperties = {
   SHAPE: "shape",
   MIRROR_X: "mirrorX",
   MIRROR_Y: "mirrorY",
+  X: "x",
+  Y: "y",
 };
 
 export const dimensions = { width: 1920, height: 930 }; // 1080p-friendly

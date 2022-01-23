@@ -10,13 +10,13 @@ export const setupPaintProperties = (p5, state) => {
   const lfos = [lfo3, lfo2, lfo1];
 
   return {
-    x: p5.mouseX,
-    y: p5.mouseY,
-    fillColor: handleLfoValue(lfos, gui, p.FILL_COLOR),
-    strokeColor: handleLfoValue(lfos, gui, p.STROKE_COLOR),
-    size: handleLfoValue(lfos, gui, p.SIZE),
-    fillOpacity: handleLfoValue(lfos, gui, p.FILL_OPACITY),
-    strokeOpacity: handleLfoValue(lfos, gui, p.STROKE_OPACITY),
+    x: handleLfoValue(p5, lfos, gui, p.X),
+    y: handleLfoValue(p5, lfos, gui, p.Y),
+    fillColor: handleLfoValue(p5, lfos, gui, p.FILL_COLOR),
+    strokeColor: handleLfoValue(p5, lfos, gui, p.STROKE_COLOR),
+    size: handleLfoValue(p5, lfos, gui, p.SIZE),
+    fillOpacity: handleLfoValue(p5, lfos, gui, p.FILL_OPACITY),
+    strokeOpacity: handleLfoValue(p5, lfos, gui, p.STROKE_OPACITY),
     shape: gui.shape,
     mirrorX: gui.mirrorX,
     mirrorY: gui.mirrorY,
@@ -25,12 +25,40 @@ export const setupPaintProperties = (p5, state) => {
 
 // default to the values from the GUI if no LFO stuff is enabled
 // if any are enabled, they will be overwritten by their LFO'd values
-const handleLfoValue = (lfos, gui, value) => {
+const handleLfoValue = (p5, lfos, gui, value) => {
+  let lfoCount = 0;
+  let runningValue = 0;
+  let isColor = false;
+  let colorsArray = [0, 0, 0];
+
   for (const lfo of lfos) {
-    if (lfo[value]) return lfo[value];
+    if (lfo[value]) {
+      lfoCount++;
+
+      // if we're dealing with a color
+      if ([p.FILL_COLOR, p.STROKE_COLOR].includes(value)) {
+        isColor = true;
+        const levels = lfo[value].levels;
+
+        // sum rgb values from lfos
+        for (let i = 0; i < 3; i++) {
+          colorsArray[i] += levels[i];
+        }
+
+        colorsArray = colorsArray.map((colorChannel) =>
+          p5.map(colorChannel, 0, 255 * lfoCount, 0, 255)
+        );
+      } else {
+        runningValue += lfo[value];
+      }
+    }
   }
 
-  return gui[value];
+  // if a color, return a hex string
+  if (isColor) return p5.color(colorsArray).toString("#rrggbb");
+
+  // otherwise return the value as a number (default to GUI if no active lfo for given param)
+  return lfoCount > 0 ? runningValue / lfoCount : gui[value];
 };
 
 export const useLfo = (p5, gui, lfo) => {
@@ -43,21 +71,50 @@ export const useLfo = (p5, gui, lfo) => {
     size,
     fillColor,
     strokeColor,
+    floor,
+    x,
+    y,
   } = lfo.gui;
 
-  const values = {};
+  // x & y don't have default values from GUI, so prepopulate w/ current mouse X/Y
+  const values = {
+    x: p5.mouseX,
+    y: p5.mouseY,
+  };
 
   // if any of the LFO targetable params are enabled, advance the lfo
-  if (fillOpacity || strokeOpacity || size || fillColor || strokeColor) {
+  if (
+    fillOpacity ||
+    strokeOpacity ||
+    size ||
+    fillColor ||
+    strokeColor ||
+    x ||
+    y
+  ) {
     lfo.value += speed;
-    // up to PI * 2 because geometry
+    // up to 2 * PI (see Waveforms.js implementation)
     lfo.value %= Math.PI * 2;
+  }
+
+  if (x) {
+    const lfoValue =
+      p5.mouseX + (Waveforms[shape](floor, lfo.value) * 2 - 1) * amount;
+
+    values[p.X] = lfoValue;
+  }
+
+  if (y) {
+    const lfoValue =
+      p5.mouseY + (Waveforms[shape](floor, lfo.value) * 2 - 1) * amount;
+
+    values[p.Y] = lfoValue;
   }
 
   if (fillOpacity) {
     // scale color values by 2.55x: 100 * 2.55 = 255
     const lfoValue =
-      gui.fillOpacity + Waveforms[shape](lfo.value) * (amount * 2.55);
+      gui.fillOpacity + Waveforms[shape](floor, lfo.value) * (amount * 2.55);
 
     const scaledValue = scaleLfoValue(p5, lfoValue, gui.fillOpacity, 0, 255);
 
@@ -66,31 +123,28 @@ export const useLfo = (p5, gui, lfo) => {
 
   if (fillColor) {
     // scale amount to 360 (degrees) for rotating through HSL colorspace
-    // scale lfoValue by half because the range is -360 to 360 and we use the absolute value
-    // i.e. the rotation speed is 2x other values tracking the LFO, so halve the speed
-    const lfoValue = Waveforms[shape](lfo.value * 0.5) * (amount * 3.6);
-    const rainbow = useRainbow(p5, lfoValue, values.fillOpacity);
+    const lfoValue = Waveforms[shape](floor, lfo.value) * (amount * 3.6);
+    const rainbow = useRainbow(p5, lfoValue, lfo.gui, values.fillOpacity);
     values[p.FILL_COLOR] = rainbow;
   }
 
   if (strokeOpacity) {
     const lfoValue =
-      gui.strokeOpacity + Waveforms[shape](lfo.value) * (amount * 2.55);
+      gui.strokeOpacity + Waveforms[shape](floor, lfo.value) * (amount * 2.55);
 
     const scaledValue = scaleLfoValue(p5, lfoValue, gui.strokeOpacity, 0, 255);
 
-    values.strokeOpacity = scaledValue;
+    values[p.STROKE_OPACITY] = scaledValue;
   }
 
   if (strokeColor) {
-    const lfoValue = Waveforms[shape](lfo.value * 0.5) * (amount * 3.6);
-    const rainbow = useRainbow(p5, lfoValue, values.strokeOpacity);
+    const lfoValue = Waveforms[shape](floor, lfo.value) * (amount * 3.6);
+    const rainbow = useRainbow(p5, lfoValue, lfo.gui, values.strokeOpacity);
     values[p.STROKE_COLOR] = rainbow;
   }
 
   if (size) {
-    // +1 so the oscillation never goes below the minimum/default size set in paintbrush options
-    values[p.SIZE] = gui.size + (Waveforms[shape](lfo.value) + 1) * amount;
+    values[p.SIZE] = gui.size + Waveforms[shape](floor, lfo.value) * amount;
   }
 
   return values;
@@ -102,18 +156,13 @@ const scaleLfoValue = (p5, lfoValue, guiValue, min, max) => {
   return p5.map(lfoValue, -max + guiValue, max + guiValue, min, max);
 };
 
-const useRainbow = (p5, value, opacity) => {
-  // values range from -360 to 360 so we use the absolute value
-  // this makes the colors loop 2x as fast, so that is accounted for by halving the raw LFO value
-  const hue = Math.abs(Math.floor(value));
-
-  // TODO: add GUI sliders for these values - the values should override
-  // the default color selection (i.e. even if not using useRainbow) but also effect this function
-  const saturation = p5.map(p5.mouseY, 0, p5.windowHeight, 100, 75);
-  const brightness = p5.map(p5.mouseY, 0, p5.windowHeight, 100, 50);
+const useRainbow = (p5, lfoValue, lfoGui, opacity) => {
+  const hue = Math.floor(lfoValue);
+  const saturation = lfoGui.saturation;
+  const brightness = lfoGui.brightness;
 
   const rainbow = p5.color(`hsb(${hue}, ${saturation}%, ${brightness}%)`);
   rainbow.setAlpha(Math.ceil(opacity));
 
-  return rainbow.toString("#rrggbb");
+  return rainbow;
 };

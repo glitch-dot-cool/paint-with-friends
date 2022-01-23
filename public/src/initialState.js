@@ -19,6 +19,8 @@ const lfoControllableParams = [
   p.SIZE,
   p.FILL_COLOR,
   p.STROKE_COLOR,
+  p.X,
+  p.Y,
 ];
 
 const lfoParams = {
@@ -26,11 +28,17 @@ const lfoParams = {
   speedMin: 0.00001,
   speedMax: 0.5,
   speedStep: 0.00001,
+  floor: 0,
+  floorMin: 0,
+  floorMax: 100,
+  floorStep: 1,
   amount: 50,
   amountMin: 0,
   amountMax: 100,
   amountStep: 0.01,
-  shape: ["sine", "triangle", "square", "saw", "random"],
+  shape: ["sine", "triangle", "square", "saw", "random", "noise"],
+  saturation: 100,
+  brightness: 100,
 };
 
 // add toggle controls for each available LFO target
