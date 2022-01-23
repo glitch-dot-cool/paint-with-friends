@@ -106,7 +106,7 @@ export const useLfo = (p5, gui, lfo) => {
 
   if (y) {
     const lfoValue =
-      p5.mouseX + (Waveforms[shape](floor, lfo.value) * 2 - 1) * amount;
+      p5.mouseY + (Waveforms[shape](floor, lfo.value) * 2 - 1) * amount;
 
     values[p.Y] = lfoValue;
   }
