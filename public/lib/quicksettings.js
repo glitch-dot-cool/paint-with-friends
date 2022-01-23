@@ -12,9 +12,9 @@
     return "qs_" + nextID;
   }
 
-  function createLabel(title, container) {
-    var label = createElement("div", null, "qs_label", container);
-    label.innerHTML = title;
+  function createLabel(title, html, container) {
+    var label = createElement("div", `${title}_label`, "qs_label", container);
+    label.innerHTML = html;
     return label;
   }
 
@@ -266,8 +266,8 @@
       this._content = createElement("div", null, "qs_content", this._panel);
     },
 
-    _createContainer: function () {
-      var container = createElement("div", null, "qs_container");
+    _createContainer: function (title) {
+      var container = createElement("div", title, "qs_container");
       container.addEventListener(
         "focus",
         function () {
@@ -697,7 +697,7 @@
      * @returns {module:QuickSettings}
      */
     addBoolean: function (title, value, callback) {
-      var container = this._createContainer();
+      var container = this._createContainer(title);
 
       var id = getNextID();
       var label = createElement("label", null, "qs_checkbox_label", container);
@@ -760,7 +760,7 @@
      * @returns {module:QuickSettings}
      */
     addButton: function (title, callback) {
-      var container = this._createContainer();
+      var container = this._createContainer(title);
 
       var button = createInput("button", getNextID(), "qs_button", container);
       button.value = title;
@@ -796,8 +796,12 @@
       if (isSafari() || isEdge() || isIE()) {
         return this.addText(title, color, callback);
       }
-      var container = this._createContainer();
-      var label = createLabel("<b>" + title + ":</b> " + color, container);
+      var container = this._createContainer(title);
+      var label = createLabel(
+        title,
+        "<b>" + title + ":</b> " + color,
+        container
+      );
       var id = getNextID();
       var colorInput = createInput("color", id, "qs_color", container);
       colorInput.value = color || "#ff0000";
@@ -882,8 +886,8 @@
       if (isIE()) {
         return this.addText(title, dateStr, callback);
       }
-      var container = this._createContainer();
-      var label = createLabel("<b>" + title + "</b>", container);
+      var container = this._createContainer(title);
+      var label = createLabel(title, "<b>" + title + "</b>", container);
 
       var dateInput = createInput(
         "date",
@@ -956,9 +960,9 @@
      * @returns {module:QuickSettings}
      */
     addDropDown: function (title, items, callback) {
-      var container = this._createContainer();
+      var container = this._createContainer(title);
 
-      var label = createLabel("<b>" + title + "</b>", container);
+      var label = createLabel(title, "<b>" + title + "</b>", container);
       var select = createElement("select", null, "qs_select", container);
       for (var i = 0; i < items.length; i++) {
         var option = createElement("option"),
@@ -1045,8 +1049,8 @@
      * @returns {module:QuickSettings}
      */
     addElement: function (title, element) {
-      var container = this._createContainer(),
-        label = createLabel("<b>" + title + "</b>", container);
+      var container = this._createContainer(title),
+        label = createLabel(title, "<b>" + title + "</b>", container);
 
       container.appendChild(element);
 
@@ -1073,8 +1077,8 @@
      * @returns {module:QuickSettings}
      */
     addFileChooser: function (title, labelStr, filter, callback) {
-      var container = this._createContainer();
-      var label = createLabel("<b>" + title + "</b>", container);
+      var container = this._createContainer(title);
+      var label = createLabel(title, "<b>" + title + "</b>", container);
       var id = getNextID();
       var fileChooser = createInput("file", id, "qs_file_chooser", container);
       if (filter) {
@@ -1123,8 +1127,8 @@
      * @returns {module:QuickSettings}
      */
     addHTML: function (title, html) {
-      var container = this._createContainer();
-      var label = createLabel("<b>" + title + ":</b> ", container);
+      var container = this._createContainer(title);
+      var label = createLabel(title, "<b>" + title + ":</b> ", container);
 
       var div = createElement("div", null, null, container);
       div.innerHTML = html;
@@ -1155,8 +1159,8 @@
      * @returns {module:QuickSettings}
      */
     addImage: function (title, imageURL, callback) {
-      var container = this._createContainer(),
-        label = createLabel("<b>" + title + "</b>", container);
+      var container = this._createContainer(title),
+        label = createLabel(title, "<b>" + title + "</b>", container);
       img = createElement("img", null, "qs_image", container);
       img.src = imageURL;
 
@@ -1214,9 +1218,9 @@
     },
 
     _addNumber: function (type, title, min, max, value, step, callback) {
-      var container = this._createContainer();
+      var container = this._createContainer(title);
 
-      var label = createLabel("", container);
+      var label = createLabel(title, "", container);
 
       var className = type === "range" ? "qs_range" : "qs_text_input qs_number";
       var input = createInput(type, getNextID(), className, container);
@@ -1369,8 +1373,8 @@
      * @returns {module:QuickSettings}
      */
     addProgressBar: function (title, max, value, valueDisplay) {
-      var container = this._createContainer(),
-        label = createLabel("", container),
+      var container = this._createContainer(title),
+        label = createLabel(title, "", container),
         progressDiv = createElement("div", null, "qs_progress", container),
         valueDiv = createElement("div", null, "qs_progress_value", progressDiv);
 
@@ -1466,8 +1470,8 @@
     },
 
     _addText: function (type, title, text, callback) {
-      var container = this._createContainer();
-      var label = createLabel("<b>" + title + "</b>", container);
+      var container = this._createContainer(title);
+      var label = createLabel(title, "<b>" + title + "</b>", container);
       var textInput;
 
       if (type === "textarea") {
@@ -1591,8 +1595,8 @@
         return this.addText(title, timeStr, callback);
       }
 
-      var container = this._createContainer();
-      var label = createLabel("<b>" + title + "</b>", container);
+      var container = this._createContainer(title);
+      var label = createLabel(title, "<b>" + title + "</b>", container);
 
       var timeInput = createInput(
         "time",
