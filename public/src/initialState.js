@@ -50,3 +50,15 @@ export const state = {
   lfo2: { gui: { ...lfoParams }, value: 0 },
   lfo3: { gui: { ...lfoParams }, value: 0 },
 };
+
+export const initialServerState = {
+  [p.FILL_COLOR]: "#349beb",
+  [p.FILL_OPACITY]: 255,
+  [p.STROKE_COLOR]: "#000000",
+  [p.STROKE_OPACITY]: 255,
+  [p.SIZE]: 15,
+  [p.MIRROR_X]: false,
+  [p.MIRROR_Y]: false,
+  [p.X]: 0,
+  [p.Y]: 0,
+};

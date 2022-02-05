@@ -1,6 +1,7 @@
 import express from "express";
 import { Server } from "socket.io";
 import { Connections } from "./Connections.js";
+import p5Instance from "./serverP5.js";
 
 const port = 3000;
 
@@ -16,9 +17,12 @@ const server = app.listen(port, () =>
 const io = new Server(server);
 const connectedUsers = new Connections(io);
 
+console.log(io.sockets);
+
 io.sockets.on("connection", (socket) => {
   socket.emit("connected", socket.id);
   connectedUsers.addConnection(socket.id);
+  p5Instance(socket);
 
   socket.on("update", (data) => {
     socket.broadcast.emit("update", data);
