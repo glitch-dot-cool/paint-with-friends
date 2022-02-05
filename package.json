@@ -19,6 +19,7 @@
   "homepage": "https://github.com/glitch-dot-cool/paint-with-friends#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "node-p5": "^1.0.4",
     "socket.io": "^4.3.2"
   },
   "devDependencies": {
