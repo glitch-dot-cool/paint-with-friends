@@ -9,12 +9,13 @@ export const initServerP5 = () => {
   let paintProperties = initialServerState;
   let count = 0;
 
-  eventEmitter.on(EVENTS.DRAW_UPDATE, (data) => {
-    paintProperties = data;
-  });
-
   function sketch(s) {
     let canvas;
+
+    eventEmitter.on(EVENTS.DRAW_UPDATE, (data) => {
+      paintProperties = data;
+      updateDrawing(s, paintProperties);
+    });
 
     s.setup = () => {
       canvas = s.createCanvas(dimensions.width, dimensions.height);
@@ -23,8 +24,6 @@ export const initServerP5 = () => {
     };
 
     s.draw = () => {
-      updateDrawing(s, paintProperties);
-
       if (s.frameCount % 1000 === 0) {
         count++;
         s.saveCanvas(canvas, `canvas_${count}`, "png").then((filename) => {
