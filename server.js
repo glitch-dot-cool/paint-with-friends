@@ -1,7 +1,9 @@
 import express from "express";
 import { Server } from "socket.io";
+
 import { Connections } from "./Connections.js";
-import p5Instance from "./serverP5.js";
+import { initServerP5 } from "./serverP5.js";
+import { eventEmitter, EVENTS } from "./event.js";
 
 const port = 3000;
 
@@ -9,6 +11,7 @@ const app = express();
 app.use(express.json());
 
 app.use(express.static("public"));
+initServerP5();
 
 const server = app.listen(port, () =>
   console.log(`server listening on port ${port}`)
@@ -17,15 +20,13 @@ const server = app.listen(port, () =>
 const io = new Server(server);
 const connectedUsers = new Connections(io);
 
-console.log(io.sockets);
-
 io.sockets.on("connection", (socket) => {
   socket.emit("connected", socket.id);
   connectedUsers.addConnection(socket.id);
-  p5Instance(socket);
 
   socket.on("update", (data) => {
     socket.broadcast.emit("update", data);
+    eventEmitter.emit(EVENTS.DRAW_UPDATE, data);
   });
 
   socket.on("disconnect", (reason) => {

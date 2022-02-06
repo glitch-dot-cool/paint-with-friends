@@ -1,13 +1,15 @@
 import p5 from "node-p5";
+
 import { dimensions } from "./public/src/constants.js";
 import { updateDrawing } from "./public/src/utils/drawing.js";
 import { initialServerState } from "./public/src/initialState.js";
+import { eventEmitter, EVENTS } from "./event.js";
 
-const createSketch = (socket) => {
+export const initServerP5 = () => {
   let paintProperties = initialServerState;
   let count = 0;
 
-  socket.on("update", (data) => {
+  eventEmitter.on(EVENTS.DRAW_UPDATE, (data) => {
     paintProperties = data;
   });
 
@@ -34,5 +36,3 @@ const createSketch = (socket) => {
 
   p5.createSketch(sketch);
 };
-
-export default createSketch;
