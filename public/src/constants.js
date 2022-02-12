@@ -21,3 +21,7 @@ export const EVENTS = {
   MEMBERS_CHANGED: "membersChanged",
   MESSAGE: "message",
 };
+
+const GUI_WIDTH = 200;
+export const GUI_GUTTER = 20;
+export const GUI_OFFSET = 0 + 2 * GUI_GUTTER + GUI_WIDTH;
