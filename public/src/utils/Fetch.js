@@ -1,5 +1,7 @@
+import { setBaseUrl } from "./setBaseUrl.js";
+
 export class Fetch {
-  static baseUrl = "http://localhost:3000"; // todo make this dynamic
+  static baseUrl = setBaseUrl();
 
   static async get(endpoint) {
     try {
