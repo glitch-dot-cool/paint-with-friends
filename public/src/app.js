@@ -9,6 +9,7 @@ import { initUsername } from "./utils/initUsername.js";
 import { chatMessages } from "./components/chatMessages.js";
 import { KeyManager } from "./utils/KeyManager.js";
 import { initGuiPanels } from "./utils/initUI.js";
+import { setBaseUrl } from "./utils/setBaseUrl.js";
 
 const app = (s) => {
   const keysPressed = new KeyManager(s);
@@ -32,7 +33,7 @@ const app = (s) => {
     s.background(0);
     s.rectMode(s.CENTER);
 
-    socket = io.connect("http://localhost:3000");
+    socket = io.connect(setBaseUrl());
 
     initGuiPanels(s, this);
 
