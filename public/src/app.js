@@ -1,5 +1,5 @@
 import { state } from "./initialState.js";
-import { dimensions } from "./constants.js";
+import { dimensions, EVENTS } from "./constants.js";
 import { setupPaintProperties } from "./utils/setupPaintProperties.js";
 import { updateDrawing } from "./utils/drawing.js";
 import { LocalStorage } from "./utils/LocalStorage.js";
@@ -55,20 +55,20 @@ const app = (s) => {
     lfo3Gui.addObject(state.lfo3.gui);
     lfo3Gui.collapse();
 
-    socket.on("connected", (socketID) => {
+    socket.on(EVENTS.CONNECTED, (socketID) => {
       LocalStorage.set("pwf_socket", socketID);
       initUsername(socketID);
     });
 
-    socket.on("update", (paintProperties) => {
+    socket.on(EVENTS.DRAW_UPDATE, (paintProperties) => {
       updateDrawing(s, paintProperties);
     });
 
-    socket.on("members", (users) => {
+    socket.on(EVENTS.MEMBERS_CHANGED, (users) => {
       userList(users);
     });
 
-    socket.on("message", (message) => {
+    socket.on(EVENTS.MESSAGE, (message) => {
       chatMessages(message);
     });
   };
@@ -76,7 +76,7 @@ const app = (s) => {
   s.mouseDragged = () => {
     const paintProperties = setupPaintProperties(s, state);
     updateDrawing(s, paintProperties);
-    socket.emit("update", paintProperties);
+    socket.emit(EVENTS.DRAW_UPDATE, paintProperties);
   };
 
   s.keyPressed = () => {

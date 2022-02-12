@@ -3,7 +3,8 @@ import p5 from "node-p5";
 import { dimensions } from "./public/src/constants.js";
 import { updateDrawing } from "./public/src/utils/drawing.js";
 import { initialServerState } from "./public/src/initialState.js";
-import { eventEmitter, EVENTS } from "./event.js";
+import { eventEmitter } from "./event.js";
+import { EVENTS } from "./public/src/constants.js";
 
 export const initServerP5 = () => {
   let paintProperties = initialServerState;

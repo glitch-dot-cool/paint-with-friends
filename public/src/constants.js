@@ -12,3 +12,12 @@ export const paintProperties = {
 };
 
 export const dimensions = { width: 1920, height: 930 }; // 1080p-friendly
+
+export const EVENTS = {
+  DRAW_UPDATE: "drawUpdate",
+  NEW_CONNECTION: "connection",
+  CONNECTED: "connected",
+  DISCONNECT: "disconnect",
+  MEMBERS_CHANGED: "membersChanged",
+  MESSAGE: "message",
+};

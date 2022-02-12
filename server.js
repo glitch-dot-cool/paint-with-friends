@@ -3,7 +3,8 @@ import { Server } from "socket.io";
 
 import { Connections } from "./Connections.js";
 import { initServerP5 } from "./serverP5.js";
-import { eventEmitter, EVENTS } from "./event.js";
+import { eventEmitter } from "./event.js";
+import { EVENTS } from "./public/src/constants.js";
 
 const port = 3000;
 
@@ -20,16 +21,16 @@ const server = app.listen(port, () =>
 const io = new Server(server);
 const connectedUsers = new Connections(io);
 
-io.sockets.on("connection", (socket) => {
-  socket.emit("connected", socket.id);
+io.sockets.on(EVENTS.NEW_CONNECTION, (socket) => {
+  socket.emit(EVENTS.CONNECTED, socket.id);
   connectedUsers.addConnection(socket.id);
 
-  socket.on("update", (data) => {
-    socket.broadcast.emit("update", data);
+  socket.on(EVENTS.DRAW_UPDATE, (data) => {
+    socket.broadcast.emit(EVENTS.DRAW_UPDATE, data);
     eventEmitter.emit(EVENTS.DRAW_UPDATE, data);
   });
 
-  socket.on("disconnect", (reason) => {
+  socket.on(EVENTS.DISCONNECT, (reason) => {
     connectedUsers.removeConnection(socket.id);
   });
 });

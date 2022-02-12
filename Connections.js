@@ -1,3 +1,5 @@
+import { EVENTS } from "./public/src/constants.js";
+
 export class Connections {
   constructor(io) {
     this.io = io;
@@ -6,23 +8,23 @@ export class Connections {
 
   addConnection = (id) => {
     this.connections[id] = id;
-    this.broadcast("members", this.connections);
+    this.broadcast(EVENTS.MEMBERS_CHANGED, this.connections);
   };
 
   removeConnection = (id) => {
     delete this.connections[id];
-    this.broadcast("members", this.connections);
+    this.broadcast(EVENTS.MEMBERS_CHANGED, this.connections);
   };
 
   renameConnection = (id, name) => {
     this.connections[id] = name;
-    this.broadcast("members", this.connections);
+    this.broadcast(EVENTS.MEMBERS_CHANGED, this.connections);
   };
 
   message = (id, message) => {
     const sender = this.connections[id];
     const payload = { sender, message };
-    this.broadcast("message", payload);
+    this.broadcast(EVENTS.MESSAGE, payload);
   };
 
   broadcast = (channel, payload) => {
