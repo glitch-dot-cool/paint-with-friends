@@ -11,7 +11,7 @@ const app = express();
 app.use(express.json());
 
 app.use(express.static("public"));
-initServerP5();
+const serializeCanvas = initServerP5();
 
 const server = app.listen(port, () =>
   console.log(`server listening on port ${port}`)
@@ -44,4 +44,9 @@ app.post("/message", async (req, res) => {
   const { id, message } = req.body;
   connectedUsers.message(id, message);
   res.sendStatus(200);
+});
+
+app.get("/canvas", async (req, res) => {
+  const serializedCanvasData = serializeCanvas();
+  res.json(serializedCanvasData).status(200);
 });

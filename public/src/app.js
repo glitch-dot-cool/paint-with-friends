@@ -3,6 +3,7 @@ import { dimensions } from "./constants.js";
 import { setupPaintProperties } from "./utils/setupPaintProperties.js";
 import { updateDrawing } from "./utils/drawing.js";
 import { LocalStorage } from "./utils/LocalStorage.js";
+import { Fetch } from "./utils/Fetch.js";
 import { userList } from "./components/userList.js";
 import { initUsername } from "./utils/initUsername.js";
 import { chatMessages } from "./components/chatMessages.js";
@@ -16,12 +17,24 @@ const app = (s) => {
 
   let socket;
 
-  s.setup = function () {
-    socket = io.connect("http://localhost:3000");
+  s.initCanvas = (serializedCanvas) => {
+    const canvas = document.querySelector("canvas");
+    const ctx = canvas.getContext("2d");
+    const img = new Image();
+    img.onload = function () {
+      ctx.drawImage(img, 0, 0);
+    };
+    img.src = serializedCanvas;
+  };
 
+  s.setup = async function () {
+    const initialCanvasState = await Fetch.get("canvas");
     s.createCanvas(dimensions.width, dimensions.height);
+    s.initCanvas(initialCanvasState);
     s.background(0);
     s.rectMode(s.CENTER);
+
+    socket = io.connect("http://localhost:3000");
 
     const gui = s.createGui("paintbrush", this);
     gui.id = "paintbrush-options";

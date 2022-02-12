@@ -7,11 +7,9 @@ import { eventEmitter, EVENTS } from "./event.js";
 
 export const initServerP5 = () => {
   let paintProperties = initialServerState;
-  let count = 0;
+  let canvas;
 
   function sketch(s) {
-    let canvas;
-
     eventEmitter.on(EVENTS.DRAW_UPDATE, (data) => {
       paintProperties = data;
       updateDrawing(s, paintProperties);
@@ -22,16 +20,13 @@ export const initServerP5 = () => {
       s.background(0);
       s.rectMode(s.CENTER);
     };
-
-    s.draw = () => {
-      if (s.frameCount % 1000 === 0) {
-        count++;
-        s.saveCanvas(canvas, `canvas_${count}`, "png").then((filename) => {
-          console.log(`saved the canvas as ${filename}`);
-        });
-      }
-    };
   }
 
   p5.createSketch(sketch);
+
+  function serializeCanvas() {
+    return canvas.elt.toDataURL("image/png", 1);
+  }
+
+  return serializeCanvas;
 };
