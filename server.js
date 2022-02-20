@@ -1,21 +1,26 @@
 import express from "express";
 import { Server } from "socket.io";
+import path from "path";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
 
 import { Connections } from "./Connections.js";
 import { initServerP5 } from "./serverP5.js";
 import { eventEmitter } from "./event.js";
 import { EVENTS } from "./public/src/constants.js";
 
-const port = 3000;
+const PORT = 3000;
 
 const app = express();
 app.use(express.json());
 
-app.use(express.static("public"));
+const __dirname = dirname(fileURLToPath(import.meta.url));
+app.use(express.static(path.join(__dirname, "public")));
+
 const serializeCanvas = initServerP5();
 
-const server = app.listen(port, () =>
-  console.log(`server listening on port ${port}`)
+const server = app.listen(PORT, () =>
+  console.log(`server listening on port ${PORT}`)
 );
 
 const io = new Server(server);
