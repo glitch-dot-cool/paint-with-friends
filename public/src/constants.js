@@ -12,3 +12,16 @@ export const paintProperties = {
 };
 
 export const dimensions = { width: 1920, height: 930 }; // 1080p-friendly
+
+export const EVENTS = {
+  DRAW_UPDATE: "drawUpdate",
+  NEW_CONNECTION: "connection",
+  CONNECTED: "connected",
+  DISCONNECT: "disconnect",
+  MEMBERS_CHANGED: "membersChanged",
+  MESSAGE: "message",
+};
+
+const GUI_WIDTH = 200;
+export const GUI_GUTTER = 20;
+export const GUI_OFFSET = 0 + 2 * GUI_GUTTER + GUI_WIDTH;
