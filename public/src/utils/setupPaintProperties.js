@@ -166,3 +166,37 @@ const useRainbow = (p5, lfoValue, lfoGui, opacity) => {
 
   return rainbow;
 };
+
+export const convertToLeanPaintProperties = (paintProperties) => {
+  const payload = [
+    paintProperties.x,
+    paintProperties.y,
+    paintProperties.fillColor,
+    paintProperties.fillOpacity,
+    paintProperties.strokeColor,
+    paintProperties.strokeOpacity,
+    paintProperties.mirrorX,
+    paintProperties.mirrorY,
+    paintProperties.shape,
+    paintProperties.size,
+  ];
+
+  return payload;
+};
+
+export const convertLeanPaintPropertiesToObject = (leanPaintProperties) => {
+  const converted = {
+    x: leanPaintProperties[0],
+    y: leanPaintProperties[1],
+    fillColor: leanPaintProperties[2],
+    fillOpacity: leanPaintProperties[3],
+    strokeColor: leanPaintProperties[4],
+    strokeOpacity: leanPaintProperties[5],
+    mirrorX: leanPaintProperties[6],
+    mirrorY: leanPaintProperties[7],
+    shape: leanPaintProperties[8],
+    size: leanPaintProperties[9],
+  };
+
+  return converted;
+};
