@@ -167,8 +167,14 @@ const useRainbow = (p5, lfoValue, lfoGui, opacity) => {
   return rainbow;
 };
 
+/**
+ * Converts paint properties object to an ordered array to reduce payload size.
+ *
+ * @param {object} paintProperties
+ * @returns {array} leanPaintProperties
+ */
 export const convertToLeanPaintProperties = (paintProperties) => {
-  const payload = [
+  return [
     paintProperties.x,
     paintProperties.y,
     paintProperties.fillColor,
@@ -180,12 +186,17 @@ export const convertToLeanPaintProperties = (paintProperties) => {
     paintProperties.shape,
     paintProperties.size,
   ];
-
-  return payload;
 };
 
+/**
+ * Converts "lean" (array) representation of paint properties back to the object
+ * shape used within the client/server p5 applications.
+ *
+ * @param {array} leanPaintProperties
+ * @returns {object} paintProperties
+ */
 export const convertLeanPaintPropertiesToObject = (leanPaintProperties) => {
-  const converted = {
+  return {
     x: leanPaintProperties[0],
     y: leanPaintProperties[1],
     fillColor: leanPaintProperties[2],
@@ -197,6 +208,4 @@ export const convertLeanPaintPropertiesToObject = (leanPaintProperties) => {
     shape: leanPaintProperties[8],
     size: leanPaintProperties[9],
   };
-
-  return converted;
 };
