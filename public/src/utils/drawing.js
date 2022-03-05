@@ -19,67 +19,18 @@ const handleColor = (
   p5.fill(fill);
 };
 
-const renderShape = (
-  p5,
-  dimensions,
-  { x, y, size, shape, mirrorX, mirrorY, prevX, prevY }
-) => {
+const renderShape = (p5, dimensions, params) => {
+  const { x, y, shape, mirrorX, mirrorY } = params;
   if (x > 0 && x < dimensions.width && y > 0 && y < dimensions.height) {
-    const { width, height } = dimensions;
-
-    const defaultArgs = [x, y, size];
-    const defaultMirrorXArgs = [width - x, y, size];
-    const defaultMirrorYArgs = [x, height - y, size];
-    const defaultMirrorXAndYArgs = [width - x, height - y, size];
     switch (shape) {
       case "circle":
-        handleMirrorMode(
-          setupShape(
-            p5.circle.bind(p5),
-            defaultArgs,
-            defaultMirrorXArgs,
-            defaultMirrorYArgs,
-            defaultMirrorXAndYArgs
-          ),
-          mirrorX,
-          mirrorY
-        );
+        handleMirrorMode(setupShape(p5, "circle", params), mirrorX, mirrorY);
         break;
       case "square":
-        handleMirrorMode(
-          setupShape(
-            p5.square.bind(p5),
-            defaultArgs,
-            defaultMirrorXArgs,
-            defaultMirrorYArgs,
-            defaultMirrorXAndYArgs
-          ),
-          mirrorX,
-          mirrorY
-        );
+        handleMirrorMode(setupShape(p5, "square", params), mirrorX, mirrorY);
         break;
       case "line":
-        const defaultLineArgs = [prevX, prevY, x, y];
-        const mirrorXArgs = [width - prevX, prevY, width - x, y];
-        const mirrorYArgs = [prevX, height - prevY, x, height - y];
-        const mirrorXAndYArgs = [
-          width - prevX,
-          height - prevY,
-          width - x,
-          height - y,
-        ];
-
-        handleMirrorMode(
-          setupShape(
-            p5.line.bind(p5),
-            defaultLineArgs,
-            mirrorXArgs,
-            mirrorYArgs,
-            mirrorXAndYArgs
-          ),
-          mirrorX,
-          mirrorY
-        );
+        handleMirrorMode(setupShape(p5, "line", params), mirrorX, mirrorY);
     }
   }
 };
@@ -99,18 +50,38 @@ const handleMirrorMode = (
   }
 };
 
-const setupShape = (
-  shape,
-  defaultArgs,
-  mirrorXArgs,
-  mirrorYArgs,
-  mirrorXAndYArgs
-) => {
+const setupShape = (p5, shape, params) => {
+  const args = setupMirrorArgs(shape, params);
+
   return {
-    fn: shape,
-    defaultArgs,
-    mirrorXArgs,
-    mirrorYArgs,
-    mirrorXAndYArgs,
+    fn: p5[shape].bind(p5),
+    defaultArgs: args.default,
+    mirrorXArgs: args.mirrorX,
+    mirrorYArgs: args.mirrorY,
+    mirrorXAndYArgs: args.mirrorBoth,
   };
+};
+
+const setupMirrorArgs = (shape, params) => {
+  const { width, height } = dimensions;
+  const { x, y, prevX, prevY, size } = params;
+
+  switch (shape) {
+    case "circle":
+    case "square":
+      return {
+        default: [x, y, size],
+        mirrorX: [width - x, y, size],
+        mirrorY: [x, height - y, size],
+        mirrorBoth: [width - x, height - y, size],
+      };
+
+    case "line":
+      return {
+        default: [prevX, prevY, x, y],
+        mirrorX: [width - prevX, prevY, width - x, y],
+        mirrorY: [prevX, height - prevY, x, height - y],
+        mirrorBoth: [width - prevX, height - prevY, width - x, height - y],
+      };
+  }
 };
