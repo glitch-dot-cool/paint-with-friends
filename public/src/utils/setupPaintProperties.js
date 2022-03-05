@@ -1,7 +1,7 @@
 import { Waveforms } from "./Waveforms.js";
 import { paintProperties as p } from "../constants.js";
 
-export const setupPaintProperties = (p5, state) => {
+export const setupPaintProperties = (p5, state, lastX, lastY) => {
   const { gui } = state;
   const lfo1 = useLfo(p5, state.gui, state.lfo1);
   const lfo2 = useLfo(p5, state.gui, state.lfo2);
@@ -20,6 +20,8 @@ export const setupPaintProperties = (p5, state) => {
     shape: gui.shape,
     mirrorX: gui.mirrorX,
     mirrorY: gui.mirrorY,
+    prevX: lastX,
+    prevY: lastY,
   };
 };
 
