@@ -20,7 +20,9 @@ const handleColor = (
 };
 
 const renderShape = (p5, dimensions, params) => {
-  const { x, y, shape, mirrorX, mirrorY } = params;
+  const { x, y, shape, mirrorX, mirrorY, strokeWeight } = params;
+  p5.strokeWeight(strokeWeight);
+
   if (x > 0 && x < dimensions.width && y > 0 && y < dimensions.height) {
     switch (shape) {
       case "circle":

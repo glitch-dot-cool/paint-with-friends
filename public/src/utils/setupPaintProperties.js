@@ -22,6 +22,7 @@ export const setupPaintProperties = (p5, state, lastX, lastY) => {
     mirrorY: gui.mirrorY,
     prevX: lastX,
     prevY: lastY,
+    strokeWeight: gui.strokeWeight,
   };
 };
 
@@ -189,6 +190,7 @@ export const convertToLeanPaintProperties = (paintProperties) => {
     paintProperties.size,
     paintProperties.prevX,
     paintProperties.prevY,
+    paintProperties.strokeWeight,
   ];
 };
 
@@ -213,5 +215,6 @@ export const convertLeanPaintPropertiesToObject = (leanPaintProperties) => {
     size: leanPaintProperties[9],
     prevX: leanPaintProperties[10],
     prevY: leanPaintProperties[11],
+    strokeWeight: leanPaintProperties[12],
   };
 };

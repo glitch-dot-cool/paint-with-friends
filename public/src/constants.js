@@ -11,6 +11,7 @@ export const paintProperties = {
   Y: "y",
   PREV_X: "prevX",
   PREV_Y: "prevY",
+  STROKE_WEIGHT: "strokeWeight",
 };
 
 export const dimensions = { width: 1920, height: 930 }; // 1080p-friendly
