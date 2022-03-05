@@ -51,6 +51,7 @@ const lfoControllableParams = [
   p.FILL_OPACITY,
   p.STROKE_OPACITY,
   p.SIZE,
+  p.STROKE_WEIGHT,
   p.FILL_COLOR,
   p.STROKE_COLOR,
   p.X,

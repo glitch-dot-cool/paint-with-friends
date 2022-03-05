@@ -22,7 +22,7 @@ export const setupPaintProperties = (p5, state, lastX, lastY) => {
     mirrorY: gui.mirrorY,
     prevX: lastX,
     prevY: lastY,
-    strokeWeight: gui.strokeWeight,
+    strokeWeight: handleLfoValue(p5, lfos, gui, p.STROKE_WEIGHT),
   };
 };
 
@@ -77,6 +77,7 @@ export const useLfo = (p5, gui, lfo) => {
     floor,
     x,
     y,
+    strokeWeight,
   } = lfo.gui;
 
   // x & y don't have default values from GUI, so prepopulate w/ current mouse X/Y
@@ -93,7 +94,8 @@ export const useLfo = (p5, gui, lfo) => {
     fillColor ||
     strokeColor ||
     x ||
-    y
+    y ||
+    strokeWeight
   ) {
     lfo.value += speed;
     // up to 2 * PI (see Waveforms.js implementation)
@@ -148,6 +150,11 @@ export const useLfo = (p5, gui, lfo) => {
 
   if (size) {
     values[p.SIZE] = gui.size + Waveforms[shape](floor, lfo.value) * amount;
+  }
+
+  if (strokeWeight) {
+    values[p.STROKE_WEIGHT] =
+      gui.strokeWeight + Waveforms[shape](floor, lfo.value) * amount;
   }
 
   return values;
