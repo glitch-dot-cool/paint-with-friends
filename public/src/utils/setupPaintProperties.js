@@ -187,6 +187,8 @@ export const convertToLeanPaintProperties = (paintProperties) => {
     paintProperties.mirrorY,
     paintProperties.shape,
     paintProperties.size,
+    paintProperties.prevX,
+    paintProperties.prevY,
   ];
 };
 
@@ -209,5 +211,7 @@ export const convertLeanPaintPropertiesToObject = (leanPaintProperties) => {
     mirrorY: leanPaintProperties[7],
     shape: leanPaintProperties[8],
     size: leanPaintProperties[9],
+    prevX: leanPaintProperties[10],
+    prevY: leanPaintProperties[11],
   };
 };
