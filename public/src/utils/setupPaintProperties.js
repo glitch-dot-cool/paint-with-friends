@@ -93,8 +93,6 @@ export const useLfo = (p5, gui, lfo) => {
     y
   ) {
     lfo.value += speed;
-    // up to 2 * PI (see Waveforms.js implementation)
-    lfo.value %= Math.PI * 2;
   }
 
   if (x) {
