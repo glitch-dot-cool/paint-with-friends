@@ -13,10 +13,12 @@ import { setBaseUrl } from "./utils/setBaseUrl.js";
 
 const app = (s) => {
   const keysPressed = new KeyManager(s);
-  let socket;
+  let socket, canvas;
+  let zoom = 1;
+  let isDrawing = false;
 
   s.initCanvas = (serializedCanvas) => {
-    const canvas = document.querySelector("canvas");
+    canvas = document.querySelector("canvas");
     const ctx = canvas.getContext("2d");
     const img = new Image();
     img.onload = function () {
@@ -56,17 +58,38 @@ const app = (s) => {
   };
 
   s.mouseDragged = () => {
-    const paintProperties = setupPaintProperties(s, state);
-    updateDrawing(s, paintProperties);
-    socket.emit(EVENTS.DRAW_UPDATE, paintProperties);
+    if (isDrawing) {
+      const paintProperties = setupPaintProperties(s, state);
+      updateDrawing(s, paintProperties);
+      socket.emit(EVENTS.DRAW_UPDATE, paintProperties);
+    } else {
+      s.scaleAt(s.mouseX, s.mouseY, zoom);
+    }
+  };
+
+  const origin = { x: 0, y: 0 };
+
+  s.scaleAt = (x, y, zoom) => {
+    origin.x = x - (x - origin.x) * zoom;
+    origin.y = y - (y - origin.y) * zoom;
+    console.log(zoom, origin.x, origin.y);
+    canvas.style.transform = `scale(${zoom}) translate(${origin.x}px, ${origin.y}px)`;
+  };
+
+  s.mouseWheel = ({ delta }) => {
+    console.log("scrolling");
+    zoom += delta * -1 * 0.001;
+    s.scaleAt(s.mouseX, s.mouseY, zoom);
   };
 
   s.keyPressed = () => {
     keysPressed.addKey(s.keyCode);
+    if (s.keyCode === 16) isDrawing = true;
   };
 
   s.keyReleased = () => {
     keysPressed.removeKey(s.keyCode);
+    if (s.keyCode === 16) isDrawing = false;
   };
 };
 

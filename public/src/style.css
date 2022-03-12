@@ -30,6 +30,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
 
 canvas {
@@ -100,6 +101,10 @@ ul {
 
 .dim {
   opacity: 0.5;
+}
+
+.above {
+  z-index: 100;
 }
 
 /* COMPONENT STYLES */
