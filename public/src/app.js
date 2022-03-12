@@ -10,11 +10,11 @@ import { chatMessages } from "./components/chatMessages.js";
 import { KeyManager } from "./utils/KeyManager.js";
 import { initGuiPanels } from "./utils/initUI.js";
 import { setBaseUrl } from "./utils/setBaseUrl.js";
+import { Zoom } from "./utils/Zoom.js";
 
 const app = (s) => {
   const keysPressed = new KeyManager(s);
-  let socket, canvas;
-  let zoom = 1;
+  let socket, canvas, zoom;
   let isDrawing = false;
 
   s.initCanvas = (serializedCanvas) => {
@@ -31,6 +31,7 @@ const app = (s) => {
     const initialCanvasState = await Fetch.get("canvas");
     s.createCanvas(dimensions.width, dimensions.height);
     s.initCanvas(initialCanvasState);
+    zoom = new Zoom(canvas);
 
     s.background(0);
     s.rectMode(s.CENTER);
@@ -63,23 +64,13 @@ const app = (s) => {
       updateDrawing(s, paintProperties);
       socket.emit(EVENTS.DRAW_UPDATE, paintProperties);
     } else {
-      s.scaleAt(s.mouseX, s.mouseY, zoom);
+      zoom.scaleAt(s.mouseX, s.mouseY);
     }
   };
 
-  const origin = { x: 0, y: 0 };
-
-  s.scaleAt = (x, y, zoom) => {
-    origin.x = x - (x - origin.x) * zoom;
-    origin.y = y - (y - origin.y) * zoom;
-    console.log(zoom, origin.x, origin.y);
-    canvas.style.transform = `scale(${zoom}) translate(${origin.x}px, ${origin.y}px)`;
-  };
-
   s.mouseWheel = ({ delta }) => {
-    console.log("scrolling");
-    zoom += delta * -1 * 0.001;
-    s.scaleAt(s.mouseX, s.mouseY, zoom);
+    zoom.set(delta * -1);
+    zoom.scaleAt(s.mouseX, s.mouseY);
   };
 
   s.keyPressed = () => {
