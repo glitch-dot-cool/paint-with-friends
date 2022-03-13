@@ -112,7 +112,6 @@ const app = (s) => {
 
     // reset last coord positions to null to re-trigger init
     state.lastX = state.lastY = null;
-    console.log(state.lastX, state.lastY);
   };
 };
 

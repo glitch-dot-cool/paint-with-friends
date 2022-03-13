@@ -49,7 +49,6 @@
     // create a gui using the provider
     if (provider === "QuickSettings") {
       if (QuickSettings) {
-        console.log("Creating p5.gui powered by QuickSettings.");
         gui = new QSGui(label, parent, sketch);
 
         const uiPanels = document.querySelectorAll(".qs_main");
