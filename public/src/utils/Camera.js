@@ -4,7 +4,7 @@ export class Camera {
     this.offset = { x: 0, y: 0 };
     this.canvas = canvas;
     this.maxZoom = 1;
-    this.minZoom = 0.1;
+    this.minZoom = 0.2;
     this.scrollSensitivity = 0.001;
   }
 
