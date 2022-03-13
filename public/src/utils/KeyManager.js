@@ -13,22 +13,22 @@ export class KeyManager {
 
   addKey = (key) => {
     this.keysPressed.push(key);
-    this.checkForValidCommand();
+    this._checkForValidCommand();
   };
 
   removeKey = (key) => {
-    this.keysPressed = this.keysPressed.filter((key) => key !== key);
+    this.keysPressed = this.keysPressed.filter((k) => k !== key);
   };
 
-  checkForValidCommand = () => {
+  _checkForValidCommand = () => {
     this.commands.forEach((command) => {
-      if (this.arrayEquals(command.keys, this.keysPressed)) {
+      if (this._arrayEquals(command.keys, this.keysPressed)) {
         command.execute(command.param);
       }
     });
   };
 
-  arrayEquals = (a, b) => {
+  _arrayEquals = (a, b) => {
     return a.every((val, idx) => val === b[idx]);
   };
 }

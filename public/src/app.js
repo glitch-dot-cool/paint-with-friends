@@ -75,12 +75,26 @@ const app = (s) => {
 
   s.keyPressed = () => {
     keysPressed.addKey(s.keyCode);
-    if (s.keyCode === 16) isDrawing = true;
+    if (s.keyCode === 16) {
+      isDrawing = true;
+      document.body.style.cursor = "crosshair";
+    }
   };
 
   s.keyReleased = () => {
     keysPressed.removeKey(s.keyCode);
-    if (s.keyCode === 16) isDrawing = false;
+    if (s.keyCode === 16) {
+      isDrawing = false;
+      document.body.style.cursor = "grab";
+    }
+  };
+
+  s.mousePressed = () => {
+    if (!isDrawing) document.body.style.cursor = "grabbing";
+  };
+
+  s.mouseReleased = () => {
+    if (!isDrawing) document.body.style.cursor = "grab";
   };
 };
 
