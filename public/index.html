@@ -44,7 +44,7 @@
 
 <body>
 
-    <form id="username-form" class="flex hide">
+    <form id="username-form" class="flex hide above">
         <label class="flex column">
             username
             <input id="name-input" type="text">
@@ -52,7 +52,7 @@
         <button id="update-username">update</button>
     </form>
 
-    <form id="chat-form" class="flex">
+    <form id="chat-form" class="flex above">
         <label class="flex column">
             message
             <input id="message-input" type="text">
@@ -60,14 +60,14 @@
         <button id="send-message">send</button>
     </form>
 
-    <div id="message-container">
+    <div id="message-container above">
         <ul id="chat-list">
             <!-- chat messages go here -->
         </ul>
     </div>
 
 
-    <div id="username-list-container" class="backdrop">
+    <div id="username-list-container" class="backdrop above">
         <h4 id="username-list-title">connected users:</h4>
         <ul id="username-list">
             <template id="connected-users-template">

@@ -1,3 +1,6 @@
+import { toggleDrawMode } from "./drawing.js";
+import { state } from "../initialState.js";
+
 export class KeyManager {
   constructor(p5) {
     this.keysPressed = [];
@@ -8,27 +11,33 @@ export class KeyManager {
         execute: p5.save.bind(p5),
         param: "paint with friends.png",
       },
+      {
+        name: "toggleDrawMode",
+        keys: [16], // shift
+        execute: toggleDrawMode,
+        param: state,
+      },
     ];
   }
 
   addKey = (key) => {
     this.keysPressed.push(key);
-    this.checkForValidCommand();
+    this._checkForValidCommand();
   };
 
   removeKey = (key) => {
-    this.keysPressed = this.keysPressed.filter((key) => key !== key);
+    this.keysPressed = this.keysPressed.filter((k) => k !== key);
   };
 
-  checkForValidCommand = () => {
+  _checkForValidCommand = () => {
     this.commands.forEach((command) => {
-      if (this.arrayEquals(command.keys, this.keysPressed)) {
+      if (this._arrayEquals(command.keys, this.keysPressed)) {
         command.execute(command.param);
       }
     });
   };
 
-  arrayEquals = (a, b) => {
+  _arrayEquals = (a, b) => {
     return a.every((val, idx) => val === b[idx]);
   };
 }

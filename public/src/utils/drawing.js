@@ -87,3 +87,13 @@ const setupMirrorArgs = (shape, params) => {
       };
   }
 };
+
+export const toggleDrawMode = (state) => {
+  state.isDrawing = !state.isDrawing;
+
+  if (state.isDrawing) {
+    document.body.style.cursor = "crosshair";
+  } else {
+    document.body.style.cursor = "grab";
+  }
+};

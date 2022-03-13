@@ -69,4 +69,5 @@ export const state = {
   lfo3: { gui: { ...lfoParams }, value: 0 },
   lastX: null,
   lastY: null,
+  isDrawing: false,
 };
