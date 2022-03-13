@@ -79,7 +79,6 @@ const app = (s) => {
 
   s.keyReleased = () => {
     keysPressed.removeKey(s.keyCode);
-    if (s.keyCode === 16) toggleDrawMode(state);
   };
 
   s.mousePressed = () => {
