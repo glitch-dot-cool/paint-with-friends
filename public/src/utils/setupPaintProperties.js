@@ -97,8 +97,6 @@ export const useLfo = (p5, gui, lfo) => {
     y
   ) {
     lfo.value += speed;
-    // up to 2 * PI (see Waveforms.js implementation)
-    lfo.value %= Math.PI * 2;
   }
 
   if (x) {
@@ -169,4 +167,47 @@ const useRainbow = (p5, lfoValue, lfoGui, opacity) => {
   rainbow.setAlpha(Math.ceil(opacity));
 
   return rainbow;
+};
+
+/**
+ * Converts paint properties object to an ordered array to reduce payload size.
+ *
+ * @param {object} paintProperties
+ * @returns {array} leanPaintProperties
+ */
+export const convertToLeanPaintProperties = (paintProperties) => {
+  return [
+    paintProperties.x,
+    paintProperties.y,
+    paintProperties.fillColor,
+    paintProperties.fillOpacity,
+    paintProperties.strokeColor,
+    paintProperties.strokeOpacity,
+    paintProperties.mirrorX,
+    paintProperties.mirrorY,
+    paintProperties.shape,
+    paintProperties.size,
+  ];
+};
+
+/**
+ * Converts "lean" (array) representation of paint properties back to the object
+ * shape used within the client/server p5 applications.
+ *
+ * @param {array} leanPaintProperties
+ * @returns {object} paintProperties
+ */
+export const convertLeanPaintPropertiesToObject = (leanPaintProperties) => {
+  return {
+    x: leanPaintProperties[0],
+    y: leanPaintProperties[1],
+    fillColor: leanPaintProperties[2],
+    fillOpacity: leanPaintProperties[3],
+    strokeColor: leanPaintProperties[4],
+    strokeOpacity: leanPaintProperties[5],
+    mirrorX: leanPaintProperties[6],
+    mirrorY: leanPaintProperties[7],
+    shape: leanPaintProperties[8],
+    size: leanPaintProperties[9],
+  };
 };

@@ -5,24 +5,25 @@ export class Waveforms {
   }
 
   static square(min, x) {
-    if (x <= Math.PI) {
+    if (this._tauMod(x) <= Math.PI) {
       return this._normalize(-1, min);
     }
     return this._normalize(1, min);
   }
 
   static triangle(min, x) {
-    if (x <= Math.PI) {
-      const expression = x / (Math.PI * 0.5) - 1;
+    const value = this._tauMod(x);
+    if (value <= Math.PI) {
+      const expression = value / (Math.PI * 0.5) - 1;
       return this._normalize(expression, min);
     }
 
-    const expression = (x - Math.PI) / (-Math.PI * 0.5) + 1;
+    const expression = (value - Math.PI) / (-Math.PI * 0.5) + 1;
     return this._normalize(expression, min);
   }
 
   static saw(min, x) {
-    const expression = x / Math.PI - 1;
+    const expression = this._tauMod(x) / Math.PI - 1;
     return this._normalize(expression, min);
   }
 
@@ -45,5 +46,15 @@ export class Waveforms {
   static _normalize(x, min) {
     const scaledMin = min * 0.01;
     return window.p5.prototype.map(x, -1, 1, scaledMin, 1);
+  }
+
+  /**
+   * Mods an input value by tau, used in constant waveforms.
+   *
+   * @param {number} x
+   * @returns {number} 0 - tau
+   */
+  static _tauMod(x) {
+    return (x %= Math.PI * 2);
   }
 }

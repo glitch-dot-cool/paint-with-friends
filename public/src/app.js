@@ -1,6 +1,10 @@
 import { state } from "./initialState.js";
 import { dimensions, EVENTS } from "./constants.js";
-import { setupPaintProperties } from "./utils/setupPaintProperties.js";
+import {
+  setupPaintProperties,
+  convertToLeanPaintProperties,
+  convertLeanPaintPropertiesToObject,
+} from "./utils/setupPaintProperties.js";
 import { updateDrawing } from "./utils/drawing.js";
 import { LocalStorage } from "./utils/LocalStorage.js";
 import { Fetch } from "./utils/Fetch.js";
@@ -44,7 +48,10 @@ const app = (s) => {
       initUsername(socketID);
     });
 
-    socket.on(EVENTS.DRAW_UPDATE, (paintProperties) => {
+    socket.on(EVENTS.DRAW_UPDATE, (leanPaintProperties) => {
+      const paintProperties =
+        convertLeanPaintPropertiesToObject(leanPaintProperties);
+
       updateDrawing(s, paintProperties);
     });
 
@@ -61,7 +68,10 @@ const app = (s) => {
     if (state.isDrawing) {
       const paintProperties = setupPaintProperties(s, state, camera.zoomAmount);
       updateDrawing(s, paintProperties);
-      socket.emit(EVENTS.DRAW_UPDATE, paintProperties);
+      socket.emit(
+        EVENTS.DRAW_UPDATE,
+        convertToLeanPaintProperties(paintProperties)
+      );
     } else {
       camera.pan(movementX, movementY);
     }

@@ -35,7 +35,8 @@ io.sockets.on(EVENTS.NEW_CONNECTION, (socket) => {
     eventEmitter.emit(EVENTS.DRAW_UPDATE, data);
   });
 
-  socket.on(EVENTS.DISCONNECT, (reason) => {
+  socket.on(EVENTS.DISCONNECT, () => {
+    socket.removeAllListeners();
     connectedUsers.removeConnection(socket.id);
   });
 });
