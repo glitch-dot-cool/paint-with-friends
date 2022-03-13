@@ -10,11 +10,11 @@ import { chatMessages } from "./components/chatMessages.js";
 import { KeyManager } from "./utils/KeyManager.js";
 import { initGuiPanels } from "./utils/initUI.js";
 import { setBaseUrl } from "./utils/setBaseUrl.js";
-import { Zoom } from "./utils/Zoom.js";
+import { Camera } from "./utils/Camera.js";
 
 const app = (s) => {
   const keysPressed = new KeyManager(s);
-  let socket, canvas, zoom;
+  let socket, canvas, camera;
   let isDrawing = false;
 
   s.initCanvas = (serializedCanvas) => {
@@ -31,7 +31,7 @@ const app = (s) => {
     const initialCanvasState = await Fetch.get("canvas");
     s.createCanvas(dimensions.width, dimensions.height);
     s.initCanvas(initialCanvasState);
-    zoom = new Zoom(canvas);
+    camera = new Camera(canvas);
 
     s.background(0);
     s.rectMode(s.CENTER);
@@ -58,19 +58,19 @@ const app = (s) => {
     });
   };
 
-  s.mouseDragged = () => {
+  s.mouseDragged = ({ movementX, movementY }) => {
     if (isDrawing) {
       const paintProperties = setupPaintProperties(s, state);
       updateDrawing(s, paintProperties);
       socket.emit(EVENTS.DRAW_UPDATE, paintProperties);
     } else {
-      zoom.scaleAt(s.mouseX, s.mouseY);
+      camera.pan(movementX, movementY);
     }
   };
 
   s.mouseWheel = ({ delta }) => {
-    zoom.set(delta * -1);
-    zoom.scaleAt(s.mouseX, s.mouseY);
+    camera.set(delta * -1);
+    camera.zoom();
   };
 
   s.keyPressed = () => {
