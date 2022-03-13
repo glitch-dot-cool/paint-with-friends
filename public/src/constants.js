@@ -11,7 +11,7 @@ export const paintProperties = {
   Y: "y",
 };
 
-export const dimensions = { width: 3840, height: 2160 }; // 1080p-friendly
+export const dimensions = { width: 3840, height: 2160 }; // 4k
 
 export const EVENTS = {
   DRAW_UPDATE: "drawUpdate",
