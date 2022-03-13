@@ -5,6 +5,7 @@ import { updateDrawing } from "./public/src/utils/drawing.js";
 import { initialServerState } from "./public/src/initialState.js";
 import { eventEmitter } from "./event.js";
 import { EVENTS } from "./public/src/constants.js";
+import { convertLeanPaintPropertiesToObject } from "./public/src/utils/setupPaintProperties.js";
 
 export const initServerP5 = () => {
   let paintProperties = initialServerState;
@@ -12,7 +13,7 @@ export const initServerP5 = () => {
 
   function sketch(s) {
     eventEmitter.on(EVENTS.DRAW_UPDATE, (data) => {
-      paintProperties = data;
+      paintProperties = convertLeanPaintPropertiesToObject(data);
       updateDrawing(s, paintProperties);
     });
 
