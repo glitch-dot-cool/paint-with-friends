@@ -17,7 +17,7 @@ import { setBaseUrl } from "./utils/setBaseUrl.js";
 
 const app = (s) => {
   const keysPressed = new KeyManager(s);
-  let socket, lastX, lastY;
+  let socket;
 
   s.initCanvas = (serializedCanvas) => {
     const canvas = document.querySelector("canvas");
@@ -64,7 +64,7 @@ const app = (s) => {
 
   s.mouseDragged = () => {
     s.initLastCoords();
-    const paintProperties = setupPaintProperties(s, state, lastX, lastY);
+    const paintProperties = setupPaintProperties(s, state);
     updateDrawing(s, paintProperties);
 
     socket.emit(
@@ -76,19 +76,19 @@ const app = (s) => {
   };
 
   s.initLastCoords = () => {
-    if (!lastX || !lastY) {
+    if (!state.lastX || !state.lastY) {
       s.setLastCoords();
     }
   };
 
   s.mouseReleased = () => {
     // reset last coord positions to null to re-trigger init
-    lastX = lastY = null;
+    state.lastX = state.lastY = null;
   };
 
   s.setLastCoords = () => {
-    lastX = s.mouseX;
-    lastY = s.mouseY;
+    state.lastX = s.mouseX;
+    state.lastY = s.mouseY;
   };
 
   s.keyPressed = () => {
