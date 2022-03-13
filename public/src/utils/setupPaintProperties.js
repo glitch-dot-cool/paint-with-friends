@@ -1,5 +1,6 @@
 import { Waveforms } from "./Waveforms.js";
 import { paintProperties as p } from "../constants.js";
+import { Camera } from "./Camera.js";
 
 export const setupPaintProperties = (p5, state, zoomAmount) => {
   const { gui } = state;
@@ -10,8 +11,8 @@ export const setupPaintProperties = (p5, state, zoomAmount) => {
   const lfos = [lfo3, lfo2, lfo1];
 
   return {
-    x: scaleByZoomAmount(handleLfoValue(p5, lfos, gui, p.X), zoomAmount),
-    y: scaleByZoomAmount(handleLfoValue(p5, lfos, gui, p.Y), zoomAmount),
+    x: Camera.scaleByZoomAmount(handleLfoValue(p5, lfos, gui, p.X), zoomAmount),
+    y: Camera.scaleByZoomAmount(handleLfoValue(p5, lfos, gui, p.Y), zoomAmount),
     fillColor: handleLfoValue(p5, lfos, gui, p.FILL_COLOR),
     strokeColor: handleLfoValue(p5, lfos, gui, p.STROKE_COLOR),
     size: handleLfoValue(p5, lfos, gui, p.SIZE),
@@ -24,10 +25,6 @@ export const setupPaintProperties = (p5, state, zoomAmount) => {
     prevY: state.lastY,
     strokeWeight: handleLfoValue(p5, lfos, gui, p.STROKE_WEIGHT),
   };
-};
-
-const scaleByZoomAmount = (coordinate, zoomAmount) => {
-  return coordinate * (1 / zoomAmount);
 };
 
 // default to the values from the GUI if no LFO stuff is enabled

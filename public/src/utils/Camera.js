@@ -23,8 +23,8 @@ export class Camera {
   };
 
   pan = (movementX, movementY) => {
-    this.offset.x += movementX * (1 / this.zoomAmount);
-    this.offset.y += movementY * (1 / this.zoomAmount);
+    this.offset.x += Camera.scaleByZoomAmount(movementX, this.zoomAmount);
+    this.offset.y += Camera.scaleByZoomAmount(movementY, this.zoomAmount);
 
     this.canvas.style.transform = `scale(${this.zoomAmount}) translate(${this.offset.x}px, ${this.offset.y}px)`;
   };
