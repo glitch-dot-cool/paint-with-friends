@@ -28,16 +28,4 @@ export class Camera {
 
     this.canvas.style.transform = `scale(${this.zoomAmount}) translate(${this.offset.x}px, ${this.offset.y}px)`;
   };
-
-  // toWorldSpace = (x, y) => {
-  //   x = (x - this.origin.x) / zoom;
-  //   y = (y - this.origin.y) / zoom;
-  //   return { x, y };
-  // };
-
-  // toScreenSpace = (x, y) => {
-  //   x = x * zoom + this.origin.x;
-  //   y = y * zoom + this.origin.y;
-  //   return { x, y };
-  // };
 }

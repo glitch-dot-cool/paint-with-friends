@@ -60,7 +60,7 @@ const app = (s) => {
 
   s.mouseDragged = ({ movementX, movementY }) => {
     if (isDrawing) {
-      const paintProperties = setupPaintProperties(s, state);
+      const paintProperties = setupPaintProperties(s, state, camera.zoomAmount);
       updateDrawing(s, paintProperties);
       socket.emit(EVENTS.DRAW_UPDATE, paintProperties);
     } else {
