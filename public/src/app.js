@@ -15,7 +15,6 @@ import { Camera } from "./utils/Camera.js";
 const app = (s) => {
   const keysPressed = new KeyManager(s);
   let socket, canvas, camera;
-  let isDrawing = false;
 
   s.initCanvas = (serializedCanvas) => {
     canvas = document.querySelector("canvas");
@@ -59,7 +58,7 @@ const app = (s) => {
   };
 
   s.mouseDragged = ({ movementX, movementY }) => {
-    if (isDrawing) {
+    if (state.isDrawing) {
       const paintProperties = setupPaintProperties(s, state, camera.zoomAmount);
       updateDrawing(s, paintProperties);
       socket.emit(EVENTS.DRAW_UPDATE, paintProperties);
@@ -76,7 +75,7 @@ const app = (s) => {
   s.keyPressed = () => {
     keysPressed.addKey(s.keyCode);
     if (s.keyCode === 16) {
-      isDrawing = true;
+      state.isDrawing = true;
       document.body.style.cursor = "crosshair";
     }
   };
@@ -84,17 +83,17 @@ const app = (s) => {
   s.keyReleased = () => {
     keysPressed.removeKey(s.keyCode);
     if (s.keyCode === 16) {
-      isDrawing = false;
+      state.isDrawing = false;
       document.body.style.cursor = "grab";
     }
   };
 
   s.mousePressed = () => {
-    if (!isDrawing) document.body.style.cursor = "grabbing";
+    if (!state.isDrawing) document.body.style.cursor = "grabbing";
   };
 
   s.mouseReleased = () => {
-    if (!isDrawing) document.body.style.cursor = "grab";
+    if (!state.isDrawing) document.body.style.cursor = "grab";
   };
 };
 
