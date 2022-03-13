@@ -1,7 +1,7 @@
 import { state } from "./initialState.js";
 import { dimensions, EVENTS } from "./constants.js";
 import { setupPaintProperties } from "./utils/setupPaintProperties.js";
-import { toggleDrawMode, updateDrawing } from "./utils/drawing.js";
+import { updateDrawing } from "./utils/drawing.js";
 import { LocalStorage } from "./utils/LocalStorage.js";
 import { Fetch } from "./utils/Fetch.js";
 import { userList } from "./components/userList.js";
@@ -74,7 +74,6 @@ const app = (s) => {
 
   s.keyPressed = () => {
     keysPressed.addKey(s.keyCode);
-    if (s.keyCode === 16) toggleDrawMode(state);
   };
 
   s.keyReleased = () => {

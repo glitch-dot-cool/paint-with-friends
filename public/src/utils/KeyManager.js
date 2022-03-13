@@ -1,3 +1,6 @@
+import { toggleDrawMode } from "./drawing.js";
+import { state } from "../initialState.js";
+
 export class KeyManager {
   constructor(p5) {
     this.keysPressed = [];
@@ -7,6 +10,12 @@ export class KeyManager {
         keys: [17, 88], // ctrl + x
         execute: p5.save.bind(p5),
         param: "paint with friends.png",
+      },
+      {
+        name: "toggleDrawMode",
+        keys: [16], // shift
+        execute: toggleDrawMode,
+        param: state,
       },
     ];
   }
