@@ -14,13 +14,14 @@ import { chatMessages } from "./components/chatMessages.js";
 import { KeyManager } from "./utils/KeyManager.js";
 import { initGuiPanels } from "./utils/initUI.js";
 import { setBaseUrl } from "./utils/setBaseUrl.js";
+import { Camera } from "./utils/Camera.js";
 
 const app = (s) => {
   const keysPressed = new KeyManager(s);
-  let socket;
+  let socket, canvas, camera;
 
   s.initCanvas = (serializedCanvas) => {
-    const canvas = document.querySelector("canvas");
+    canvas = document.querySelector("canvas");
     const ctx = canvas.getContext("2d");
     const img = new Image();
     img.onload = function () {
@@ -33,6 +34,7 @@ const app = (s) => {
     const initialCanvasState = await Fetch.get("canvas");
     s.createCanvas(dimensions.width, dimensions.height);
     s.initCanvas(initialCanvasState);
+    camera = new Camera(canvas);
 
     s.background(0);
     s.rectMode(s.CENTER);
@@ -62,14 +64,22 @@ const app = (s) => {
     });
   };
 
-  s.mouseDragged = () => {
-    const paintProperties = setupPaintProperties(s, state);
-    updateDrawing(s, paintProperties);
+  s.mouseDragged = ({ movementX, movementY }) => {
+    if (state.isDrawing) {
+      const paintProperties = setupPaintProperties(s, state, camera.zoomAmount);
+      updateDrawing(s, paintProperties);
+      socket.emit(
+        EVENTS.DRAW_UPDATE,
+        convertToLeanPaintProperties(paintProperties)
+      );
+    } else {
+      camera.pan(movementX, movementY);
+    }
+  };
 
-    socket.emit(
-      EVENTS.DRAW_UPDATE,
-      convertToLeanPaintProperties(paintProperties)
-    );
+  s.mouseWheel = ({ delta }) => {
+    camera.set(delta * -1);
+    camera.zoom();
   };
 
   s.keyPressed = () => {
@@ -78,6 +88,14 @@ const app = (s) => {
 
   s.keyReleased = () => {
     keysPressed.removeKey(s.keyCode);
+  };
+
+  s.mousePressed = () => {
+    if (!state.isDrawing) document.body.style.cursor = "grabbing";
+  };
+
+  s.mouseReleased = () => {
+    if (!state.isDrawing) document.body.style.cursor = "grab";
   };
 };
 

@@ -24,16 +24,19 @@ html,
 body {
   height: 100%;
   background: var(--black);
+  cursor: grab;
 }
 
 body {
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
 
 canvas {
   display: block;
+  box-shadow: 2px 20px 40px rgba(0, 0, 0, 0.3);
 }
 
 label {
@@ -100,6 +103,10 @@ ul {
 
 .dim {
   opacity: 0.5;
+}
+
+.above {
+  z-index: 100;
 }
 
 /* COMPONENT STYLES */
