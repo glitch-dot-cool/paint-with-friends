@@ -19,10 +19,12 @@ export class Camera {
   };
 
   zoom = () => {
+    this.canvas.style.transition = "300ms ease-in-out transform";
     this.canvas.style.transform = `scale(${this.zoomAmount}) translate(${this.offset.x}px, ${this.offset.y}px)`;
   };
 
   pan = (movementX, movementY) => {
+    this.canvas.style.transition = "none";
     this.offset.x += movementX * (1 / this.zoomAmount);
     this.offset.y += movementY * (1 / this.zoomAmount);
 
