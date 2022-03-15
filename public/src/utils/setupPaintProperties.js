@@ -182,8 +182,9 @@ const useRainbow = (p5, lfoValue, lfoGui, opacity) => {
  * @param {object} paintProperties
  * @returns {array} leanPaintProperties
  */
-export const convertToLeanPaintProperties = (paintProperties) => {
+export const convertToLeanPaintProperties = (paintProperties, username) => {
   return [
+    username,
     paintProperties.x,
     paintProperties.y,
     paintProperties.fillColor,
@@ -209,18 +210,18 @@ export const convertToLeanPaintProperties = (paintProperties) => {
  */
 export const convertLeanPaintPropertiesToObject = (leanPaintProperties) => {
   return {
-    x: leanPaintProperties[0],
-    y: leanPaintProperties[1],
-    fillColor: leanPaintProperties[2],
-    fillOpacity: leanPaintProperties[3],
-    strokeColor: leanPaintProperties[4],
-    strokeOpacity: leanPaintProperties[5],
-    mirrorX: leanPaintProperties[6],
-    mirrorY: leanPaintProperties[7],
-    shape: leanPaintProperties[8],
-    size: leanPaintProperties[9],
-    prevX: leanPaintProperties[10],
-    prevY: leanPaintProperties[11],
-    strokeWeight: leanPaintProperties[12],
+    x: leanPaintProperties[1],
+    y: leanPaintProperties[2],
+    fillColor: leanPaintProperties[3],
+    fillOpacity: leanPaintProperties[4],
+    strokeColor: leanPaintProperties[5],
+    strokeOpacity: leanPaintProperties[6],
+    mirrorX: leanPaintProperties[7],
+    mirrorY: leanPaintProperties[8],
+    shape: leanPaintProperties[9],
+    size: leanPaintProperties[10],
+    prevX: leanPaintProperties[11],
+    prevY: leanPaintProperties[12],
+    strokeWeight: leanPaintProperties[13],
   };
 };

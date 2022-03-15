@@ -41,6 +41,12 @@ canvas {
   will-change: transform;
 }
 
+#p5-cursors {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+}
+
 label {
   color: var(--white);
 }

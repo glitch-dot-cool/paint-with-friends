@@ -15,13 +15,14 @@ import { KeyManager } from "./utils/KeyManager.js";
 import { initGuiPanels } from "./utils/initUI.js";
 import { setBaseUrl } from "./utils/setBaseUrl.js";
 import { Camera } from "./utils/Camera.js";
+import { initCursors } from "./cursors.js";
 
 const app = (s) => {
   const keysPressed = new KeyManager(s);
   let socket, canvas, camera;
 
   s.initCanvas = (serializedCanvas) => {
-    canvas = document.querySelector("canvas");
+    canvas = document.querySelector("#app");
     const ctx = canvas.getContext("2d");
     const img = new Image();
     img.onload = function () {
@@ -32,7 +33,8 @@ const app = (s) => {
 
   s.setup = async function () {
     const initialCanvasState = await Fetch.get("canvas");
-    s.createCanvas(dimensions.width, dimensions.height);
+    const cnv = s.createCanvas(dimensions.width, dimensions.height);
+    cnv.id("app");
     s.initCanvas(initialCanvasState);
     camera = new Camera(canvas);
 
@@ -42,6 +44,9 @@ const app = (s) => {
     socket = io.connect(setBaseUrl());
 
     initGuiPanels(s, this);
+
+    // init separate sketch for rendering cursors
+    new p5(initCursors(socket, camera));
 
     socket.on(EVENTS.CONNECTED, (socketID) => {
       LocalStorage.set("pwf_socket", socketID);
@@ -75,26 +80,6 @@ const app = (s) => {
     state.lastY = Camera.scaleByZoomAmount(s.mouseY, camera.zoomAmount);
   };
 
-  s.mouseDragged = ({ movementX, movementY }) => {
-    if (state.isDrawing) {
-      s.initLastCoords();
-      const paintProperties = setupPaintProperties(s, state, camera.zoomAmount);
-      updateDrawing(s, paintProperties);
-      socket.emit(
-        EVENTS.DRAW_UPDATE,
-        convertToLeanPaintProperties(paintProperties)
-      );
-      s.setLastCoords();
-    } else {
-      camera.pan(movementX, movementY);
-    }
-  };
-
-  s.mouseWheel = ({ delta }) => {
-    camera.set(delta * -1);
-    camera.zoom();
-  };
-
   s.keyPressed = () => {
     keysPressed.addKey(s.keyCode);
   };
@@ -103,12 +88,39 @@ const app = (s) => {
     keysPressed.removeKey(s.keyCode);
   };
 
+  s.mouseDragged = ({ movementX, movementY }) => {
+    if (state.isDrawing) {
+      s.initLastCoords();
+      const paintProperties = setupPaintProperties(s, state, camera.zoomAmount);
+      updateDrawing(s, paintProperties);
+      socket.emit(
+        EVENTS.DRAW_UPDATE,
+        convertToLeanPaintProperties(
+          paintProperties,
+          LocalStorage.get("pwf_username")
+        )
+      );
+      s.setLastCoords();
+    } else {
+      camera.pan(movementX, movementY);
+    }
+  };
+
+  s.mouseWheel = ({ delta }) => {
+    camera.zoom(delta);
+  };
+
   s.mousePressed = () => {
     if (!state.isDrawing) document.body.style.cursor = "grabbing";
   };
 
   s.mouseReleased = () => {
-    if (!state.isDrawing) document.body.style.cursor = "grab";
+    if (!state.isDrawing) {
+      document.body.style.cursor = "grab";
+    } else {
+      // if done drawing, clear the cursors
+      socket.emit(EVENTS.MOUSE_RELEASED);
+    }
 
     // reset last coord positions to null to re-trigger init
     state.lastX = state.lastY = null;
