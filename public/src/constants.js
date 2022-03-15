@@ -9,6 +9,9 @@ export const paintProperties = {
   MIRROR_Y: "mirrorY",
   X: "x",
   Y: "y",
+  PREV_X: "prevX",
+  PREV_Y: "prevY",
+  STROKE_WEIGHT: "strokeWeight",
 };
 
 export const dimensions = { width: 3840, height: 2160 }; // 4k

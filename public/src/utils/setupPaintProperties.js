@@ -1,5 +1,6 @@
 import { Waveforms } from "./Waveforms.js";
 import { paintProperties as p } from "../constants.js";
+import { Camera } from "./Camera.js";
 
 export const setupPaintProperties = (p5, state, zoomAmount) => {
   const { gui } = state;
@@ -10,8 +11,8 @@ export const setupPaintProperties = (p5, state, zoomAmount) => {
   const lfos = [lfo3, lfo2, lfo1];
 
   return {
-    x: scaleByZoomAmount(handleLfoValue(p5, lfos, gui, p.X), zoomAmount),
-    y: scaleByZoomAmount(handleLfoValue(p5, lfos, gui, p.Y), zoomAmount),
+    x: Camera.scaleByZoomAmount(handleLfoValue(p5, lfos, gui, p.X), zoomAmount),
+    y: Camera.scaleByZoomAmount(handleLfoValue(p5, lfos, gui, p.Y), zoomAmount),
     fillColor: handleLfoValue(p5, lfos, gui, p.FILL_COLOR),
     strokeColor: handleLfoValue(p5, lfos, gui, p.STROKE_COLOR),
     size: handleLfoValue(p5, lfos, gui, p.SIZE),
@@ -20,11 +21,10 @@ export const setupPaintProperties = (p5, state, zoomAmount) => {
     shape: gui.shape,
     mirrorX: gui.mirrorX,
     mirrorY: gui.mirrorY,
+    prevX: state.lastX,
+    prevY: state.lastY,
+    strokeWeight: handleLfoValue(p5, lfos, gui, p.STROKE_WEIGHT),
   };
-};
-
-const scaleByZoomAmount = (coordinate, zoomAmount) => {
-  return coordinate * (1 / zoomAmount);
 };
 
 // default to the values from the GUI if no LFO stuff is enabled
@@ -78,6 +78,7 @@ export const useLfo = (p5, gui, lfo) => {
     floor,
     x,
     y,
+    strokeWeight,
   } = lfo.gui;
 
   // x & y don't have default values from GUI, so prepopulate w/ current mouse X/Y
@@ -94,7 +95,8 @@ export const useLfo = (p5, gui, lfo) => {
     fillColor ||
     strokeColor ||
     x ||
-    y
+    y ||
+    strokeWeight
   ) {
     lfo.value += speed;
   }
@@ -149,6 +151,11 @@ export const useLfo = (p5, gui, lfo) => {
     values[p.SIZE] = gui.size + Waveforms[shape](floor, lfo.value) * amount;
   }
 
+  if (strokeWeight) {
+    values[p.STROKE_WEIGHT] =
+      gui.strokeWeight + Waveforms[shape](floor, lfo.value) * amount;
+  }
+
   return values;
 };
 
@@ -187,6 +194,9 @@ export const convertToLeanPaintProperties = (paintProperties) => {
     paintProperties.mirrorY,
     paintProperties.shape,
     paintProperties.size,
+    paintProperties.prevX,
+    paintProperties.prevY,
+    paintProperties.strokeWeight,
   ];
 };
 
@@ -209,5 +219,8 @@ export const convertLeanPaintPropertiesToObject = (leanPaintProperties) => {
     mirrorY: leanPaintProperties[7],
     shape: leanPaintProperties[8],
     size: leanPaintProperties[9],
+    prevX: leanPaintProperties[10],
+    prevY: leanPaintProperties[11],
+    strokeWeight: leanPaintProperties[12],
   };
 };

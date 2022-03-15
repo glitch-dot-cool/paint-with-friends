@@ -64,14 +64,27 @@ const app = (s) => {
     });
   };
 
+  s.initLastCoords = () => {
+    if (!state.lastX || !state.lastY) {
+      s.setLastCoords();
+    }
+  };
+
+  s.setLastCoords = () => {
+    state.lastX = Camera.scaleByZoomAmount(s.mouseX, camera.zoomAmount);
+    state.lastY = Camera.scaleByZoomAmount(s.mouseY, camera.zoomAmount);
+  };
+
   s.mouseDragged = ({ movementX, movementY }) => {
     if (state.isDrawing) {
+      s.initLastCoords();
       const paintProperties = setupPaintProperties(s, state, camera.zoomAmount);
       updateDrawing(s, paintProperties);
       socket.emit(
         EVENTS.DRAW_UPDATE,
         convertToLeanPaintProperties(paintProperties)
       );
+      s.setLastCoords();
     } else {
       camera.pan(movementX, movementY);
     }
@@ -96,6 +109,9 @@ const app = (s) => {
 
   s.mouseReleased = () => {
     if (!state.isDrawing) document.body.style.cursor = "grab";
+
+    // reset last coord positions to null to re-trigger init
+    state.lastX = state.lastY = null;
   };
 };
 
