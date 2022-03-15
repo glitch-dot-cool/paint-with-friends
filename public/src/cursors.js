@@ -11,10 +11,8 @@ export const initCursors = (socket) => {
       s.textFont("JetBrains Mono");
 
       socket.on(EVENTS.DRAW_UPDATE, (data) => {
-        // first 2 elements of lean paint proerties are current mouse coords
-        const [x, y] = data;
-        // last element is username
-        const username = data[data.length - 1];
+        // first 3 elements of paint props are username & mouse x/y
+        const [username, x, y] = data;
         color = s.usernameToColor(username);
         s.drawCursor(x, y, username);
       });
