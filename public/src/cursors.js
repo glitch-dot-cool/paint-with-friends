@@ -2,6 +2,8 @@ import { dimensions, EVENTS } from "./constants.js";
 
 export const initCursors = (socket) => {
   const cursors = (s) => {
+    let color = s.color(0, 255, 0);
+
     s.setup = () => {
       const canvas = s.createCanvas(dimensions.width, dimensions.height);
       canvas.parent("p5-cursors");
@@ -19,8 +21,12 @@ export const initCursors = (socket) => {
 
     s.drawCursor = (x, y, username) => {
       s.clear();
-      s.fill(0, 255, 0);
+      s.fill(color);
+      s.noStroke();
       s.circle(x, y, 10);
+
+      s.stroke(0);
+      s.strokeWeight(2);
       s.text(username, x + 8, y + 3);
     };
   };
