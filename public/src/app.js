@@ -94,10 +94,12 @@ const app = (s) => {
       updateDrawing(s, paintProperties);
       socket.emit(
         EVENTS.DRAW_UPDATE,
-        convertToLeanPaintProperties(paintProperties)
+        convertToLeanPaintProperties(
+          paintProperties,
+          LocalStorage.get("pwf_username")
+        )
       );
       s.setLastCoords();
-      s.broadcastMouse();
     } else {
       camera.pan(movementX, movementY);
     }
@@ -117,14 +119,6 @@ const app = (s) => {
 
     // reset last coord positions to null to re-trigger init
     state.lastX = state.lastY = null;
-  };
-
-  s.broadcastMouse = () => {
-    socket?.emit(EVENTS.CURSOR_UPDATE, {
-      x: Camera.scaleByZoomAmount(s.mouseX, camera.zoomAmount),
-      y: Camera.scaleByZoomAmount(s.mouseY, camera.zoomAmount),
-      username: LocalStorage.get("pwf_username"),
-    });
   };
 };
 

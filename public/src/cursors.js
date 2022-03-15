@@ -6,7 +6,11 @@ export const initCursors = (socket) => {
       const canvas = s.createCanvas(dimensions.width, dimensions.height);
       canvas.parent("p5-cursors");
 
-      socket.on(EVENTS.CURSOR_UPDATE, ({ x, y, username }) => {
+      socket.on(EVENTS.DRAW_UPDATE, (data) => {
+        // first 2 elements of lean paint proerties are current mouse coords
+        const [x, y] = data;
+        // last element is username
+        const username = data[data.length - 1];
         s.drawCursor(x, y, username);
       });
     };

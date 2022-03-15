@@ -182,7 +182,7 @@ const useRainbow = (p5, lfoValue, lfoGui, opacity) => {
  * @param {object} paintProperties
  * @returns {array} leanPaintProperties
  */
-export const convertToLeanPaintProperties = (paintProperties) => {
+export const convertToLeanPaintProperties = (paintProperties, username) => {
   return [
     paintProperties.x,
     paintProperties.y,
@@ -197,6 +197,7 @@ export const convertToLeanPaintProperties = (paintProperties) => {
     paintProperties.prevX,
     paintProperties.prevY,
     paintProperties.strokeWeight,
+    username, // this should always be last
   ];
 };
 
