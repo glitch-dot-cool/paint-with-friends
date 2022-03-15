@@ -1,12 +1,16 @@
 import { dimensions, EVENTS } from "./constants.js";
+import { Camera } from "./utils/Camera.js";
 
-export const initCursors = (socket) => {
+export const initCursors = (socket, camera) => {
   const cursors = (s) => {
     let color;
 
     s.setup = () => {
       const canvas = s.createCanvas(dimensions.width, dimensions.height);
+      canvas.id("cursors");
       canvas.parent("p5-cursors");
+
+      camera.registerCursorCanvas(document.querySelector("#cursors"));
 
       s.textFont("JetBrains Mono");
 
@@ -26,10 +30,11 @@ export const initCursors = (socket) => {
       s.clear();
       s.fill(color);
       s.noStroke();
-      s.circle(x, y, 10);
+      s.circle(x, y, Camera.scaleByZoomAmount(10, camera.zoomAmount));
 
       s.stroke(0);
       s.strokeWeight(2);
+      s.textSize(Camera.scaleByZoomAmount(12, camera.zoomAmount));
       s.text(username, x + 8, y + 3);
     };
 

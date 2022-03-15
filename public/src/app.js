@@ -22,7 +22,7 @@ const app = (s) => {
   let socket, canvas, camera;
 
   s.initCanvas = (serializedCanvas) => {
-    canvas = document.querySelector("canvas");
+    canvas = document.querySelector("#app");
     const ctx = canvas.getContext("2d");
     const img = new Image();
     img.onload = function () {
@@ -33,7 +33,8 @@ const app = (s) => {
 
   s.setup = async function () {
     const initialCanvasState = await Fetch.get("canvas");
-    s.createCanvas(dimensions.width, dimensions.height);
+    const cnv = s.createCanvas(dimensions.width, dimensions.height);
+    cnv.id("app");
     s.initCanvas(initialCanvasState);
     camera = new Camera(canvas);
 
@@ -45,7 +46,7 @@ const app = (s) => {
     initGuiPanels(s, this);
 
     // init separate sketch for rendering cursors
-    new p5(initCursors(socket));
+    new p5(initCursors(socket, camera));
 
     socket.on(EVENTS.CONNECTED, (socketID) => {
       LocalStorage.set("pwf_socket", socketID);
@@ -106,8 +107,7 @@ const app = (s) => {
   };
 
   s.mouseWheel = ({ delta }) => {
-    camera.set(delta * -1);
-    camera.zoom();
+    camera.zoom(delta);
   };
 
   s.mousePressed = () => {
