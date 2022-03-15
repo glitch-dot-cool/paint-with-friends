@@ -18,6 +18,10 @@ export const initCursors = (socket) => {
         color = s.usernameToColor(username);
         s.drawCursor(x, y, username);
       });
+
+      socket.on(EVENTS.MOUSE_RELEASED, () => {
+        s.clear();
+      });
     };
 
     s.drawCursor = (x, y, username) => {

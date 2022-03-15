@@ -35,8 +35,8 @@ io.sockets.on(EVENTS.NEW_CONNECTION, (socket) => {
     eventEmitter.emit(EVENTS.DRAW_UPDATE, paintProperties);
   });
 
-  socket.on(EVENTS.CURSOR_UPDATE, (mouseCoords) => {
-    socket.broadcast.emit(EVENTS.CURSOR_UPDATE, mouseCoords);
+  socket.on(EVENTS.MOUSE_RELEASED, () => {
+    socket.broadcast.emit(EVENTS.MOUSE_RELEASED);
   });
 
   socket.on(EVENTS.DISCONNECT, () => {

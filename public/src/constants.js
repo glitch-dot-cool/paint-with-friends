@@ -23,7 +23,7 @@ export const EVENTS = {
   DISCONNECT: "disconnect",
   MEMBERS_CHANGED: "membersChanged",
   MESSAGE: "message",
-  CURSOR_UPDATE: "cursorUpdate",
+  MOUSE_RELEASED: "mouseReleased",
 };
 
 const GUI_WIDTH = 200;

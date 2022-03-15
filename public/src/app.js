@@ -115,7 +115,12 @@ const app = (s) => {
   };
 
   s.mouseReleased = () => {
-    if (!state.isDrawing) document.body.style.cursor = "grab";
+    if (!state.isDrawing) {
+      document.body.style.cursor = "grab";
+    } else {
+      // if done drawing, clear the cursors
+      socket.emit(EVENTS.MOUSE_RELEASED);
+    }
 
     // reset last coord positions to null to re-trigger init
     state.lastX = state.lastY = null;
