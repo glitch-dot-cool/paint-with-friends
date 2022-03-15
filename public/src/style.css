@@ -37,6 +37,8 @@ body {
 canvas {
   display: block;
   box-shadow: 2px 20px 40px rgba(0, 0, 0, 0.3);
+  transition: 300ms ease-in-out transform;
+  will-change: transform;
 }
 
 label {
