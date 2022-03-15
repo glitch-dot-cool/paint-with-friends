@@ -16,7 +16,6 @@ export const initCursors = (socket) => {
         // last element is username
         const username = data[data.length - 1];
         color = s.usernameToColor(username);
-        // color = s.color(s.usernameToColor(username));
         s.drawCursor(x, y, username);
       });
     };
@@ -32,8 +31,9 @@ export const initCursors = (socket) => {
       s.text(username, x + 8, y + 3);
     };
 
+    // https://gist.github.com/0x263b/2bdd90886c2036a1ad5bcf06d6e6fb37
     s.usernameToColor = (username) => {
-      var colors = [
+      const colors = [
         "#e51c23",
         "#e91e63",
         "#9c27b0",
