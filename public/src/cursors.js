@@ -6,6 +6,8 @@ export const initCursors = (socket) => {
       const canvas = s.createCanvas(dimensions.width, dimensions.height);
       canvas.parent("p5-cursors");
 
+      s.textFont("JetBrains Mono");
+
       socket.on(EVENTS.DRAW_UPDATE, (data) => {
         // first 2 elements of lean paint proerties are current mouse coords
         const [x, y] = data;
