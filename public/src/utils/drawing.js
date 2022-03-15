@@ -19,31 +19,72 @@ const handleColor = (
   p5.fill(fill);
 };
 
-const renderShape = (
-  p5,
-  dimensions,
-  { x, y, size, shape, mirrorX, mirrorY }
-) => {
+const renderShape = (p5, dimensions, params) => {
+  const { x, y, shape, mirrorX, mirrorY, strokeWeight } = params;
+  p5.strokeWeight(strokeWeight);
+
   if (x > 0 && x < dimensions.width && y > 0 && y < dimensions.height) {
     switch (shape) {
       case "circle":
-        handleMirrorMode(p5.circle.bind(p5), x, y, size, mirrorX, mirrorY);
+        handleMirrorMode(setupShape(p5, "circle", params), mirrorX, mirrorY);
         break;
       case "square":
-        handleMirrorMode(p5.square.bind(p5), x, y, size, mirrorX, mirrorY);
+        handleMirrorMode(setupShape(p5, "square", params), mirrorX, mirrorY);
         break;
+      case "line":
+        handleMirrorMode(setupShape(p5, "line", params), mirrorX, mirrorY);
     }
   }
 };
 
-const handleMirrorMode = (shape, x, y, size, mirrorX, mirrorY) => {
-  shape(x, y, size);
+const handleMirrorMode = (
+  { fn, defaultArgs, mirrorXArgs, mirrorYArgs, mirrorXAndYArgs },
+  mirrorX,
+  mirrorY
+) => {
+  fn(...defaultArgs);
   if (mirrorX && mirrorY) {
-    shape(dimensions.width - x, dimensions.height - y, size);
+    fn(...mirrorXAndYArgs);
   } else if (mirrorX) {
-    shape(dimensions.width - x, y, size);
+    fn(...mirrorXArgs);
   } else if (mirrorY) {
-    shape(x, dimensions.height - y, size);
+    fn(...mirrorYArgs);
+  }
+};
+
+const setupShape = (p5, shape, params) => {
+  const args = setupMirrorArgs(shape, params);
+
+  return {
+    fn: p5[shape].bind(p5),
+    defaultArgs: args.default,
+    mirrorXArgs: args.mirrorX,
+    mirrorYArgs: args.mirrorY,
+    mirrorXAndYArgs: args.mirrorBoth,
+  };
+};
+
+const setupMirrorArgs = (shape, params) => {
+  const { width, height } = dimensions;
+  const { x, y, prevX, prevY, size } = params;
+
+  switch (shape) {
+    case "circle":
+    case "square":
+      return {
+        default: [x, y, size],
+        mirrorX: [width - x, y, size],
+        mirrorY: [x, height - y, size],
+        mirrorBoth: [width - x, height - y, size],
+      };
+
+    case "line":
+      return {
+        default: [prevX, prevY, x, y],
+        mirrorX: [width - prevX, prevY, width - x, y],
+        mirrorY: [prevX, height - prevY, x, height - y],
+        mirrorBoth: [width - prevX, height - prevY, width - x, height - y],
+      };
   }
 };
 
