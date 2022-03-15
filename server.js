@@ -30,9 +30,13 @@ io.sockets.on(EVENTS.NEW_CONNECTION, (socket) => {
   socket.emit(EVENTS.CONNECTED, socket.id);
   connectedUsers.addConnection(socket.id);
 
-  socket.on(EVENTS.DRAW_UPDATE, (data) => {
-    socket.broadcast.emit(EVENTS.DRAW_UPDATE, data);
-    eventEmitter.emit(EVENTS.DRAW_UPDATE, data);
+  socket.on(EVENTS.DRAW_UPDATE, (paintProperties) => {
+    socket.broadcast.emit(EVENTS.DRAW_UPDATE, paintProperties);
+    eventEmitter.emit(EVENTS.DRAW_UPDATE, paintProperties);
+  });
+
+  socket.on(EVENTS.CURSOR_UPDATE, (mouseCoords) => {
+    socket.broadcast.emit(EVENTS.CURSOR_UPDATE, mouseCoords);
   });
 
   socket.on(EVENTS.DISCONNECT, () => {

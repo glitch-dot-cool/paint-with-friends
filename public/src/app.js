@@ -15,6 +15,7 @@ import { KeyManager } from "./utils/KeyManager.js";
 import { initGuiPanels } from "./utils/initUI.js";
 import { setBaseUrl } from "./utils/setBaseUrl.js";
 import { Camera } from "./utils/Camera.js";
+import { initCursors } from "./cursors.js";
 
 const app = (s) => {
   const keysPressed = new KeyManager(s);
@@ -42,6 +43,9 @@ const app = (s) => {
     socket = io.connect(setBaseUrl());
 
     initGuiPanels(s, this);
+
+    // init separate sketch for rendering cursors
+    new p5(initCursors(socket));
 
     socket.on(EVENTS.CONNECTED, (socketID) => {
       LocalStorage.set("pwf_socket", socketID);
@@ -75,6 +79,14 @@ const app = (s) => {
     state.lastY = Camera.scaleByZoomAmount(s.mouseY, camera.zoomAmount);
   };
 
+  s.keyPressed = () => {
+    keysPressed.addKey(s.keyCode);
+  };
+
+  s.keyReleased = () => {
+    keysPressed.removeKey(s.keyCode);
+  };
+
   s.mouseDragged = ({ movementX, movementY }) => {
     if (state.isDrawing) {
       s.initLastCoords();
@@ -85,6 +97,7 @@ const app = (s) => {
         convertToLeanPaintProperties(paintProperties)
       );
       s.setLastCoords();
+      s.broadcastMouse();
     } else {
       camera.pan(movementX, movementY);
     }
@@ -93,14 +106,6 @@ const app = (s) => {
   s.mouseWheel = ({ delta }) => {
     camera.set(delta * -1);
     camera.zoom();
-  };
-
-  s.keyPressed = () => {
-    keysPressed.addKey(s.keyCode);
-  };
-
-  s.keyReleased = () => {
-    keysPressed.removeKey(s.keyCode);
   };
 
   s.mousePressed = () => {
@@ -112,6 +117,14 @@ const app = (s) => {
 
     // reset last coord positions to null to re-trigger init
     state.lastX = state.lastY = null;
+  };
+
+  s.broadcastMouse = () => {
+    socket?.emit(EVENTS.CURSOR_UPDATE, {
+      x: Camera.scaleByZoomAmount(s.mouseX, camera.zoomAmount),
+      y: Camera.scaleByZoomAmount(s.mouseY, camera.zoomAmount),
+      username: LocalStorage.get("pwf_username"),
+    });
   };
 };
 
