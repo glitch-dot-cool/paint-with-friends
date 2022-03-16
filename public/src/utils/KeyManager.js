@@ -13,11 +13,11 @@ export class KeyManager {
     this.commands = new Map([
       [
         this.commandsDict.screenshot,
-        { execute: p5.save.bind(p5), param: "paint with friends.png" },
+        { execute: p5.save.bind(p5), params: ["paint with friends.png"] },
       ],
       [
         this.commandsDict.toggleDrawMode,
-        { execute: toggleDrawMode, param: state },
+        { execute: toggleDrawMode, params: [state] },
       ],
     ]);
   }
@@ -33,9 +33,8 @@ export class KeyManager {
 
   _checkForValidCommand = () => {
     const command = this.commands.get(JSON.stringify(this.keysPressed));
-
     if (command) {
-      command.execute(command.param);
+      command.execute(...command.params);
     }
   };
 }
