@@ -4,20 +4,22 @@ import { state } from "../initialState.js";
 export class KeyManager {
   constructor(p5) {
     this.keysPressed = [];
-    this.commands = [
-      {
-        name: "screenshot",
-        keys: [17, 88], // ctrl + x
-        execute: p5.save.bind(p5),
-        param: "paint with friends.png",
-      },
-      {
-        name: "toggleDrawMode",
-        keys: [16], // shift
-        execute: toggleDrawMode,
-        param: state,
-      },
-    ];
+
+    this.commandsDict = {
+      screenshot: JSON.stringify([17, 88]), // ctrl + x
+      toggleDrawMode: JSON.stringify([16]), // shift
+    };
+
+    this.commands = new Map([
+      [
+        this.commandsDict.screenshot,
+        { execute: p5.save.bind(p5), param: "paint with friends.png" },
+      ],
+      [
+        this.commandsDict.toggleDrawMode,
+        { execute: toggleDrawMode, param: state },
+      ],
+    ]);
   }
 
   addKey = (key) => {
@@ -30,14 +32,10 @@ export class KeyManager {
   };
 
   _checkForValidCommand = () => {
-    this.commands.forEach((command) => {
-      if (this._arrayEquals(command.keys, this.keysPressed)) {
-        command.execute(command.param);
-      }
-    });
-  };
+    const command = this.commands.get(JSON.stringify(this.keysPressed));
 
-  _arrayEquals = (a, b) => {
-    return a.every((val, idx) => val === b[idx]);
+    if (command) {
+      command.execute(command.param);
+    }
   };
 }
