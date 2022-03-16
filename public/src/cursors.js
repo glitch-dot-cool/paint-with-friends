@@ -35,7 +35,11 @@ export const initCursors = (socket, camera) => {
       s.stroke(0);
       s.strokeWeight(2);
       s.textSize(Camera.scaleByZoomAmount(12, camera.zoomAmount));
-      s.text(username, x + 8, y + 3);
+      s.text(
+        username,
+        x + Camera.scaleByZoomAmount(8, camera.zoomAmount),
+        y + Camera.scaleByZoomAmount(3, camera.zoomAmount)
+      );
     };
 
     // https://gist.github.com/0x263b/2bdd90886c2036a1ad5bcf06d6e6fb37
