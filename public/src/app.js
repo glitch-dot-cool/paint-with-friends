@@ -97,7 +97,7 @@ const app = (s) => {
         EVENTS.DRAW_UPDATE,
         convertToLeanPaintProperties(
           paintProperties,
-          LocalStorage.get("pwf_username")
+          LocalStorage.get("pwf_username") || LocalStorage.get("pwf_socket")
         )
       );
       s.setLastCoords();

@@ -62,7 +62,7 @@ export const initCursors = (socket, camera) => {
       ];
 
       let hash = 0;
-      if (username.length === 0) return hash;
+      if (username?.length === 0) return hash;
       for (let i = 0; i < username.length; i++) {
         hash = username.charCodeAt(i) + ((hash << 5) - hash);
         hash = hash & hash;
