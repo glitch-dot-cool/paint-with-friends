@@ -9,19 +9,74 @@ export const initGuiPanels = (s, thisContext) => {
   const lfo1Gui = s.createGui("lfo1", thisContext);
   lfo1Gui.setPosition(GUI_OFFSET);
   lfo1Gui.addObject(state.lfo1.gui);
-  lfo1Gui.collapse();
 
   const lfo2Gui = s.createGui("lfo2", thisContext);
   lfo2Gui.setPosition(2 * GUI_OFFSET - GUI_GUTTER);
   lfo2Gui.addObject(state.lfo2.gui);
-  lfo2Gui.collapse();
 
   const lfo3Gui = s.createGui("lfo3", thisContext);
   lfo3Gui.setPosition(3 * GUI_OFFSET - 2 * GUI_GUTTER);
   lfo3Gui.addObject(state.lfo3.gui);
-  lfo3Gui.collapse();
 
   handleVisibleParams();
+  handleVisibleLfoParams(1);
+  handleVisibleLfoParams(2);
+  handleVisibleLfoParams(3);
+  // lfos must be in the DOM to set up listeners, immediately close after init
+  lfo1Gui.collapse();
+  lfo2Gui.collapse();
+  lfo3Gui.collapse();
+};
+
+// need to split this up per-lfo, the areColorOptionsSelected bools are getting out of sync
+const handleVisibleLfoParams = (lfoIndex) => {
+  const colorOptions = ["saturation", "brightness"];
+  // set initial visible params
+  initLfoParams(colorOptions, lfoIndex);
+
+  const fillColorToggle = document.querySelector(
+    `#lfo${lfoIndex} .qs_content #${p.FILL_COLOR}`
+  );
+  const strokeColorToggle = document.querySelector(
+    `#lfo${lfoIndex} .qs_content #${p.STROKE_COLOR}`
+  );
+  const toggles = [fillColorToggle, strokeColorToggle];
+
+  const areColorOptionsSelected = [false, false];
+
+  // add listeners to update visibility based on user changes
+  toggles.forEach((toggle, idx) => {
+    toggle.addEventListener("change", (e) => {
+      const isOn = e.target.checked;
+      areColorOptionsSelected[idx] = isOn;
+
+      // if either of the color-based options are selected, show the saturation/brightness sliders
+      if (areColorOptionsSelected.some((x) => x)) {
+        colorOptions.forEach((option) => {
+          const element = document.querySelector(
+            `#lfo${lfoIndex} .qs_content #${option}`
+          );
+          element.style.display = "block";
+        });
+      } else {
+        colorOptions.forEach((option) => {
+          const element = document.querySelector(
+            `#lfo${lfoIndex} .qs_content #${option}`
+          );
+          element.style.display = "none";
+        });
+      }
+    });
+  });
+};
+
+const initLfoParams = (colorOptions, lfoIndex) => {
+  colorOptions.forEach((option) => {
+    const element = document.querySelector(
+      `#lfo${lfoIndex} .qs_content #${option}`
+    );
+    element.style.display = "none";
+  });
 };
 
 const handleVisibleParams = () => {
