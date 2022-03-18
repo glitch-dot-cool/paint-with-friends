@@ -28,7 +28,6 @@ export const initGuiPanels = (s, thisContext) => {
   lfo3Gui.collapse();
 };
 
-// need to split this up per-lfo, the areColorOptionsSelected bools are getting out of sync
 const handleVisibleLfoParams = (lfoIndex) => {
   const colorOptions = ["saturation", "brightness"];
   // set initial visible params
