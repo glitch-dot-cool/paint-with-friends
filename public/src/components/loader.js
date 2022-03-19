@@ -2,6 +2,7 @@ export class Loader {
   static show = () => {
     const container = document.createElement("div");
     container.id = "loader-container";
+    container.classList.add("fade-in");
 
     const ring = document.createElement("div");
     ring.classList.add("loader-ring");
@@ -34,10 +35,15 @@ export class Loader {
     const connectedUsers = document.querySelector("#username-list-container");
 
     // unhide canvases
-    canvases.forEach((canvas) => (canvas.style.display = "block"));
+    canvases.forEach((canvas) => {
+      canvas.style.display = "block";
+      canvas.classList.add("fade-in");
+    });
 
     // unhide other UI elements
     chat.style.display = "flex";
+    chat.classList.add("fade-in");
     connectedUsers.style.display = "block";
+    connectedUsers.classList.add("fade-in");
   };
 }

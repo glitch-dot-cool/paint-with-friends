@@ -99,6 +99,10 @@ ul {
   border-radius: 2px;
 }
 
+.fade-in {
+  animation: fadeOut 1s ease-in reverse;
+}
+
 .fade-out {
   animation: fadeOut 5s ease-in forwards;
   animation-delay: 55s;
