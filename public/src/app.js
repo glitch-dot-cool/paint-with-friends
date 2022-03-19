@@ -16,6 +16,7 @@ import { initGuiPanels } from "./utils/initUI.js";
 import { setBaseUrl } from "./utils/setBaseUrl.js";
 import { Camera } from "./utils/Camera.js";
 import { initCursors } from "./cursors.js";
+import { Loader } from "./components/loader.js";
 
 const app = (s) => {
   const keysPressed = new KeyManager(s);
@@ -32,9 +33,11 @@ const app = (s) => {
   };
 
   s.setup = async function () {
+    Loader.show();
     const initialCanvasState = await Fetch.get("canvas");
     const cnv = s.createCanvas(dimensions.width, dimensions.height);
     cnv.id("app");
+    Loader.hide();
     s.initCanvas(initialCanvasState);
     camera = new Camera(canvas);
 
