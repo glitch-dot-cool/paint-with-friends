@@ -1,4 +1,3 @@
-// const messageContainer = document.querySelector("#message-container");
 const messages = [];
 
 export const chatMessages = (message) => {
