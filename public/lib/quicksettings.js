@@ -25,7 +25,7 @@
   }
 
   function createElement(type, id, className, parent) {
-    var element = document.createElement(type);
+    var element = document.createElement(type, id, className);
     if (!element) return;
     element.id = id;
     if (className) {
@@ -150,8 +150,9 @@
       if (!cssInjected) {
         injectCSS();
       }
+
       this._bindHandlers();
-      this._createPanel(x, y, parent);
+      this._createPanel(x, y, parent, title);
       this._createTitleBar(title || "QuickSettings");
       this._createContent();
     },
@@ -242,10 +243,10 @@
     // region CREATION FUNCTIONS
     ////////////////////////////////////////////////////////////////////////////////
 
-    _createPanel: function (x, y, parent) {
+    _createPanel: function (x, y, parent, title) {
       this._panel = createElement(
         "div",
-        null,
+        title,
         "qs_main",
         parent || document.body
       );

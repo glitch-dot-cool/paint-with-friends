@@ -48,12 +48,12 @@ const lfoParams = {
 
 // params that can be controlled via LFO
 const lfoControllableParams = [
-  p.FILL_OPACITY,
-  p.STROKE_OPACITY,
-  p.SIZE,
-  p.STROKE_WEIGHT,
   p.FILL_COLOR,
+  p.FILL_OPACITY,
   p.STROKE_COLOR,
+  p.STROKE_OPACITY,
+  p.STROKE_WEIGHT,
+  p.SIZE,
   p.X,
   p.Y,
 ];
