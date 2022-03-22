@@ -37,7 +37,6 @@ const app = (s) => {
     const initialCanvasState = await Fetch.get("canvas");
     const cnv = s.createCanvas(dimensions.width, dimensions.height);
     cnv.id("app");
-    Loader.hide();
     s.initCanvas(initialCanvasState);
     camera = new Camera(canvas);
 
@@ -50,6 +49,7 @@ const app = (s) => {
 
     // init separate sketch for rendering cursors
     new p5(initCursors(socket, camera));
+    Loader.hide();
 
     socket.on(EVENTS.CONNECTED, (socketID) => {
       LocalStorage.set("pwf_socket", socketID);
