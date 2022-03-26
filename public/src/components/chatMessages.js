@@ -1,12 +1,14 @@
 const messages = [];
 
-export const chatMessages = (message) => {
+export const chatMessages = (newMessages) => {
+  if (!newMessages.length) return;
+
   // max 10 messages at a time
   if (messages.length > 9) {
     messages.splice(0, 1);
   }
 
-  messages.push(message);
+  messages.push(...newMessages);
 
   // create new unordered list to replace old one
   const ul = document.createElement("ul");

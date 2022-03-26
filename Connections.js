@@ -4,6 +4,7 @@ export class Connections {
   constructor(io) {
     this.io = io;
     this.connections = {};
+    this.messages = [];
   }
 
   addConnection = (id) => {
@@ -24,6 +25,8 @@ export class Connections {
   message = (id, message) => {
     const sender = this.connections[id];
     const payload = { sender, message };
+    this._limitMessages();
+    this.messages.push(payload);
     this.broadcast(EVENTS.MESSAGE, payload);
   };
 
@@ -31,7 +34,9 @@ export class Connections {
     this.io.emit(channel, payload);
   };
 
-  get = (id) => {
-    return this.connections[id];
+  _limitMessages = () => {
+    if (this.messages.length > 9) {
+      this.messages.splice(0, 1);
+    }
   };
 }

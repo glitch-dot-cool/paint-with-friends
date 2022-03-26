@@ -61,3 +61,8 @@ app.get("/canvas", async (req, res) => {
   const serializedCanvasData = serializeCanvas();
   res.json(serializedCanvasData).status(200);
 });
+
+app.get("/messages", async (req, res) => {
+  const messageHistory = connectedUsers.messages;
+  res.json(messageHistory).status(200);
+});
