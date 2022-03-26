@@ -15,7 +15,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "JetBrains Mono", monospace;
+  font-family: "JetBrains Mono", monospace !important;
   user-select: none;
   font-size: 95%;
 }
@@ -47,14 +47,14 @@ canvas {
 }
 
 label {
-  color: var(--white);
+  color: var(--white) !important;
 }
 
 button {
   background-color: var(--black);
   color: var(--white);
   border: 1px solid var(--white);
-  border-radius: 2px;
+  border-radius: 2px !important;
   padding: 4px 8px;
 }
 
@@ -234,6 +234,43 @@ canvas {
   animation-delay: -0.15s;
 }
 
+.emoji-picker.dark {
+  background: var(--gray1) !important;
+  border: 1px solid var(--gray4) !important;
+  border-radius: 2px;
+}
+
+.emoji-picker__wrapper {
+  transform: translate(253px, -32px) !important;
+}
+
+.emoji-picker.dark .emoji-picker__search {
+  background: var(--black) !important;
+}
+
+.emoji-picker__content {
+  height: auto !important;
+}
+
+/* SCROLL BARS */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--gray2);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gray4);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gray6);
+}
+
+/* ANIMATIONS */
+
 @keyframes loader-ring {
   0% {
     transform: rotate(0deg);
@@ -242,8 +279,6 @@ canvas {
     transform: rotate(360deg);
   }
 }
-
-/* ANIMATIONS */
 
 @keyframes fadeOut {
   from {

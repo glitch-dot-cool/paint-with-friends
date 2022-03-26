@@ -14,13 +14,13 @@ import { chatMessages } from "./components/chatMessages.js";
 import { KeyManager } from "./utils/KeyManager.js";
 import { initGuiPanels } from "./utils/initUI.js";
 import { setBaseUrl } from "./utils/setBaseUrl.js";
-import { Camera } from "./utils/Camera.js";
+import { Camera, camera } from "./utils/Camera.js";
 import { initCursors } from "./cursors.js";
 import { Loader } from "./components/loader.js";
 
 const app = (s) => {
   const keysPressed = new KeyManager(s);
-  let socket, canvas, camera;
+  let socket, canvas;
 
   s.initCanvas = (serializedCanvas) => {
     canvas = document.querySelector("#app");
@@ -38,7 +38,7 @@ const app = (s) => {
     const cnv = s.createCanvas(dimensions.width, dimensions.height);
     cnv.id("app");
     s.initCanvas(initialCanvasState);
-    camera = new Camera(canvas);
+    camera.registerCanvas(canvas, "app");
 
     s.background(0);
     s.rectMode(s.CENTER);

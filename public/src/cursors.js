@@ -10,7 +10,7 @@ export const initCursors = (socket, camera) => {
       canvas.id("cursors");
       canvas.parent("p5-cursors");
 
-      camera.registerCursorCanvas(document.querySelector("#cursors"));
+      camera.registerCanvas(document.querySelector("#cursors"), "cursors");
 
       s.textFont("JetBrains Mono");
 
