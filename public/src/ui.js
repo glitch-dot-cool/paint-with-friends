@@ -37,6 +37,7 @@ sendMessageBtn.addEventListener("click", (e) => {
 const picker = new EmojiButton({
   rootElement: document.querySelector("#chat-form"),
   theme: "dark",
+  autoFocusSearch: false,
 });
 const trigger = document.querySelector("#emoji-picker");
 
