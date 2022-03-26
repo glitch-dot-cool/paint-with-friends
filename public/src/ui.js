@@ -1,5 +1,6 @@
 import { Fetch } from "./utils/Fetch.js";
 import { LocalStorage } from "./utils/LocalStorage.js";
+import { EmojiButton } from "https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.6.4/dist/index.min.js";
 
 // username input
 const nameInput = document.querySelector("#name-input");
@@ -31,4 +32,19 @@ sendMessageBtn.addEventListener("click", (e) => {
   chatInput.value = "";
   const socketID = LocalStorage.get("pwf_socket");
   Fetch.post("message", { id: socketID, message });
+});
+
+const picker = new EmojiButton({
+  rootElement: document.querySelector("#chat-form"),
+  theme: "dark",
+});
+const trigger = document.querySelector("#emoji-picker");
+
+picker.on("emoji", ({ emoji }) => {
+  chatInput.value = `${chatInput.value} ${emoji}`;
+});
+
+trigger.addEventListener("click", (e) => {
+  e.preventDefault();
+  picker.togglePicker(trigger);
 });
