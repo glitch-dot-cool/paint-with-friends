@@ -1,4 +1,6 @@
 export class Camera {
+  static isActive = true;
+
   constructor(canvas) {
     this.zoomAmount = 1;
     this.maxZoom = 1;
@@ -15,18 +17,26 @@ export class Camera {
     return coordinate * (1 / zoomAmount);
   };
 
+  static activate = () => (Camera.isActive = true);
+
+  static deactivate = () => (Camera.isActive = false);
+
   registerCursorCanvas = (canvas) => {
     this.canvases.cursors = canvas;
   };
 
   zoom = (delta) => {
-    this._setZoom(delta * -1);
-    this._applyToCanvases(this._zoomCanvas);
+    if (Camera.isActive) {
+      this._setZoom(delta * -1);
+      this._applyToCanvases(this._zoomCanvas);
+    }
   };
 
   pan = (movementX, movementY) => {
-    this._setPan(movementX, movementY);
-    this._applyToCanvases(this._panCanvas);
+    if (Camera.isActive) {
+      this._setPan(movementX, movementY);
+      this._applyToCanvases(this._panCanvas);
+    }
   };
 
   _setZoom = (delta) => {

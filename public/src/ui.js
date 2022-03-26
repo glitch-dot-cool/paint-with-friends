@@ -1,6 +1,7 @@
 import { Fetch } from "./utils/Fetch.js";
 import { LocalStorage } from "./utils/LocalStorage.js";
 import { EmojiButton } from "https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.6.4/dist/index.min.js";
+import { Camera } from "./utils/Camera.js";
 
 // username input
 const nameInput = document.querySelector("#name-input");
@@ -48,4 +49,9 @@ picker.on("emoji", ({ emoji }) => {
 trigger.addEventListener("click", (e) => {
   e.preventDefault();
   picker.togglePicker(trigger);
+
+  // disable camera while menu is open to prevent accidental zoom
+  if (picker.pickerVisible) {
+    Camera.deactivate();
+  } else Camera.activate();
 });
