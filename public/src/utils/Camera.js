@@ -71,4 +71,5 @@ class Camera {
 }
 
 const camera = new Camera();
+// camera = singleton instance, Camera for using static methods
 export { camera, Camera };
