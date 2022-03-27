@@ -70,8 +70,8 @@ const app = (s) => {
       userList(users);
     });
 
-    socket.on(EVENTS.MESSAGE, (message) => {
-      chatMessages([message]);
+    socket.on(EVENTS.MESSAGE, (messages) => {
+      chatMessages(messages);
     });
   };
 

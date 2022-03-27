@@ -19,15 +19,17 @@ export class Connections {
 
   renameConnection = (id, name) => {
     this.connections[id] = name;
+    this._renameSenderInMessageHistory(id, name);
     this.broadcast(EVENTS.MEMBERS_CHANGED, this.connections);
+    this.broadcast(EVENTS.MESSAGE, this.messages);
   };
 
   message = (id, message) => {
     const sender = this.connections[id];
     const payload = { sender, message };
     this._limitMessages();
-    this.messages.push(payload);
-    this.broadcast(EVENTS.MESSAGE, payload);
+    this.messages.push({ ...payload, id });
+    this.broadcast(EVENTS.MESSAGE, this.messages);
   };
 
   broadcast = (channel, payload) => {
@@ -38,5 +40,14 @@ export class Connections {
     if (this.messages.length > 9) {
       this.messages.splice(0, 1);
     }
+  };
+
+  _renameSenderInMessageHistory = (id, newName) => {
+    this.messages = this.messages.map((msg) => {
+      if (msg.id === id) {
+        msg.sender = newName;
+      }
+      return msg;
+    });
   };
 }
