@@ -21,7 +21,7 @@ export class Connections {
     this.connections[id] = name;
     this._renameSenderInMessageHistory(id, name);
     this.broadcast(EVENTS.MEMBERS_CHANGED, this.connections);
-    this.broadcast(EVENTS.MESSAGE, this.messages);
+    this.io.emit(EVENTS.MESSAGE, this.messages);
   };
 
   message = (id, message) => {
