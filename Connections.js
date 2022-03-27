@@ -26,9 +26,8 @@ export class Connections {
 
   message = (id, message) => {
     const sender = this.connections[id];
-    const payload = { sender, message };
     this._limitMessages();
-    this.messages.push({ ...payload, id });
+    this.messages.push({ sender, message, id });
     this.broadcast(EVENTS.MESSAGE, this.messages);
   };
 
