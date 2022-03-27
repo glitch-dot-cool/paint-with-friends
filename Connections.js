@@ -50,4 +50,8 @@ export class Connections {
       return msg;
     });
   };
+
+  purgeMessages = () => {
+    setInterval(() => (this.messages = []), 1000 * 60 * 5);
+  };
 }

@@ -25,6 +25,7 @@ const server = app.listen(PORT, () =>
 
 const io = new Server(server);
 const connectedUsers = new Connections(io);
+connectedUsers.purgeMessages();
 
 io.sockets.on(EVENTS.NEW_CONNECTION, (socket) => {
   socket.emit(EVENTS.CONNECTED, socket.id);
