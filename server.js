@@ -25,6 +25,7 @@ const server = app.listen(PORT, () =>
 
 const io = new Server(server);
 const connectedUsers = new Connections(io);
+connectedUsers.purgeMessages();
 
 io.sockets.on(EVENTS.NEW_CONNECTION, (socket) => {
   socket.emit(EVENTS.CONNECTED, socket.id);
@@ -60,4 +61,9 @@ app.post("/message", async (req, res) => {
 app.get("/canvas", async (req, res) => {
   const serializedCanvasData = serializeCanvas();
   res.json(serializedCanvasData).status(200);
+});
+
+app.get("/messages", async (req, res) => {
+  const messageHistory = connectedUsers.messages;
+  res.json(messageHistory).status(200);
 });

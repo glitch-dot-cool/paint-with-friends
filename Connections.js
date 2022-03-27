@@ -4,6 +4,7 @@ export class Connections {
   constructor(io) {
     this.io = io;
     this.connections = {};
+    this.messages = [];
   }
 
   addConnection = (id) => {
@@ -18,20 +19,38 @@ export class Connections {
 
   renameConnection = (id, name) => {
     this.connections[id] = name;
+    this._renameSenderInMessageHistory(id, name);
     this.broadcast(EVENTS.MEMBERS_CHANGED, this.connections);
+    this.io.emit(EVENTS.MESSAGE, this.messages);
   };
 
   message = (id, message) => {
     const sender = this.connections[id];
-    const payload = { sender, message };
-    this.broadcast(EVENTS.MESSAGE, payload);
+    this._limitMessages();
+    this.messages.push({ sender, message, id });
+    this.broadcast(EVENTS.MESSAGE, this.messages);
   };
 
   broadcast = (channel, payload) => {
     this.io.emit(channel, payload);
   };
 
-  get = (id) => {
-    return this.connections[id];
+  _limitMessages = () => {
+    if (this.messages.length > 9) {
+      this.messages.splice(0, 1);
+    }
+  };
+
+  _renameSenderInMessageHistory = (id, newName) => {
+    this.messages = this.messages.map((msg) => {
+      if (msg.id === id) {
+        msg.sender = newName;
+      }
+      return msg;
+    });
+  };
+
+  purgeMessages = () => {
+    setInterval(() => (this.messages = []), 1000 * 60 * 5);
   };
 }
