@@ -43,7 +43,6 @@ const app = (s) => {
     const messageHistory = await Fetch.get("messages");
     chatMessages(messageHistory);
 
-    s.background(0);
     s.rectMode(s.CENTER);
 
     socket = io.connect(setBaseUrl());
