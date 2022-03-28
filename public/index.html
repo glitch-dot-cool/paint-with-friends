@@ -47,7 +47,7 @@
     <form id="username-form" class="flex hide above">
         <label class="flex column">
             username
-            <input id="name-input" type="text">
+            <input id="name-input" type="text" autocomplete="off">
         </label>
         <button id="update-username">update</button>
     </form>
@@ -55,7 +55,7 @@
     <form id="chat-form" class="flex above" onsubmit="event.preventDefault();">
         <label class="flex column">
             message
-            <input id="message-input" type="text">
+            <input id="message-input" type="text" autocomplete="off">
         </label>
         <button id="send-message">send</button>
         <button id="emoji-picker">🙃</button>
