@@ -21,6 +21,7 @@ updateUsernameBtn.addEventListener("click", (e) => {
 
 changeNameBtn.addEventListener("click", () => {
   changeUsernameContainer.classList.toggle("hide");
+  nameInput.focus();
 });
 
 // chat input
