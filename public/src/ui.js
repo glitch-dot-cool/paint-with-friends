@@ -56,6 +56,11 @@ sendMessageBtn.addEventListener("click", (e) => {
   Fetch.post("message", { id: socketID, message });
 });
 
+const messageContainer = document.querySelector("#message-container");
+messageContainer.addEventListener("mousedown", (e) => {
+  e.stopPropagation();
+});
+
 const picker = new EmojiButton({
   rootElement: document.querySelector("#chat-form"),
   theme: "dark",
