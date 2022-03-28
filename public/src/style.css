@@ -87,6 +87,10 @@ ul {
 
 /* UTILITY CLASSES */
 
+.collapse {
+  width: 0 !important;
+}
+
 .flex {
   display: flex;
 }
