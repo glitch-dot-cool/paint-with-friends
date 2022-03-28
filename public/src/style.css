@@ -171,6 +171,11 @@ canvas {
   left: 20px;
 }
 
+#chat-list {
+  max-height: 40vh;
+  overflow: auto;
+}
+
 .chat-list-item {
   overflow-wrap: break-word;
   hyphens: auto;
