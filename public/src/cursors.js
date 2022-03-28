@@ -28,12 +28,22 @@ export const initCursors = (socket, camera) => {
 
     s.drawCursor = (x, y, username) => {
       s.clear();
+
+      // black bg
+      s.fill(0, 200);
+      s.rect(
+        x + Camera.scaleByZoomAmount(8, camera.zoomAmount),
+        y - Camera.scaleByZoomAmount(7, camera.zoomAmount),
+        Camera.scaleByZoomAmount(7.25 * username.length, camera.zoomAmount),
+        Camera.scaleByZoomAmount(12, camera.zoomAmount)
+      );
+
+      // cursor
       s.fill(color);
       s.noStroke();
       s.circle(x, y, Camera.scaleByZoomAmount(10, camera.zoomAmount));
 
-      s.stroke(0);
-      s.strokeWeight(2);
+      // username
       s.textSize(Camera.scaleByZoomAmount(12, camera.zoomAmount));
       s.text(
         username,
