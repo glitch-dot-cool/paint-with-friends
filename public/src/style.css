@@ -162,6 +162,7 @@ ul {
 }
 
 #chat-form,
+#message-container,
 #username-list-container,
 canvas {
   /* hide on init, Loader will unhide after init */
