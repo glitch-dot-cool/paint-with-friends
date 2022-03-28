@@ -58,7 +58,9 @@ sendMessageBtn.addEventListener("click", (e) => {
 
 const messageContainer = document.querySelector("#message-container");
 messageContainer.addEventListener("mousedown", (e) => {
-  e.stopPropagation();
+  const chatList = document.querySelector("#chat-list");
+  const opacity = window.getComputedStyle(chatList).getPropertyValue("opacity");
+  if (opacity > 0) e.stopPropagation();
 });
 
 const picker = new EmojiButton({
