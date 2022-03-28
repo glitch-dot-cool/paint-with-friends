@@ -9,6 +9,16 @@ const updateUsernameBtn = document.querySelector("#update-username");
 const changeUsernameContainer = document.querySelector("#username-form");
 const changeNameBtn = document.querySelector("#change-username");
 
+nameInput.addEventListener("input", (e) => {
+  if (e.target.value.length > 32) {
+    nameInput.classList.add("error");
+    updateUsernameBtn.setAttribute("disabled", "");
+  } else {
+    nameInput.classList.remove("error");
+    updateUsernameBtn.removeAttribute("disabled");
+  }
+});
+
 updateUsernameBtn.addEventListener("click", (e) => {
   e.preventDefault(); // prevent page refresh on submit
   const username = nameInput.value;

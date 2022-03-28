@@ -63,6 +63,16 @@ button:hover {
   cursor: pointer;
 }
 
+button:disabled {
+  opacity: 0.8;
+  filter: contrast(0.5);
+}
+
+button:disabled:hover {
+  cursor: not-allowed;
+  background-color: var(--black);
+}
+
 input {
   border: 1px solid var(--white);
   border-radius: 2px;
@@ -118,6 +128,11 @@ ul {
 
 .above {
   z-index: 100;
+}
+
+.error {
+  outline: 1px solid #eb4034 !important;
+  border: 1px solid #eb4034;
 }
 
 /* COMPONENT STYLES */
