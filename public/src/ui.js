@@ -38,6 +38,16 @@ changeNameBtn.addEventListener("click", () => {
 const chatInput = document.querySelector("#message-input");
 const sendMessageBtn = document.querySelector("#send-message");
 
+chatInput.addEventListener("input", (e) => {
+  if (e.target.value.length > 500) {
+    chatInput.classList.add("error");
+    sendMessageBtn.setAttribute("disabled", "");
+  } else {
+    chatInput.classList.remove("error");
+    sendMessageBtn.removeAttribute("disabled");
+  }
+});
+
 sendMessageBtn.addEventListener("click", (e) => {
   e.preventDefault(); // prevent page refresh on submit
   const message = chatInput.value;
