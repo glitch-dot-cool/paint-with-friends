@@ -23,7 +23,8 @@ export class KeyManager {
   }
 
   addKey = (key) => {
-    this.keysPressed.push(key);
+    // omit alt key which can cause issues when alt+tabbing
+    if (key !== 18) this.keysPressed.push(key);
     this._checkForValidCommand();
   };
 
