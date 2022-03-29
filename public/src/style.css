@@ -40,6 +40,10 @@ canvas {
   will-change: transform;
 }
 
+form input {
+  width: 196px;
+}
+
 #p5-cursors {
   position: absolute;
   z-index: 2;
