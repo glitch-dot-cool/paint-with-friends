@@ -6,17 +6,17 @@ export class KeyManager {
     this.keysPressed = [];
 
     this.commandsDict = {
-      screenshot: JSON.stringify([17, 88]), // ctrl + x
-      toggleDrawMode: JSON.stringify([16]), // shift
+      screenshot: [17, 88], // ctrl/cmd + x
+      toggleDrawMode: [16], // shift
     };
 
     this.commands = new Map([
       [
-        this.commandsDict.screenshot,
+        JSON.stringify(this.commandsDict.screenshot),
         { execute: p5.save.bind(p5), params: ["paint with friends.png"] },
       ],
       [
-        this.commandsDict.toggleDrawMode,
+        JSON.stringify(this.commandsDict.toggleDrawMode),
         { execute: toggleDrawMode, params: [state] },
       ],
     ]);
@@ -29,6 +29,10 @@ export class KeyManager {
 
   removeKey = (key) => {
     this.keysPressed = this.keysPressed.filter((k) => k !== key);
+  };
+
+  purge = () => {
+    this.keysPressed = [];
   };
 
   _checkForValidCommand = () => {

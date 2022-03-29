@@ -91,6 +91,7 @@ const app = (s) => {
 
   s.keyReleased = () => {
     keysPressed.removeKey(s.keyCode);
+    if (!s.keyIsPressed) keysPressed.purge();
   };
 
   s.mouseDragged = ({ movementX, movementY }) => {
