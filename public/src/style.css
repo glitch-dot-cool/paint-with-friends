@@ -183,6 +183,7 @@ canvas {
   overflow: auto;
   opacity: 0;
   transition: 1s ease-in opacity;
+  scrollbar-width: thin;
 }
 
 .chat-list-item {
