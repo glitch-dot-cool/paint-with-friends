@@ -29,6 +29,7 @@ const guiParams = {
 
 // params for generating LFO UI panels
 const lfoParams = {
+  shape: ["sine", "triangle", "square", "saw", "random", "noise"],
   speed: 0.00005,
   speedMin: 0.00001,
   speedMax: 0.5,
@@ -41,7 +42,6 @@ const lfoParams = {
   amountMin: 0,
   amountMax: 100,
   amountStep: 0.01,
-  shape: ["sine", "triangle", "square", "saw", "random", "noise"],
   saturation: 100,
   brightness: 100,
 };
