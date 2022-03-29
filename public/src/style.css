@@ -40,6 +40,10 @@ canvas {
   will-change: transform;
 }
 
+form input {
+  width: 196px;
+}
+
 #p5-cursors {
   position: absolute;
   z-index: 2;
@@ -179,6 +183,7 @@ canvas {
   overflow: auto;
   opacity: 0;
   transition: 1s ease-in opacity;
+  scrollbar-width: thin;
 }
 
 .chat-list-item {
@@ -203,6 +208,7 @@ canvas {
   color: var(--white);
   display: inline;
   overflow-wrap: break-word;
+  font-size: 13px;
 }
 
 #username-list-container {
