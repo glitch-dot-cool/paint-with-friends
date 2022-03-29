@@ -1,11 +1,14 @@
-export const chatMessages = (messages) => {
+export const chatMessages = (messages, init = false) => {
   if (!messages.length) return;
 
   // create new unordered list to replace old one
   const ul = document.createElement("ul");
   ul.classList.add("backdrop", "fade-out");
   ul.setAttribute("id", "chat-list");
-  ul.style.opacity = 1;
+
+  if (init) {
+    setTimeout(() => (ul.style.opacity = 1), 100);
+  } else ul.style.opacity = 1;
 
   // append list elements for each message
   messages.forEach((message) => {

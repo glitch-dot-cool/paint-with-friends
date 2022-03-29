@@ -70,4 +70,5 @@ export const state = {
   lastX: null,
   lastY: null,
   isDrawing: false,
+  hasInitializedMessages: false,
 };

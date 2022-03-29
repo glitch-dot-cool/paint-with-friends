@@ -67,7 +67,10 @@ const app = (s) => {
     });
 
     socket.on(EVENTS.MESSAGE, (messages) => {
-      chatMessages(messages);
+      if (!state.hasInitializedMessages) {
+        chatMessages(messages, true);
+        state.hasInitializedMessages = true;
+      } else chatMessages(messages);
     });
   };
 
