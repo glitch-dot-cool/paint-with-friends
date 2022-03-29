@@ -207,6 +207,7 @@ canvas {
   color: var(--white);
   display: inline;
   overflow-wrap: break-word;
+  font-size: 13px;
 }
 
 #username-list-container {
