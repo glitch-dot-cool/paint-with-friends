@@ -40,9 +40,6 @@ const app = (s) => {
     s.initCanvas(initialCanvasState);
     camera.registerCanvas(canvas, "app");
 
-    const messageHistory = await Fetch.get("messages");
-    chatMessages(messageHistory);
-
     s.rectMode(s.CENTER);
 
     socket = io.connect(setBaseUrl());

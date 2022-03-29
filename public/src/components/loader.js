@@ -34,7 +34,6 @@ export class Loader {
   static _unhideMainUi = () => {
     const canvases = document.querySelectorAll("canvas");
     const chat = document.querySelector("#chat-form");
-    const chatHistory = document.querySelector("#message-container");
     const connectedUsers = document.querySelector("#username-list-container");
 
     // unhide canvases
@@ -45,7 +44,6 @@ export class Loader {
 
     // unhide other UI elements
     chat.classList.add("fade-in");
-    chatHistory.classList.add("fade-in");
     connectedUsers.classList.add("fade-in");
   };
 

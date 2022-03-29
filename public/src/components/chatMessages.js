@@ -5,6 +5,7 @@ export const chatMessages = (messages) => {
   const ul = document.createElement("ul");
   ul.classList.add("backdrop", "fade-out");
   ul.setAttribute("id", "chat-list");
+  ul.style.opacity = 1;
 
   // append list elements for each message
   messages.forEach((message) => {
