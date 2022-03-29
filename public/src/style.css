@@ -327,6 +327,10 @@ canvas {
 
 /* p5.GUI STYLES */
 
+.qs_main {
+  animation: 1s ease-in fadeIn;
+}
+
 .qs_container {
   background-color: var(--gray3) !important;
   color: var(--white);
