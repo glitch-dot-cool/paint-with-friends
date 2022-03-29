@@ -5,7 +5,7 @@ import {
   convertToLeanPaintProperties,
   convertLeanPaintPropertiesToObject,
 } from "./utils/setupPaintProperties.js";
-import { updateDrawing } from "./utils/drawing.js";
+import { toggleCursor, updateDrawing } from "./utils/drawing.js";
 import { LocalStorage } from "./utils/LocalStorage.js";
 import { Fetch } from "./utils/Fetch.js";
 import { userList } from "./components/userList.js";
@@ -74,6 +74,13 @@ const app = (s) => {
     });
   };
 
+  s.draw = () => {
+    if (s.keyIsDown(32)) {
+      state.isDrawing = false;
+      toggleCursor(state);
+    }
+  };
+
   s.initLastCoords = () => {
     if (!state.lastX || !state.lastY) {
       s.setLastCoords();
@@ -92,6 +99,14 @@ const app = (s) => {
   s.keyReleased = () => {
     keysPressed.removeKey(s.keyCode);
     if (!s.keyIsPressed) keysPressed.purge();
+
+    // release drag mode
+    if (s.keyCode === 32) {
+      if (!state.isDrawing) {
+        state.isDrawing = true;
+        toggleCursor(state);
+      }
+    }
   };
 
   s.mouseDragged = ({ movementX, movementY }) => {

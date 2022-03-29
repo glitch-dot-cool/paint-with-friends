@@ -90,7 +90,10 @@ const setupMirrorArgs = (shape, params) => {
 
 export const toggleDrawMode = (state) => {
   state.isDrawing = !state.isDrawing;
+  toggleCursor(state);
+};
 
+export const toggleCursor = (state) => {
   if (state.isDrawing) {
     document.body.style.cursor = "crosshair";
   } else {
