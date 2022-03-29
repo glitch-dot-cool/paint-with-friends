@@ -3,7 +3,7 @@ export const chatMessages = (messages) => {
 
   // create new unordered list to replace old one
   const ul = document.createElement("ul");
-  ul.classList.add("fade-out");
+  ul.classList.add("backdrop", "fade-out");
   ul.setAttribute("id", "chat-list");
 
   // append list elements for each message
@@ -13,7 +13,6 @@ export const chatMessages = (messages) => {
 
   // replace the old list w/ the new one
   const currentList = document.querySelector("#chat-list");
-  ul.classList.add("fade-out");
   currentList.replaceWith(ul);
 };
 
