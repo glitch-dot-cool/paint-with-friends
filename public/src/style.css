@@ -266,7 +266,7 @@ canvas {
 }
 
 .emoji-picker__wrapper {
-  transform: translate(253px, -32px) !important;
+  transform: translate(313px, 0px) !important;
 }
 
 .emoji-picker.dark .emoji-picker__search {
