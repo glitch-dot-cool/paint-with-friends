@@ -18,6 +18,9 @@ export const chatMessages = (messages, init = false) => {
   // replace the old list w/ the new one
   const currentList = document.querySelector("#chat-list");
   currentList.replaceWith(ul);
+
+  // scroll to bottom
+  ul.scrollTop = ul.scrollHeight;
 };
 
 const createMessageMarkup = (message, list) => {

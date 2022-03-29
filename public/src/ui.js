@@ -59,6 +59,7 @@ sendMessageBtn.addEventListener("click", (e) => {
 const messageContainer = document.querySelector("#message-container");
 messageContainer.addEventListener("mousedown", (e) => {
   const chatList = document.querySelector("#chat-list");
+  // disabled drawing if chat is visible
   const opacity = window.getComputedStyle(chatList).getPropertyValue("opacity");
   if (opacity > 0) e.stopPropagation();
 });
