@@ -140,7 +140,10 @@ const app = (s) => {
       document.body.style.cursor = "grab";
     } else {
       // if done drawing, clear the cursors
-      socket.emit(EVENTS.MOUSE_RELEASED);
+      socket.emit(
+        EVENTS.MOUSE_RELEASED,
+        LocalStorage.get("pwf_username") || LocalStorage.get("pwf_socket")
+      );
     }
 
     // reset last coord positions to null to re-trigger init

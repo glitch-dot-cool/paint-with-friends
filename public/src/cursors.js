@@ -3,7 +3,7 @@ import { Camera } from "./utils/Camera.js";
 
 export const initCursors = (socket, camera) => {
   const cursors = (s) => {
-    let color;
+    const users = {};
 
     s.setup = () => {
       const canvas = s.createCanvas(dimensions.width, dimensions.height);
@@ -15,20 +15,30 @@ export const initCursors = (socket, camera) => {
       s.textFont("JetBrains Mono");
 
       socket.on(EVENTS.DRAW_UPDATE, (data) => {
-        // first 3 elements of paint props are username & mouse x/y
         const [username, x, y] = data;
-        color = s.usernameToColor(username);
-        s.drawCursor(x, y, username);
+        const color = s.usernameToColor(username);
+        s.upsertUser(username, x, y, color);
       });
 
-      socket.on(EVENTS.MOUSE_RELEASED, () => {
-        s.clear();
+      socket.on(EVENTS.MOUSE_RELEASED, (user) => {
+        delete users[user];
       });
     };
 
-    s.drawCursor = (x, y, username) => {
+    s.draw = () => {
       s.clear();
 
+      Object.keys(users).forEach((username) => {
+        const { x, y, color } = users[username];
+        s.drawCursor(x, y, username, color);
+      });
+    };
+
+    s.upsertUser = (username, x, y, color) => {
+      users[username] = { x, y, color };
+    };
+
+    s.drawCursor = (x, y, username, color) => {
       // black bg
       s.fill(0, 200);
       s.rect(
