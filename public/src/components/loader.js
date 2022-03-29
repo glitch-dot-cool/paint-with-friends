@@ -1,5 +1,7 @@
 export class Loader {
   static show = () => {
+    Loader._collapseCanvasWidths();
+
     const container = document.createElement("div");
     container.id = "loader-container";
     container.classList.add("fade-in");
@@ -36,11 +38,20 @@ export class Loader {
 
     // unhide canvases
     canvases.forEach((canvas) => {
+      canvas.classList.remove("collapse");
       canvas.classList.add("fade-in");
     });
 
     // unhide other UI elements
     chat.classList.add("fade-in");
     connectedUsers.classList.add("fade-in");
+  };
+
+  static _collapseCanvasWidths = () => {
+    const canvases = document.querySelectorAll("canvas");
+
+    canvases.forEach((canvas) => {
+      canvas.classList.add("collapse");
+    });
   };
 }

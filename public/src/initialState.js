@@ -29,6 +29,7 @@ const guiParams = {
 
 // params for generating LFO UI panels
 const lfoParams = {
+  shape: ["sine", "triangle", "square", "saw", "random", "noise"],
   speed: 0.00005,
   speedMin: 0.00001,
   speedMax: 0.5,
@@ -41,9 +42,6 @@ const lfoParams = {
   amountMin: 0,
   amountMax: 100,
   amountStep: 0.01,
-  shape: ["sine", "triangle", "square", "saw", "random", "noise"],
-  saturation: 100,
-  brightness: 100,
 };
 
 // params that can be controlled via LFO
@@ -60,6 +58,9 @@ const lfoControllableParams = [
 
 // add toggle controls for each available LFO target
 lfoControllableParams.forEach((param) => (lfoParams[param] = false));
+// position optional color sliders below checkboxes to prevent layout shift
+lfoParams.saturation = 100;
+lfoParams.brightness = 100;
 
 // full client-side state object
 export const state = {
@@ -70,4 +71,5 @@ export const state = {
   lastX: null,
   lastY: null,
   isDrawing: false,
+  hasInitializedMessages: false,
 };

@@ -9,6 +9,16 @@ const updateUsernameBtn = document.querySelector("#update-username");
 const changeUsernameContainer = document.querySelector("#username-form");
 const changeNameBtn = document.querySelector("#change-username");
 
+nameInput.addEventListener("input", (e) => {
+  if (e.target.value.length > 32) {
+    nameInput.classList.add("error");
+    updateUsernameBtn.setAttribute("disabled", "");
+  } else {
+    nameInput.classList.remove("error");
+    updateUsernameBtn.removeAttribute("disabled");
+  }
+});
+
 updateUsernameBtn.addEventListener("click", (e) => {
   e.preventDefault(); // prevent page refresh on submit
   const username = nameInput.value;
@@ -21,11 +31,22 @@ updateUsernameBtn.addEventListener("click", (e) => {
 
 changeNameBtn.addEventListener("click", () => {
   changeUsernameContainer.classList.toggle("hide");
+  nameInput.focus();
 });
 
 // chat input
 const chatInput = document.querySelector("#message-input");
 const sendMessageBtn = document.querySelector("#send-message");
+
+chatInput.addEventListener("input", (e) => {
+  if (e.target.value.length > 500) {
+    chatInput.classList.add("error");
+    sendMessageBtn.setAttribute("disabled", "");
+  } else {
+    chatInput.classList.remove("error");
+    sendMessageBtn.removeAttribute("disabled");
+  }
+});
 
 sendMessageBtn.addEventListener("click", (e) => {
   e.preventDefault(); // prevent page refresh on submit
@@ -33,6 +54,14 @@ sendMessageBtn.addEventListener("click", (e) => {
   chatInput.value = "";
   const socketID = LocalStorage.get("pwf_socket");
   Fetch.post("message", { id: socketID, message });
+});
+
+const messageContainer = document.querySelector("#message-container");
+messageContainer.addEventListener("mousedown", (e) => {
+  const chatList = document.querySelector("#chat-list");
+  // disabled drawing if chat is visible
+  const opacity = window.getComputedStyle(chatList).getPropertyValue("opacity");
+  if (opacity > 0) e.stopPropagation();
 });
 
 const picker = new EmojiButton({

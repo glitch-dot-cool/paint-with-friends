@@ -63,6 +63,16 @@ button:hover {
   cursor: pointer;
 }
 
+button:disabled {
+  opacity: 0.8;
+  filter: contrast(0.5);
+}
+
+button:disabled:hover {
+  cursor: not-allowed;
+  background-color: var(--black);
+}
+
 input {
   border: 1px solid var(--white);
   border-radius: 2px;
@@ -76,6 +86,10 @@ ul {
 }
 
 /* UTILITY CLASSES */
+
+.collapse {
+  width: 0 !important;
+}
 
 .flex {
   display: flex;
@@ -97,10 +111,11 @@ ul {
   padding: 10px;
   background-color: rgba(17, 17, 17, 0.75);
   border-radius: 2px;
+  backdrop-filter: blur(20px);
 }
 
 .fade-in {
-  animation: fadeIn 1s ease-in forwards;
+  animation: fadeIn 1s ease-in forwards !important;
 }
 
 .fade-out {
@@ -117,13 +132,17 @@ ul {
 }
 
 .above {
-  z-index: 100;
+  z-index: 1;
+}
+
+.error {
+  outline: 1px solid #eb4034 !important;
+  border: 1px solid #eb4034;
 }
 
 /* COMPONENT STYLES */
 
 #username-form {
-  max-width: 200px;
   position: fixed;
   bottom: 20px;
   left: 350px;
@@ -136,7 +155,6 @@ ul {
 }
 
 #chat-form {
-  max-width: 200px;
   position: fixed;
   bottom: 20px;
   left: 20px;
@@ -150,10 +168,17 @@ canvas {
 }
 
 #message-container {
-  width: 250px;
+  width: 309px;
   position: fixed;
-  bottom: 70px;
+  bottom: 90px;
   left: 20px;
+}
+
+#chat-list {
+  max-height: 40vh;
+  overflow: auto;
+  opacity: 0;
+  transition: 1s ease-in opacity;
 }
 
 .chat-list-item {
@@ -241,7 +266,7 @@ canvas {
 }
 
 .emoji-picker__wrapper {
-  transform: translate(253px, -32px) !important;
+  transform: translate(313px, 0px) !important;
 }
 
 .emoji-picker.dark .emoji-picker__search {
@@ -301,6 +326,10 @@ canvas {
 }
 
 /* p5.GUI STYLES */
+
+.qs_main {
+  animation: 1s ease-in fadeIn;
+}
 
 .qs_container {
   background-color: var(--gray3) !important;

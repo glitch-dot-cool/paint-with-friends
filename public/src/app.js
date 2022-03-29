@@ -5,7 +5,7 @@ import {
   convertToLeanPaintProperties,
   convertLeanPaintPropertiesToObject,
 } from "./utils/setupPaintProperties.js";
-import { updateDrawing } from "./utils/drawing.js";
+import { toggleCursor, updateDrawing } from "./utils/drawing.js";
 import { LocalStorage } from "./utils/LocalStorage.js";
 import { Fetch } from "./utils/Fetch.js";
 import { userList } from "./components/userList.js";
@@ -40,9 +40,6 @@ const app = (s) => {
     s.initCanvas(initialCanvasState);
     camera.registerCanvas(canvas, "app");
 
-    const messageHistory = await Fetch.get("messages");
-    chatMessages(messageHistory);
-
     s.rectMode(s.CENTER);
 
     socket = io.connect(setBaseUrl());
@@ -70,8 +67,18 @@ const app = (s) => {
     });
 
     socket.on(EVENTS.MESSAGE, (messages) => {
-      chatMessages(messages);
+      if (!state.hasInitializedMessages) {
+        chatMessages(messages, true);
+        state.hasInitializedMessages = true;
+      } else chatMessages(messages);
     });
+  };
+
+  s.draw = () => {
+    if (s.keyIsDown(32)) {
+      state.isDrawing = false;
+      toggleCursor(state);
+    }
   };
 
   s.initLastCoords = () => {
@@ -91,6 +98,15 @@ const app = (s) => {
 
   s.keyReleased = () => {
     keysPressed.removeKey(s.keyCode);
+    if (!s.keyIsPressed) keysPressed.purge();
+
+    // release drag mode
+    if (s.keyCode === 32) {
+      if (!state.isDrawing) {
+        state.isDrawing = true;
+        toggleCursor(state);
+      }
+    }
   };
 
   s.mouseDragged = ({ movementX, movementY }) => {
