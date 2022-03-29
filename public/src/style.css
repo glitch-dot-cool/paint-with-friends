@@ -111,6 +111,7 @@ ul {
   padding: 10px;
   background-color: rgba(17, 17, 17, 0.75);
   border-radius: 2px;
+  backdrop-filter: blur(20px);
 }
 
 .fade-in {
@@ -142,7 +143,6 @@ ul {
 /* COMPONENT STYLES */
 
 #username-form {
-  max-width: 200px;
   position: fixed;
   bottom: 20px;
   left: 350px;
@@ -154,11 +154,16 @@ ul {
   margin-left: 4px;
 }
 
+#chat {
+  width: 300px;
+}
+
 #chat-form {
-  max-width: 200px;
+  width: inherit;
   position: fixed;
   bottom: 20px;
   left: 20px;
+  border-radius: 0px 0px 2px 2px;
 }
 
 #chat-form,
@@ -170,16 +175,16 @@ canvas {
 }
 
 #message-container {
-  width: 250px;
+  width: inherit;
   position: fixed;
-  bottom: 70px;
+  bottom: 83px;
   left: 20px;
+  border-radius: 2px 2px 0px 0px;
 }
 
 #chat-list {
   max-height: 40vh;
   overflow: auto;
-  backdrop-filter: blur(20px);
 }
 
 .chat-list-item {
