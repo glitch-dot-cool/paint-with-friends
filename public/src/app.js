@@ -75,7 +75,7 @@ const app = (s) => {
   };
 
   s.draw = () => {
-    if (s.keyIsDown(32)) {
+    if (s.keyIsDown(32) && state.isDrawing) {
       state.isDrawing = false;
       toggleCursor(state);
     }
