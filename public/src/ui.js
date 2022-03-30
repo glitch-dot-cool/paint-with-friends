@@ -73,6 +73,9 @@ const trigger = document.querySelector("#emoji-picker");
 
 picker.on("emoji", ({ emoji }) => {
   chatInput.value = `${chatInput.value} ${emoji}`;
+});
+
+picker.on("hidden", () => {
   camera.activate();
 });
 
