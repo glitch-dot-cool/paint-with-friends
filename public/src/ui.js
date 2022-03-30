@@ -68,6 +68,7 @@ const picker = new EmojiButton({
   rootElement: document.querySelector("#chat-form"),
   theme: "dark",
   autoFocusSearch: false,
+  autoHide: false,
 });
 const trigger = document.querySelector("#emoji-picker");
 
