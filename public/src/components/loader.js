@@ -6,6 +6,10 @@ export class Loader {
     container.id = "loader-container";
     container.classList.add("fade-in");
 
+    const logo = document.createElement("img");
+    logo.classList.add("logo");
+    logo.src = "../assets/icon.png";
+
     const ring = document.createElement("div");
     ring.classList.add("loader-ring");
 
@@ -14,6 +18,7 @@ export class Loader {
       ring.appendChild(subdiv);
     }
 
+    ring.appendChild(logo);
     container.appendChild(ring);
     document.body.appendChild(container);
   };
