@@ -499,3 +499,21 @@ summary:hover {
 details {
   max-width: 500px;
 }
+
+.palette {
+  display: inline-block;
+}
+
+#enter-button:hover .palette {
+  animation: 1s ease-in-out rotate infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
