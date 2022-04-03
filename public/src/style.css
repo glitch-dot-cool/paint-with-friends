@@ -421,8 +421,8 @@ canvas {
   font-size: 80%;
 }
 
-#main #subcontainer * {
-  margin-bottom: 5px;
+main h3 {
+  margin-bottom: 2rem;
 }
 
 #main img {
@@ -464,4 +464,38 @@ a {
 
 a:hover {
   color: rgb(10, 244, 201, 0.5);
+}
+
+kbd {
+  background-color: #eee;
+  border-radius: 3px;
+  border: 1px solid #b4b4b4;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2),
+    0 2px 0 0 rgba(255, 255, 255, 0.7) inset;
+  color: #333;
+  display: inline-block;
+  font-weight: 700;
+  line-height: 1;
+  padding: 2px 5px;
+  white-space: nowrap;
+}
+
+kbd.key {
+  border-radius: 3px;
+  padding: 1px 2px 0;
+  border: 1px solid black;
+}
+
+td {
+  color: #9c9c9c;
+  padding: 0.5rem 1rem;
+}
+
+summary:hover {
+  cursor: pointer;
+  color: rgb(10, 244, 201);
+}
+
+details {
+  max-width: 500px;
 }
