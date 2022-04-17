@@ -24,8 +24,8 @@ export const setupPaintProperties = (p5, state, zoomAmount) => {
     prevX: state.lastX,
     prevY: state.lastY,
     strokeWeight: handleLfoValue(p5, lfos, gui, p.STROKE_WEIGHT),
-    saturation: gui.saturation,
-    brightness: gui.brightness,
+    saturation: handleLfoValue(p5, lfos, gui, p.SATURATION),
+    brightness: handleLfoValue(p5, lfos, gui, p.BRIGHTNESS),
   };
 };
 
@@ -81,6 +81,8 @@ export const useLfo = (p5, gui, lfo) => {
     x,
     y,
     strokeWeight,
+    saturation,
+    brightness,
   } = lfo.gui;
 
   // x & y don't have default values from GUI, so prepopulate w/ current mouse X/Y
@@ -98,9 +100,27 @@ export const useLfo = (p5, gui, lfo) => {
     strokeColor ||
     x ||
     y ||
-    strokeWeight
+    strokeWeight ||
+    saturation ||
+    brightness
   ) {
     lfo.value += speed;
+  }
+
+  if (saturation) {
+    const lfoValue =
+      gui.saturation + Waveforms[shape](floor, lfo.value) * amount;
+    const scaledValue = scaleLfoValue(p5, lfoValue, gui.saturation, 0, 100);
+
+    values[p.SATURATION] = scaledValue;
+  }
+
+  if (brightness) {
+    const lfoValue =
+      gui.brightness + Waveforms[shape](floor, lfo.value) * amount;
+    const scaledValue = scaleLfoValue(p5, lfoValue, gui.brightness, 0, 100);
+
+    values[p.BRIGHTNESS] = scaledValue;
   }
 
   if (x) {

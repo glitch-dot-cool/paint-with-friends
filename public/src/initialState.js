@@ -56,13 +56,15 @@ const lfoControllableParams = [
   p.SIZE,
   p.X,
   p.Y,
+  p.SATURATION,
+  p.BRIGHTNESS,
 ];
 
 // add toggle controls for each available LFO target
 lfoControllableParams.forEach((param) => (lfoParams[param] = false));
 // position optional color sliders below checkboxes to prevent layout shift
-lfoParams.saturation = 100;
-lfoParams.brightness = 100;
+// lfoParams.saturation = 100;
+// lfoParams.brightness = 100;
 
 // full client-side state object
 export const state = {

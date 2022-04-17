@@ -19,9 +19,9 @@ export const initGuiPanels = (s, thisContext) => {
   lfo3Gui.addObject(state.lfo3.gui);
 
   handleVisibleParams();
-  handleVisibleLfoParams(1);
-  handleVisibleLfoParams(2);
-  handleVisibleLfoParams(3);
+  // handleVisibleLfoParams(1);
+  // handleVisibleLfoParams(2);
+  // handleVisibleLfoParams(3);
   // lfos must be in the DOM to set up listeners, immediately close after init
   lfo1Gui.collapse();
   lfo2Gui.collapse();
