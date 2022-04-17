@@ -12,6 +12,7 @@ const commonState = {
   [p.STROKE_WEIGHT]: 1,
   [p.MIRROR_X]: false,
   [p.MIRROR_Y]: false,
+  [p.TEXT]: "",
 };
 
 // server state requires initial x/y coords
@@ -23,7 +24,7 @@ export const initialServerState = {
 
 // client requires a few extra params for rendering UI controls
 const guiParams = {
-  [p.SHAPE]: ["line", "circle", "square"],
+  [p.SHAPE]: ["line", "circle", "square", "text"],
   ...commonState,
   sizeMin: 5,
   sizeMax: 300,
