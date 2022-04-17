@@ -1,6 +1,7 @@
 import { Waveforms } from "./Waveforms.js";
 import { paintProperties as p } from "../constants.js";
 import { Camera } from "./Camera.js";
+import { state } from "../initialState.js";
 
 const cache = {};
 
@@ -116,53 +117,35 @@ export const useLfo = (p5, gui, lfo) => {
     lfo.value += speed;
   }
 
-  if (saturation) {
-    const lfoValue =
-      gui.saturation + Waveforms[shape](floor, lfo.value) * amount;
-    const scaledValue = scaleLfoValue(p5, lfoValue, gui.saturation, 0, 100);
-
-    values[p.SATURATION] = scaledValue;
-
-    const input = getLfoTargetDOMNode(p.SATURATION, "input");
-    input.value = scaledValue;
-  }
-
-  if (brightness) {
-    const lfoValue =
-      gui.brightness + Waveforms[shape](floor, lfo.value) * amount;
-    const scaledValue = scaleLfoValue(p5, lfoValue, gui.brightness, 0, 100);
-
-    values[p.BRIGHTNESS] = scaledValue;
-
-    const input = getLfoTargetDOMNode(p.BRIGHTNESS, "input");
-    input.value = scaledValue;
-  }
-
   if (x) {
-    const lfoValue =
-      p5.mouseX + (Waveforms[shape](floor, lfo.value) * 2 - 1) * amount;
-
-    values[p.X] = lfoValue;
+    p5.mouseX + (Waveforms[shape](floor, lfo.value) * 2 - 1) * amount;
   }
 
   if (y) {
-    const lfoValue =
+    values[p.Y] =
       p5.mouseY + (Waveforms[shape](floor, lfo.value) * 2 - 1) * amount;
+  }
 
-    values[p.Y] = lfoValue;
+  if (saturation) {
+    const lfoValue = Waveforms[shape](floor, lfo.value) * amount;
+    values[p.SATURATION] = lfoValue;
+    const input = getLfoTargetDOMNode(p.SATURATION, "input");
+    input.value = lfoValue;
+  }
+
+  if (brightness) {
+    const lfoValue = Waveforms[shape](floor, lfo.value) * amount;
+    values[p.BRIGHTNESS] = lfoValue;
+    const input = getLfoTargetDOMNode(p.BRIGHTNESS, "input");
+    input.value = lfoValue;
   }
 
   if (fillOpacity) {
     // scale color values by 2.55x: 100 * 2.55 = 255
-    const lfoValue =
-      gui.fillOpacity + Waveforms[shape](floor, lfo.value) * (amount * 2.55);
-
-    const scaledValue = scaleLfoValue(p5, lfoValue, gui.fillOpacity, 0, 255);
-
-    values[p.FILL_OPACITY] = scaledValue;
-
+    const lfoValue = Waveforms[shape](floor, lfo.value) * (amount * 2.55);
+    values[p.FILL_OPACITY] = lfoValue;
     const input = getLfoTargetDOMNode(p.FILL_OPACITY, "input");
-    input.value = scaledValue;
+    input.value = lfoValue;
   }
 
   if (fillColor) {
@@ -170,21 +153,15 @@ export const useLfo = (p5, gui, lfo) => {
     const lfoValue = Waveforms[shape](floor, lfo.value) * (amount * 3.6);
     const rainbow = useRainbow(p5, lfoValue);
     values[p.FILL_COLOR] = rainbow;
-
     const label = getLfoTargetDOMNode(p.FILL_COLOR, "label");
     label.style.backgroundColor = rainbow;
   }
 
   if (strokeOpacity) {
-    const lfoValue =
-      gui.strokeOpacity + Waveforms[shape](floor, lfo.value) * (amount * 2.55);
-
-    const scaledValue = scaleLfoValue(p5, lfoValue, gui.strokeOpacity, 0, 255);
-
-    values[p.STROKE_OPACITY] = scaledValue;
-
+    const lfoValue = Waveforms[shape](floor, lfo.value) * (amount * 2.55);
+    values[p.STROKE_OPACITY] = lfoValue;
     const input = getLfoTargetDOMNode(p.STROKE_OPACITY, "input");
-    input.value = scaledValue;
+    input.value = lfoValue;
   }
 
   if (strokeColor) {
@@ -196,27 +173,22 @@ export const useLfo = (p5, gui, lfo) => {
   }
 
   if (size) {
-    const value = gui.size + Waveforms[shape](floor, lfo.value) * amount;
+    const value =
+      Waveforms[shape](floor, lfo.value) *
+      ((amount * state.gui.sizeMax) / amount);
     values[p.SIZE] = value;
     const input = getLfoTargetDOMNode(p.SIZE, "input");
     input.value = value;
   }
 
   if (strokeWeight) {
-    const value =
-      gui.strokeWeight + Waveforms[shape](floor, lfo.value) * amount;
+    const value = Waveforms[shape](floor, lfo.value) * amount;
     values[p.STROKE_WEIGHT] = value;
     const input = getLfoTargetDOMNode(p.STROKE_WEIGHT, "input");
     input.value = value;
   }
 
   return values;
-};
-
-// this function handles bias/offset from GUI-derived values applied to the LFO
-// note: this function does not work w/ colors, just raw numbers
-const scaleLfoValue = (p5, lfoValue, guiValue, min, max) => {
-  return p5.map(lfoValue, -max + guiValue, max + guiValue, min, max);
 };
 
 const useRainbow = (p5, lfoValue) => {
