@@ -4,19 +4,13 @@ import { Camera } from "./Camera.js";
 
 const cache = {};
 
-const getLfoTargetInput = (target) => {
+const getLfoTargetDOMNode = (target, inputOrLabel) => {
   if (!cache[target]) {
-    cache[target] = document.querySelector(`#${target} input`);
+    cache[target] = document.querySelector(`#${target} ${inputOrLabel}`);
     return cache[target];
   } else return cache[target];
 };
 
-const getLfoTargetLabel = (target) => {
-  if (!cache[target]) {
-    cache[target] = document.querySelector(`#${target} label`);
-    return cache[target];
-  } else return cache[target];
-};
 export const setupPaintProperties = (p5, state, zoomAmount) => {
   const { gui } = state;
   const lfo1 = useLfo(p5, state.gui, state.lfo1);
@@ -129,7 +123,7 @@ export const useLfo = (p5, gui, lfo) => {
 
     values[p.SATURATION] = scaledValue;
 
-    const input = getLfoTargetInput(p.SATURATION);
+    const input = getLfoTargetDOMNode(p.SATURATION, "input");
     input.value = scaledValue;
   }
 
@@ -140,7 +134,7 @@ export const useLfo = (p5, gui, lfo) => {
 
     values[p.BRIGHTNESS] = scaledValue;
 
-    const input = getLfoTargetInput(p.BRIGHTNESS);
+    const input = getLfoTargetDOMNode(p.BRIGHTNESS, "input");
     input.value = scaledValue;
   }
 
@@ -167,7 +161,7 @@ export const useLfo = (p5, gui, lfo) => {
 
     values[p.FILL_OPACITY] = scaledValue;
 
-    const input = getLfoTargetInput(p.FILL_OPACITY);
+    const input = getLfoTargetDOMNode(p.FILL_OPACITY, "input");
     input.value = scaledValue;
   }
 
@@ -177,7 +171,7 @@ export const useLfo = (p5, gui, lfo) => {
     const rainbow = useRainbow(p5, lfoValue);
     values[p.FILL_COLOR] = rainbow;
 
-    const label = getLfoTargetLabel(p.FILL_COLOR);
+    const label = getLfoTargetDOMNode(p.FILL_COLOR, "label");
     label.style.backgroundColor = rainbow;
   }
 
@@ -189,7 +183,7 @@ export const useLfo = (p5, gui, lfo) => {
 
     values[p.STROKE_OPACITY] = scaledValue;
 
-    const input = getLfoTargetInput(p.STROKE_OPACITY);
+    const input = getLfoTargetDOMNode(p.STROKE_OPACITY, "input");
     input.value = scaledValue;
   }
 
@@ -197,14 +191,14 @@ export const useLfo = (p5, gui, lfo) => {
     const lfoValue = Waveforms[shape](floor, lfo.value) * (amount * 3.6);
     const rainbow = useRainbow(p5, lfoValue);
     values[p.STROKE_COLOR] = rainbow;
-    const label = getLfoTargetLabel(p.STROKE_COLOR);
+    const label = getLfoTargetDOMNode(p.STROKE_COLOR, "label");
     label.style.backgroundColor = rainbow;
   }
 
   if (size) {
     const value = gui.size + Waveforms[shape](floor, lfo.value) * amount;
     values[p.SIZE] = value;
-    const input = getLfoTargetInput(p.SIZE);
+    const input = getLfoTargetDOMNode(p.SIZE, "input");
     input.value = value;
   }
 
@@ -212,7 +206,7 @@ export const useLfo = (p5, gui, lfo) => {
     const value =
       gui.strokeWeight + Waveforms[shape](floor, lfo.value) * amount;
     values[p.STROKE_WEIGHT] = value;
-    const input = getLfoTargetInput(p.STROKE_WEIGHT);
+    const input = getLfoTargetDOMNode(p.STROKE_WEIGHT, "input");
     input.value = value;
   }
 
