@@ -365,9 +365,11 @@ canvas {
   background-color: var(--gray1) !important;
 }
 
-.qs_title_bar {
+.qs_title_bar,
+.qs_text_input {
   background-color: var(--gray2) !important;
   color: var(--white) !important;
+  border: none !important;
 }
 
 .qs_select {
