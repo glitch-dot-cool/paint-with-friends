@@ -150,7 +150,7 @@ export const useLfo = (p5, gui, lfo) => {
   if (fillColor) {
     // scale amount to 360 (degrees) for rotating through HSL colorspace
     const lfoValue = Waveforms[shape](floor, lfo.value) * (amount * 3.6);
-    const rainbow = useRainbow(p5, lfoValue, lfo.gui, values.fillOpacity);
+    const rainbow = useRainbow(p5, lfoValue, values.fillOpacity);
     values[p.FILL_COLOR] = rainbow;
   }
 
@@ -165,7 +165,7 @@ export const useLfo = (p5, gui, lfo) => {
 
   if (strokeColor) {
     const lfoValue = Waveforms[shape](floor, lfo.value) * (amount * 3.6);
-    const rainbow = useRainbow(p5, lfoValue, lfo.gui, values.strokeOpacity);
+    const rainbow = useRainbow(p5, lfoValue, values.strokeOpacity);
     values[p.STROKE_COLOR] = rainbow;
   }
 
@@ -187,15 +187,10 @@ const scaleLfoValue = (p5, lfoValue, guiValue, min, max) => {
   return p5.map(lfoValue, -max + guiValue, max + guiValue, min, max);
 };
 
-const useRainbow = (p5, lfoValue, lfoGui, opacity) => {
+const useRainbow = (p5, lfoValue, opacity) => {
   const hue = Math.floor(lfoValue);
-  const saturation = lfoGui.saturation;
-  const brightness = lfoGui.brightness;
-
-  const rainbow = p5.color(`hsb(${hue}, ${saturation}%, ${brightness}%)`);
-  rainbow.setAlpha(Math.ceil(opacity));
-
-  return rainbow;
+  // saturation & brightness will be overridden by global paintbrush setting
+  return p5.color(`hsb(${hue}, 100%, 100%)`);
 };
 
 /**

@@ -19,63 +19,10 @@ export const initGuiPanels = (s, thisContext) => {
   lfo3Gui.addObject(state.lfo3.gui);
 
   handleVisibleParams();
-  // handleVisibleLfoParams(1);
-  // handleVisibleLfoParams(2);
-  // handleVisibleLfoParams(3);
   // lfos must be in the DOM to set up listeners, immediately close after init
   lfo1Gui.collapse();
   lfo2Gui.collapse();
   lfo3Gui.collapse();
-};
-
-const handleVisibleLfoParams = (lfoIndex) => {
-  const colorOptions = ["saturation", "brightness"];
-  // set initial visible params
-  initLfoParams(colorOptions, lfoIndex);
-
-  const fillColorToggle = document.querySelector(
-    `#lfo${lfoIndex} .qs_content #${p.FILL_COLOR}`
-  );
-  const strokeColorToggle = document.querySelector(
-    `#lfo${lfoIndex} .qs_content #${p.STROKE_COLOR}`
-  );
-  const toggles = [fillColorToggle, strokeColorToggle];
-
-  const areColorOptionsSelected = [false, false];
-
-  // add listeners to update visibility based on user changes
-  toggles.forEach((toggle, idx) => {
-    toggle.addEventListener("change", (e) => {
-      const isOn = e.target.checked;
-      areColorOptionsSelected[idx] = isOn;
-
-      // if either of the color-based options are selected, show the saturation/brightness sliders
-      if (areColorOptionsSelected.some((x) => x)) {
-        colorOptions.forEach((option) => {
-          const element = document.querySelector(
-            `#lfo${lfoIndex} .qs_content #${option}`
-          );
-          element.style.display = "block";
-        });
-      } else {
-        colorOptions.forEach((option) => {
-          const element = document.querySelector(
-            `#lfo${lfoIndex} .qs_content #${option}`
-          );
-          element.style.display = "none";
-        });
-      }
-    });
-  });
-};
-
-const initLfoParams = (colorOptions, lfoIndex) => {
-  colorOptions.forEach((option) => {
-    const element = document.querySelector(
-      `#lfo${lfoIndex} .qs_content #${option}`
-    );
-    element.style.display = "none";
-  });
 };
 
 const handleVisibleParams = () => {
