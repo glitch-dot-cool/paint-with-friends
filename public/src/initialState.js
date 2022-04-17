@@ -6,6 +6,8 @@ const commonState = {
   [p.FILL_OPACITY]: 255,
   [p.STROKE_COLOR]: "#349beb",
   [p.STROKE_OPACITY]: 255,
+  [p.SATURATION]: 100,
+  [p.BRIGHTNESS]: 100,
   [p.SIZE]: 15,
   [p.STROKE_WEIGHT]: 1,
   [p.MIRROR_X]: false,
@@ -21,8 +23,8 @@ export const initialServerState = {
 
 // client requires a few extra params for rendering UI controls
 const guiParams = {
-  ...commonState,
   [p.SHAPE]: ["line", "circle", "square"],
+  ...commonState,
   sizeMin: 5,
   sizeMax: 300,
 };
@@ -54,13 +56,12 @@ const lfoControllableParams = [
   p.SIZE,
   p.X,
   p.Y,
+  p.SATURATION,
+  p.BRIGHTNESS,
 ];
 
 // add toggle controls for each available LFO target
 lfoControllableParams.forEach((param) => (lfoParams[param] = false));
-// position optional color sliders below checkboxes to prevent layout shift
-lfoParams.saturation = 100;
-lfoParams.brightness = 100;
 
 // full client-side state object
 export const state = {
