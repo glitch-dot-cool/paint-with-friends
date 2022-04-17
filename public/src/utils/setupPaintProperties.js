@@ -24,6 +24,8 @@ export const setupPaintProperties = (p5, state, zoomAmount) => {
     prevX: state.lastX,
     prevY: state.lastY,
     strokeWeight: handleLfoValue(p5, lfos, gui, p.STROKE_WEIGHT),
+    saturation: gui.saturation,
+    brightness: gui.brightness,
   };
 };
 
@@ -198,6 +200,8 @@ export const convertToLeanPaintProperties = (paintProperties, username) => {
     paintProperties.prevX,
     paintProperties.prevY,
     paintProperties.strokeWeight,
+    paintProperties.saturation,
+    paintProperties.brightness,
   ];
 };
 
@@ -223,5 +227,7 @@ export const convertLeanPaintPropertiesToObject = (leanPaintProperties) => {
     prevX: leanPaintProperties[11],
     prevY: leanPaintProperties[12],
     strokeWeight: leanPaintProperties[13],
+    saturation: leanPaintProperties[14],
+    brightness: leanPaintProperties[15],
   };
 };

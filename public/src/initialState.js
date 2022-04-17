@@ -6,6 +6,8 @@ const commonState = {
   [p.FILL_OPACITY]: 255,
   [p.STROKE_COLOR]: "#349beb",
   [p.STROKE_OPACITY]: 255,
+  [p.SATURATION]: 100,
+  [p.BRIGHTNESS]: 100,
   [p.SIZE]: 15,
   [p.STROKE_WEIGHT]: 1,
   [p.MIRROR_X]: false,
