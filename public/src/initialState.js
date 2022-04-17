@@ -23,8 +23,8 @@ export const initialServerState = {
 
 // client requires a few extra params for rendering UI controls
 const guiParams = {
-  ...commonState,
   [p.SHAPE]: ["line", "circle", "square"],
+  ...commonState,
   sizeMin: 5,
   sizeMax: 300,
 };
