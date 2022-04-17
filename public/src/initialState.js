@@ -2,6 +2,7 @@ import { paintProperties as p } from "./constants.js";
 
 // common state variables used by client & server
 const commonState = {
+  [p.TEXT]: "",
   [p.FILL_COLOR]: "#349beb",
   [p.FILL_OPACITY]: 255,
   [p.STROKE_COLOR]: "#349beb",
@@ -23,7 +24,7 @@ export const initialServerState = {
 
 // client requires a few extra params for rendering UI controls
 const guiParams = {
-  [p.SHAPE]: ["line", "circle", "square"],
+  [p.SHAPE]: ["line", "circle", "square", "text"],
   ...commonState,
   sizeMin: 5,
   sizeMax: 300,

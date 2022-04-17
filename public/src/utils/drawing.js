@@ -35,6 +35,9 @@ const renderShape = (p5, dimensions, params) => {
         break;
       case "line":
         handleMirrorMode(setupShape(p5, "line", params), mirrorX, mirrorY);
+      case "text":
+        p5.textSize(params.size);
+        handleMirrorMode(setupShape(p5, "text", params), mirrorX, mirrorY);
     }
   }
 };
@@ -68,7 +71,7 @@ const setupShape = (p5, shape, params) => {
 
 const setupMirrorArgs = (shape, params) => {
   const { width, height } = dimensions;
-  const { x, y, prevX, prevY, size } = params;
+  const { x, y, prevX, prevY, size, text } = params;
 
   switch (shape) {
     case "circle":
@@ -86,6 +89,13 @@ const setupMirrorArgs = (shape, params) => {
         mirrorX: [width - prevX, prevY, width - x, y],
         mirrorY: [prevX, height - prevY, x, height - y],
         mirrorBoth: [width - prevX, height - prevY, width - x, height - y],
+      };
+    case "text":
+      return {
+        default: [text, x, y],
+        mirrorX: [text, width - x, y],
+        mirrorY: [text, x, height - y],
+        mirrorBoth: [text, width - x, height - y],
       };
   }
 };

@@ -20,7 +20,12 @@ import { Loader } from "./components/loader.js";
 
 const app = (s) => {
   const keysPressed = new KeyManager(s);
-  let socket, canvas;
+  let socket, canvas, font;
+
+  s.preload = () => {
+    Loader.show();
+    font = s.loadFont("assets/JetBrainsMonoLight.ttf");
+  };
 
   s.initCanvas = (serializedCanvas) => {
     canvas = document.querySelector("#app");
@@ -33,13 +38,13 @@ const app = (s) => {
   };
 
   s.setup = async function () {
-    Loader.show();
     const initialCanvasState = await Fetch.get("canvas");
     const cnv = s.createCanvas(dimensions.width, dimensions.height);
     cnv.id("app");
     s.initCanvas(initialCanvasState);
     camera.registerCanvas(canvas, "app");
 
+    s.textFont(font);
     s.rectMode(s.CENTER);
 
     socket = io.connect(setBaseUrl());
