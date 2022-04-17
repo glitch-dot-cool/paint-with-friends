@@ -51,13 +51,19 @@ const hideUnusedProperties = (shape) => {
     case "square":
       setParamVisibility(getUnusedParamsForShape(shape));
       break;
+    case "text":
+      setParamVisibility(getUnusedParamsForShape(shape));
+      break;
   }
 };
 
 const getUnusedParamsForShape = (shape) => {
   switch (shape) {
     case "line":
-      return [p.FILL_COLOR, p.FILL_OPACITY, p.SIZE];
+      return [p.FILL_COLOR, p.FILL_OPACITY, p.SIZE, p.TEXT];
+    case "circle":
+    case "square":
+      return [p.TEXT];
     default:
       return [];
   }

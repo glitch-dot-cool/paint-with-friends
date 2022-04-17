@@ -2,6 +2,7 @@ import { paintProperties as p } from "./constants.js";
 
 // common state variables used by client & server
 const commonState = {
+  [p.TEXT]: "",
   [p.FILL_COLOR]: "#349beb",
   [p.FILL_OPACITY]: 255,
   [p.STROKE_COLOR]: "#349beb",
@@ -12,7 +13,6 @@ const commonState = {
   [p.STROKE_WEIGHT]: 1,
   [p.MIRROR_X]: false,
   [p.MIRROR_Y]: false,
-  [p.TEXT]: "",
 };
 
 // server state requires initial x/y coords
