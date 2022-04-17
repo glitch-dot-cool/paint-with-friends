@@ -2,6 +2,21 @@ import { Waveforms } from "./Waveforms.js";
 import { paintProperties as p } from "../constants.js";
 import { Camera } from "./Camera.js";
 
+const cache = {};
+
+const getLfoTargetInput = (target) => {
+  if (!cache[target]) {
+    cache[target] = document.querySelector(`#${target} input`);
+    return cache[target];
+  } else return cache[target];
+};
+
+const getLfoTargetLabel = (target) => {
+  if (!cache[target]) {
+    cache[target] = document.querySelector(`#${target} label`);
+    return cache[target];
+  } else return cache[target];
+};
 export const setupPaintProperties = (p5, state, zoomAmount) => {
   const { gui } = state;
   const lfo1 = useLfo(p5, state.gui, state.lfo1);
@@ -113,6 +128,9 @@ export const useLfo = (p5, gui, lfo) => {
     const scaledValue = scaleLfoValue(p5, lfoValue, gui.saturation, 0, 100);
 
     values[p.SATURATION] = scaledValue;
+
+    const input = getLfoTargetInput(p.SATURATION);
+    input.value = scaledValue;
   }
 
   if (brightness) {
@@ -121,6 +139,9 @@ export const useLfo = (p5, gui, lfo) => {
     const scaledValue = scaleLfoValue(p5, lfoValue, gui.brightness, 0, 100);
 
     values[p.BRIGHTNESS] = scaledValue;
+
+    const input = getLfoTargetInput(p.BRIGHTNESS);
+    input.value = scaledValue;
   }
 
   if (x) {
@@ -145,6 +166,9 @@ export const useLfo = (p5, gui, lfo) => {
     const scaledValue = scaleLfoValue(p5, lfoValue, gui.fillOpacity, 0, 255);
 
     values[p.FILL_OPACITY] = scaledValue;
+
+    const input = getLfoTargetInput(p.FILL_OPACITY);
+    input.value = scaledValue;
   }
 
   if (fillColor) {
@@ -152,6 +176,9 @@ export const useLfo = (p5, gui, lfo) => {
     const lfoValue = Waveforms[shape](floor, lfo.value) * (amount * 3.6);
     const rainbow = useRainbow(p5, lfoValue);
     values[p.FILL_COLOR] = rainbow;
+
+    const label = getLfoTargetLabel(p.FILL_COLOR);
+    label.style.backgroundColor = rainbow;
   }
 
   if (strokeOpacity) {
@@ -161,21 +188,32 @@ export const useLfo = (p5, gui, lfo) => {
     const scaledValue = scaleLfoValue(p5, lfoValue, gui.strokeOpacity, 0, 255);
 
     values[p.STROKE_OPACITY] = scaledValue;
+
+    const input = getLfoTargetInput(p.STROKE_OPACITY);
+    input.value = scaledValue;
   }
 
   if (strokeColor) {
     const lfoValue = Waveforms[shape](floor, lfo.value) * (amount * 3.6);
     const rainbow = useRainbow(p5, lfoValue);
     values[p.STROKE_COLOR] = rainbow;
+    const label = getLfoTargetLabel(p.STROKE_COLOR);
+    label.style.backgroundColor = rainbow;
   }
 
   if (size) {
-    values[p.SIZE] = gui.size + Waveforms[shape](floor, lfo.value) * amount;
+    const value = gui.size + Waveforms[shape](floor, lfo.value) * amount;
+    values[p.SIZE] = value;
+    const input = getLfoTargetInput(p.SIZE);
+    input.value = value;
   }
 
   if (strokeWeight) {
-    values[p.STROKE_WEIGHT] =
+    const value =
       gui.strokeWeight + Waveforms[shape](floor, lfo.value) * amount;
+    values[p.STROKE_WEIGHT] = value;
+    const input = getLfoTargetInput(p.STROKE_WEIGHT);
+    input.value = value;
   }
 
   return values;
