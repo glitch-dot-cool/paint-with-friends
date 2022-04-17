@@ -1,3 +1,7 @@
+* {
+  font-size: 95%;
+}
+
 #app-body {
   user-select: none;
   cursor: grab;
