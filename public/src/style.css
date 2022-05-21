@@ -91,10 +91,6 @@ ul {
 
 /* UTILITY CLASSES */
 
-.collapse {
-  width: 0 !important;
-}
-
 .flex {
   display: flex;
 }
@@ -235,6 +231,10 @@ canvas {
 
 .logo {
   animation: pulse 1.2s ease-in-out infinite alternate-reverse;
+}
+
+#loader-container {
+  position: absolute;
 }
 
 .loader-ring {
