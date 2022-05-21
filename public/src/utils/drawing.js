@@ -35,9 +35,11 @@ const renderShape = (p5, dimensions, params) => {
         break;
       case "line":
         handleMirrorMode(setupShape(p5, "line", params), mirrorX, mirrorY);
+        break;
       case "text":
         p5.textSize(params.size);
         handleMirrorMode(setupShape(p5, "text", params), mirrorX, mirrorY);
+        break;
     }
   }
 };
