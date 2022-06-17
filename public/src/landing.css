@@ -16,6 +16,7 @@
 
 #main {
   width: 67vw;
+  max-width: 715px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -70,7 +71,6 @@ main h3 {
 }
 
 #main #subcontainer button {
-  margin-top: 10px;
   padding: 8px 12px;
 }
 
@@ -139,6 +139,36 @@ summary:hover {
   animation: 1s ease-in-out rotate infinite;
 }
 
+details {
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+details summary {
+  position: relative;
+}
+
+#tips {
+  border: 1px solid #ccc;
+  padding: 1rem;
+  opacity: 0;
+  animation: fade 1s 200ms ease-in forwards;
+  margin-top: 1rem;
+}
+
+.tip {
+  color: #fff;
+  text-align: center;
+}
+
+details > *:not(summary) {
+  animation: details-show 0.5s ease-in-out;
+  position: relative;
+  transition: all 0.5s ease-in-out;
+  color: transparent;
+  overflow: hidden;
+}
+
 @keyframes rotate {
   from {
     transform: rotate(0deg);
@@ -149,14 +179,6 @@ summary:hover {
   }
 }
 
-details {
-  overflow: hidden;
-}
-
-details summary {
-  position: relative;
-}
-
 @keyframes details-show {
   from {
     margin-bottom: -50%;
@@ -165,10 +187,12 @@ details summary {
   }
 }
 
-details > *:not(summary) {
-  animation: details-show 0.5s ease-in-out;
-  position: relative;
-  transition: all 0.5s ease-in-out;
-  color: transparent;
-  overflow: hidden;
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
