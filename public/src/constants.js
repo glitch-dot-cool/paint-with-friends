@@ -12,6 +12,9 @@ export const paintProperties = {
   PREV_X: "prevX",
   PREV_Y: "prevY",
   STROKE_WEIGHT: "strokeWeight",
+  SATURATION: "saturation",
+  BRIGHTNESS: "brightness",
+  TEXT: "text",
 };
 
 export const dimensions = { width: 3840, height: 2160 }; // 4k

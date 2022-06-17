@@ -2,8 +2,8 @@ class Camera {
   constructor() {
     this.zoomAmount = 1;
     this.maxZoom = 1;
-    this.minZoom = 0.2;
-    this.scrollSensitivity = 0.001;
+    this.minZoom = 0.3;
+    this.scrollSensitivity = 0.0005;
     this.offset = { x: 0, y: 0 };
     this.canvases = {
       app: null,

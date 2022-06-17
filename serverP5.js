@@ -10,6 +10,10 @@ import { convertLeanPaintPropertiesToObject } from "./public/src/utils/setupPain
 export const initServerP5 = () => {
   let paintProperties = initialServerState;
   let canvas;
+  const typeface = p5.loadFont({
+    path: "public/assets/JetBrainsMonoLight.ttf",
+    family: "JetBrainsMono",
+  });
 
   function sketch(s) {
     eventEmitter.on(EVENTS.DRAW_UPDATE, (data) => {
@@ -21,6 +25,7 @@ export const initServerP5 = () => {
       canvas = s.createCanvas(dimensions.width, dimensions.height);
       s.background(0);
       s.rectMode(s.CENTER);
+      s.textFont(typeface);
     };
   }
 
