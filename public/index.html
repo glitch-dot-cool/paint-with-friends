@@ -30,58 +30,74 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.min.js"></script>
-    <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"
-        integrity="sha384-KAZ4DtjNhLChOB/hxXuKqhMLYvx3b5MlT55xPEiNmREKRzeEm+RVPlTnAn0ajQNs"
-        crossorigin="anonymous"></script>
-    <script src="/lib/p5.gui.js"></script>
-    <script src="/lib/quicksettings.js"></script>
     <link rel="stylesheet" href="/src/style.css">
-    <script src="/src/app.js" type="module"></script>
-    <script src="/src/ui.js" type="module"></script>
+    <link rel="stylesheet" href="/src/landing.css">
     <link rel="shortcut icon" type="image/png" sizes="32x32" href="/assets/icon.png" />
     <link rel="preload" href="/assets/icon.png" as="image">
+    <script src="/src/landing.js" type="module"></script>
 </head>
 
 <body>
 
-    <form id="username-form" class="flex hide above backdrop">
-        <label class="flex column">
-            username
-            <input id="name-input" type="text" autocomplete="off">
-        </label>
-        <button id="update-username">update</button>
-    </form>
+    <div id="background-image" class="fade-in"></div>
 
-    <form id="chat-form" class="flex above backdrop" onsubmit="event.preventDefault();">
-        <label class="flex column">
-            message
-            <input id="message-input" type="text" autocomplete="off">
-        </label>
-        <button id="send-message">send</button>
-        <button id="emoji-picker">🙃</button>
-    </form>
+    <main id="main" class="above fade-in">
+        <div id="subcontainer" class="flex column">
+            <img src="/assets/icon.png">
+            <h1>welcome to paint with friends!</h1>
+            <h3>draw and chat in real-time with your friends</h3>
 
-    <div id="message-container" class="above">
-        <ul id="chat-list">
-            <!-- chat messages go here -->
-        </ul>
-    </div>
+            <details>
+                <summary>
+                    view controls
+                </summary>
+                <table>
+                    <tr>
+                        <td>toggle draw/pan mode</td>
+                        <td>
+                            <kbd>shift</kbd>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>draw/pan</td>
+                        <td><kbd>left mouse</kbd> (hold & drag)</td>
+                    </tr>
+                    <tr>
+                        <td>zoom</td>
+                        <td><kbd>mouse wheel</kbd></td>
+                    </tr>
+                    <tr>
+                        <td>temporary pan mode</td>
+                        <td><kbd>space</kbd> (hold - in draw mode) </td>
+                    </tr>
+                    <tr>
+                        <td>download canvas</td>
+                        <td><kbd>ctrl</kbd> + <kbd>x</kbd> or <kbd>cmd</kbd> + <kbd>x</kbd></td>
+                    </tr>
+                </table>
 
+                <aside id="tips">
+                    <p class="tip">tip: double-click the "LFO" panels to expand the options.</p>
+                    <br />
+                    <p class="tip tip-description">these LFOs (low-frequency oscillators) can be used
+                        to modulate your brush settings for more interesting results - you can even combine them!
+                        🤯</p>
+                </aside>
+            </details>
 
-    <div id="username-list-container" class="backdrop above">
-        <h4 id="username-list-title">connected users:</h4>
-        <ul id="username-list">
-            <template id="connected-users-template">
-                <li class="username-list-item">
-                    <p class="username"></p>
-                </li>
-            </template>
-        </ul>
-        <button id="change-username">change username</button>
-    </div>
+            <a id="enter-button" href="paint.html">
+                <button><span class="palette">🎨</span> enter <span class="palette">🎨</span></button>
+            </a>
 
-    <div id="p5-cursors"></div>
+        </div>
+    </main>
+
+    <footer class="above fade-in">
+        <div class="flex column">
+            <p> a <a href="https://glitch.cool" target="_blank" rel="noopener noreferrer">glitch.cool</a> joint</p>
+            <p>developed by alex gohorel & lucas naumowicz in 2022</p>
+        </div>
+    </footer>
 
 </body>
 

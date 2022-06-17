@@ -1,0 +1,240 @@
+* {
+  font-size: 95%;
+}
+
+#app-body {
+  user-select: none;
+  cursor: grab;
+}
+
+#p5-cursors {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+}
+
+canvas {
+  box-shadow: 2px 20px 40px rgba(0, 0, 0, 0.3);
+  transition: 300ms ease-in-out transform;
+  will-change: transform;
+}
+
+form input {
+  width: 196px;
+}
+
+label {
+  color: var(--white) !important;
+}
+
+input {
+  border: 1px solid var(--white);
+  border-radius: 2px;
+  background: var(--black);
+  color: var(--white);
+  padding: 4px 8px;
+}
+
+ul {
+  list-style-type: none;
+}
+
+/* SCROLL BARS */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--gray2);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gray4);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gray6);
+}
+
+/* COMPONENT STYLES */
+
+#username-form {
+  position: fixed;
+  bottom: 20px;
+  left: 350px;
+}
+
+#username-form button,
+#chat-form button {
+  align-self: flex-end;
+  margin-left: 4px;
+}
+
+#chat-form {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+}
+
+#chat-form,
+#username-list-container,
+canvas {
+  /* hide on init, Loader will unhide after init */
+  opacity: 0;
+}
+
+#message-container {
+  width: 309px;
+  position: fixed;
+  bottom: 90px;
+  left: 20px;
+}
+
+#chat-list {
+  max-height: 40vh;
+  overflow: auto;
+  opacity: 0;
+  transition: 1s ease-in opacity;
+  scrollbar-width: thin;
+}
+
+.chat-list-item {
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.chat-list-item:not(:last-of-type) {
+  margin-bottom: 4px;
+}
+
+.chat-message-author {
+  color: var(--gray8);
+}
+
+.chat-message-author:after {
+  content: ":";
+  margin-right: 5px;
+}
+
+.chat-message {
+  color: var(--white);
+  display: inline;
+  overflow-wrap: break-word;
+  font-size: 13px;
+}
+
+#username-list-container {
+  position: fixed;
+  bottom: 20px;
+  right: 10px;
+}
+
+#username-list-title {
+  color: var(--gray8);
+  text-align: right;
+}
+
+#username-list li p {
+  color: var(--white);
+  text-align: right;
+}
+
+#change-username {
+  float: right;
+  font-size: 10px;
+  margin-top: 10px;
+}
+
+.logo {
+  animation: pulse 1.2s ease-in-out infinite alternate-reverse;
+}
+
+.loader-ring {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 128px;
+  height: 128px;
+}
+
+.loader-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: inherit;
+  height: inherit;
+  margin: 8px;
+  border: 8px solid #fff;
+  border-radius: 50%;
+  animation: loader-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #fff transparent transparent transparent;
+  opacity: 0.2;
+  filter: blur(5px);
+}
+
+.loader-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+
+.loader-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+
+.loader-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+
+.emoji-picker.dark {
+  background: var(--gray1) !important;
+  border: 1px solid var(--gray4) !important;
+  border-radius: 2px;
+}
+
+.emoji-picker__wrapper {
+  transform: translate(313px, 0px) !important;
+}
+
+.emoji-picker.dark .emoji-picker__search {
+  background: var(--black) !important;
+}
+
+.emoji-picker__content {
+  height: auto !important;
+}
+
+/* p5.GUI STYLES */
+
+.qs_main {
+  animation: 1s ease-in fadeIn;
+}
+
+.qs_container {
+  background-color: var(--gray3) !important;
+  color: var(--white);
+}
+
+.qs_content {
+  background-color: var(--gray1) !important;
+}
+
+.qs_title_bar {
+  background-color: var(--gray2) !important;
+  color: var(--white) !important;
+}
+
+.qs_select {
+  background-color: var(--gray3) !important;
+  border: 1px solid var(--gray1) !important;
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAIAAABvFaqvAAAEsGlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgeG1sbnM6ZXhpZj0iaHR0cDovL25zLmFkb2JlLmNvbS9leGlmLzEuMC8iCiAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyIKICAgIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIKICAgIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyIKICAgIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIgogICAgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIKICAgZXhpZjpQaXhlbFhEaW1lbnNpb249IjI0IgogICBleGlmOlBpeGVsWURpbWVuc2lvbj0iMjQiCiAgIGV4aWY6Q29sb3JTcGFjZT0iMSIKICAgdGlmZjpJbWFnZVdpZHRoPSIyNCIKICAgdGlmZjpJbWFnZUxlbmd0aD0iMjQiCiAgIHRpZmY6UmVzb2x1dGlvblVuaXQ9IjIiCiAgIHRpZmY6WFJlc29sdXRpb249IjcyLzEiCiAgIHRpZmY6WVJlc29sdXRpb249IjcyLzEiCiAgIHBob3Rvc2hvcDpDb2xvck1vZGU9IjMiCiAgIHBob3Rvc2hvcDpJQ0NQcm9maWxlPSJzUkdCIElFQzYxOTY2LTIuMSIKICAgeG1wOk1vZGlmeURhdGU9IjIwMjEtMTEtMTRUMTg6MjE6NDMtMDU6MDAiCiAgIHhtcDpNZXRhZGF0YURhdGU9IjIwMjEtMTEtMTRUMTg6MjE6NDMtMDU6MDAiPgogICA8eG1wTU06SGlzdG9yeT4KICAgIDxyZGY6U2VxPgogICAgIDxyZGY6bGkKICAgICAgc3RFdnQ6YWN0aW9uPSJwcm9kdWNlZCIKICAgICAgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWZmaW5pdHkgUGhvdG8gMS4xMC40IgogICAgICBzdEV2dDp3aGVuPSIyMDIxLTExLTE0VDE4OjIxOjQzLTA1OjAwIi8+CiAgICA8L3JkZjpTZXE+CiAgIDwveG1wTU06SGlzdG9yeT4KICA8L3JkZjpEZXNjcmlwdGlvbj4KIDwvcmRmOlJERj4KPC94OnhtcG1ldGE+Cjw/eHBhY2tldCBlbmQ9InIiPz6brRjDAAABg2lDQ1BzUkdCIElFQzYxOTY2LTIuMQAAKJF1kc8rRFEUxz8zQ2TGjzLFwmLSsBryoyYsLEYMhcXMKIPNzJtfan683ptJk62yVZTY+LXgL2CrrJUiUrJT1sQGPecZNZPMuZ17Pvd77zndey5YQ2klo9f0QSab1wJ+n2s+vOCqe8JOE204GYkoujoTnAhR1d5vsZjxusesVf3cv2aPxXUFLPXCo4qq5YUnhadX8qrJW8JOJRWJCZ8IezS5oPCNqUdL/GxyssSfJmuhwBhYW4RdyQqOVrCS0jLC8nLcmXRB+b2P+RJHPDsXlNgp3oFOAD8+XEwxzhhe+hmW2UsPA/TKiir5fT/5s+QkV5FZpYjGMklS5PGIWpDqcYkJ0eMy0hTN/v/tq54YHChVd/ig9tEwXrugbhO+Ngzj48Awvg7B9gDn2XJ+bh+G3kTfKGvuPWheg9OLshbdhrN1aL9XI1rkR7KJWxMJeDmGxjC0XkHDYqlnv/sc3UFoVb7qEnZ2oVvONy99A6buaAMsxG52AAAACXBIWXMAAAsTAAALEwEAmpwYAAAApUlEQVQ4je3TMQrEIBAF0HGXFLaDnXapbfUskzN4rhzGwsYz2MYLBNxCkIXNGotssZBfjvL44Mg453BFHpcoN3RDv4YQcXBY85ym6XNqrXXO5ZxTSv3hSaN5ngGAiKy1TSGidjTaKMaIiFJKrXXOWSlVFe/9uq6HEOv8/mVZjDEAwBgrpXSUr43eewkh9n0PIXSUk0Y19aW2betfO4cG80ebfUMtL+uzNm/OVvnWAAAAAElFTkSuQmCC)
+    no-repeat right var(--gray3) !important;
+  color: var(--white) !important;
+}
+
+.qs_range {
+  filter: invert(1);
+}
+
+.qs_color_label {
+  border: 1px solid var(--gray4) !important;
+}

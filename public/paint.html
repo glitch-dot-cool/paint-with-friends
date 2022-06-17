@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Primary Meta Tags -->
+    <title>p̷a̷i̷n̶t̷ ̴w̴i̷t̶h̷ ̷f̴r̴i̴e̵n̶d̸s̶</title>
+    <meta name="title" content="p̷a̷i̷n̶t̷ ̴w̴i̷t̶h̷ ̷f̴r̴i̴e̵n̶d̸s̶">
+    <meta name="description"
+        content="paint with friends is a multiplayer drawing app developed by glitch.cool members oddlogic (Alex Gohorel) and nuan sonar (Lucas Naumowicz).">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://paint.glitch.cool/">
+    <meta property="og:title" content="p̷a̷i̷n̶t̷ ̴w̴i̷t̶h̷ ̷f̴r̴i̴e̵n̶d̸s̶">
+    <meta property="og:description"
+        content="paint with friends is a multiplayer drawing app developed by glitch.cool members oddlogic (Alex Gohorel) and nuan sonar (Lucas Naumowicz).">
+    <meta property="og:image" content="https://i.imgur.com/cHEIvbP.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://paint.glitch.cool/">
+    <meta property="twitter:title" content="p̷a̷i̷n̶t̷ ̴w̴i̷t̶h̷ ̷f̴r̴i̴e̵n̶d̸s̶">
+    <meta property="twitter:description"
+        content="paint with friends is a multiplayer drawing app developed by glitch.cool members oddlogic (Alex Gohorel) and nuan sonar (Lucas Naumowicz).">
+    <meta property="twitter:image" content="https://i.imgur.com/cHEIvbP.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.min.js"></script>
+    <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"
+        integrity="sha384-KAZ4DtjNhLChOB/hxXuKqhMLYvx3b5MlT55xPEiNmREKRzeEm+RVPlTnAn0ajQNs"
+        crossorigin="anonymous"></script>
+    <script src="/lib/p5.gui.js"></script>
+    <script src="/lib/quicksettings.js"></script>
+    <link rel="stylesheet" href="/src/app.css">
+    <link rel="stylesheet" href="/src/style.css">
+    <script src="/src/app.js" type="module"></script>
+    <script src="/src/ui.js" type="module"></script>
+    <link rel="shortcut icon" type="image/png" sizes="32x32" href="/assets/icon.png" />
+    <link rel="preload" href="/assets/icon.png" as="image">
+</head>
+
+<body id="app-body">
+
+    <form id="username-form" class="flex hide above backdrop">
+        <label class="flex column">
+            username
+            <input id="name-input" type="text" autocomplete="off">
+        </label>
+        <button id="update-username">update</button>
+    </form>
+
+    <form id="chat-form" class="flex above backdrop" onsubmit="event.preventDefault();">
+        <label class="flex column">
+            message
+            <input id="message-input" type="text" autocomplete="off">
+        </label>
+        <button id="send-message">send</button>
+        <button id="emoji-picker">🙃</button>
+    </form>
+
+    <div id="message-container" class="above">
+        <ul id="chat-list">
+            <!-- chat messages go here -->
+        </ul>
+    </div>
+
+
+    <div id="username-list-container" class="backdrop above">
+        <h4 id="username-list-title">connected users:</h4>
+        <ul id="username-list">
+            <template id="connected-users-template">
+                <li class="username-list-item">
+                    <p class="username"></p>
+                </li>
+            </template>
+        </ul>
+        <button id="change-username">change username</button>
+    </div>
+
+    <div id="p5-cursors"></div>
+
+</body>
+
+</html>
