@@ -27,6 +27,13 @@
   padding: 4rem;
 }
 
+@media (max-width: 400px) {
+  #main {
+    padding: 2rem;
+    width: 90vw;
+  }
+}
+
 html {
   font-size: clamp(60%, calc(8px + 6 * ((100vw - 320px) / 680)), 100%);
 }
@@ -42,6 +49,7 @@ main h1 {
 
 main h3 {
   margin-bottom: 2rem;
+  color: #999;
 }
 
 #main img {
