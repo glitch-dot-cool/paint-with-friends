@@ -141,11 +141,16 @@ summary:hover {
 
 details {
   overflow: hidden;
-  margin-bottom: 2rem;
+  font-size: 0.8rem;
+  margin: 0 auto 2rem auto;
 }
 
 details summary {
   position: relative;
+}
+
+details table {
+  margin: 0 auto;
 }
 
 #tips {
