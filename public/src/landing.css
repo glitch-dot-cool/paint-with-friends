@@ -16,7 +16,6 @@
 
 #main {
   width: 67vw;
-  height: 67vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -25,7 +24,20 @@
   color: var(--white);
   border-radius: 4px;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.3);
-  font-size: 80%;
+  padding: 4rem;
+}
+
+html {
+  font-size: clamp(60%, calc(8px + 6 * ((100vw - 320px) / 680)), 100%);
+}
+
+main h1,
+h3 {
+  text-align: center;
+}
+
+main h1 {
+  margin-bottom: 1rem;
 }
 
 main h3 {
@@ -35,7 +47,7 @@ main h3 {
 #main img {
   width: 81px;
   height: 94px;
-  margin-bottom: 20px !important;
+  margin-bottom: 2rem;
 }
 
 #main #subcontainer {
@@ -58,6 +70,7 @@ footer {
   color: var(--gray8);
   padding: 10px;
   font-size: 10px;
+  text-align: center;
 }
 
 footer div {
@@ -122,7 +135,6 @@ summary:hover {
 }
 
 details {
-  max-width: 500px;
   overflow: hidden;
 }
 
