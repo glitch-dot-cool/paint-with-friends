@@ -6,10 +6,12 @@ import { state } from "../initialState.js";
 const cache = {};
 
 const getLfoTargetDOMNode = (target, inputOrLabel) => {
-  if (!cache[target]) {
-    cache[target] = document.querySelector(`#${target} ${inputOrLabel}`);
-    return cache[target];
-  } else return cache[target];
+  const key = `#${target} ${inputOrLabel}`;
+
+  if (!cache[key]) {
+    cache[key] = document.querySelector(key);
+    return cache[key];
+  } else return cache[key];
 };
 
 export const setupPaintProperties = (p5, state, zoomAmount) => {
@@ -156,6 +158,8 @@ export const useLfo = (p5, gui, lfo) => {
     values[p.FILL_COLOR] = rainbow;
     const label = getLfoTargetDOMNode(p.FILL_COLOR, "label");
     label.style.backgroundColor = rainbow;
+    // update gui color to last value from lfo
+    gui.fillColor = rainbow;
   }
 
   if (strokeOpacity) {
@@ -171,6 +175,7 @@ export const useLfo = (p5, gui, lfo) => {
     values[p.STROKE_COLOR] = rainbow;
     const label = getLfoTargetDOMNode(p.STROKE_COLOR, "label");
     label.style.backgroundColor = rainbow;
+    gui.strokeColor = rainbow;
   }
 
   if (size) {

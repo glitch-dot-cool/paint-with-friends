@@ -20,7 +20,7 @@ import { Loader } from "./components/loader.js";
 
 const app = (s) => {
   const keysPressed = new KeyManager(s);
-  let socket, canvas, font;
+  let socket, canvas, font, timeout;
 
   s.preload = () => {
     Loader.show();
@@ -115,17 +115,21 @@ const app = (s) => {
   };
 
   s.paint = () => {
-    s.initLastCoords();
-    const paintProperties = setupPaintProperties(s, state, camera.zoomAmount);
-    updateDrawing(s, paintProperties);
-    socket.emit(
-      EVENTS.DRAW_UPDATE,
-      convertToLeanPaintProperties(
-        paintProperties,
-        LocalStorage.get("pwf_username") || LocalStorage.get("pwf_socket")
-      )
-    );
-    s.setLastCoords();
+    if (timeout) cancelAnimationFrame(timeout);
+
+    timeout = requestAnimationFrame(() => {
+      s.initLastCoords();
+      const paintProperties = setupPaintProperties(s, state, camera.zoomAmount);
+      updateDrawing(s, paintProperties);
+      socket.emit(
+        EVENTS.DRAW_UPDATE,
+        convertToLeanPaintProperties(
+          paintProperties,
+          LocalStorage.get("pwf_username") || LocalStorage.get("pwf_socket")
+        )
+      );
+      s.setLastCoords();
+    });
   };
 
   s.mouseDragged = ({ movementX, movementY }) => {

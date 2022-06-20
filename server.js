@@ -63,6 +63,20 @@ app.get("/canvas", async (req, res) => {
   res.json(serializedCanvasData).status(200);
 });
 
+app.get("/image", async (req, res) => {
+  const canvasData = serializeCanvas();
+  const buffer = Buffer.from(
+    canvasData.replace(/^data:image\/png;base64,/, ""),
+    "base64"
+  );
+
+  res.writeHead(200, {
+    "Content-Type": "image/png",
+    "Content-Length": buffer.length,
+  });
+  res.end(buffer);
+});
+
 app.get("/messages", async (req, res) => {
   const messageHistory = connectedUsers.messages;
   res.json(messageHistory).status(200);
