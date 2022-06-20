@@ -21,6 +21,7 @@
   "dependencies": {
     "express": "^4.17.3",
     "node-p5": "^1.0.4",
+    "sharp": "^0.30.6",
     "socket.io": "^4.4.1"
   },
   "devDependencies": {
