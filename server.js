@@ -48,41 +48,65 @@ io.sockets.on(EVENTS.NEW_CONNECTION, (socket) => {
 });
 
 app.post("/update-username", async (req, res) => {
-  const { id, username } = req.body;
-  connectedUsers.renameConnection(id, username);
-  res.sendStatus(200);
+  try {
+    const { id, username } = req.body;
+    connectedUsers.renameConnection(id, username);
+    res.sendStatus(200);
+  } catch (error) {
+    sendError(res, error, "an error occured while updating username");
+  }
 });
 
 app.post("/message", async (req, res) => {
-  const { id, message } = req.body;
-  connectedUsers.message(id, message);
-  res.sendStatus(200);
+  try {
+    const { id, message } = req.body;
+    connectedUsers.message(id, message);
+    res.sendStatus(200);
+  } catch (error) {
+    sendError(res, error, "an error occured while sending a message");
+  }
 });
 
 app.get("/canvas", async (req, res) => {
-  const serializedCanvasData = serializeCanvas();
-  res.json(serializedCanvasData).status(200);
+  try {
+    const serializedCanvasData = serializeCanvas();
+    res.json(serializedCanvasData).status(200);
+  } catch (error) {
+    sendError(res, error, "an error occured while fetching the canvas");
+  }
 });
 
 app.get("/image/:anyTimestamp", async (req, res) => {
-  const buffer = getCanvasBuffer();
-  sendImage(res, buffer);
+  try {
+    const buffer = getCanvasBuffer();
+    sendImage(res, buffer);
+  } catch (error) {
+    sendError(res, error, "an error occured while fetching the canvas image");
+  }
 });
 
 app.get("/thumbnail/:anyTimestamp", async (req, res) => {
-  const buffer = getCanvasBuffer();
+  try {
+    const buffer = getCanvasBuffer();
+    const image = await sharp(buffer)
+      .resize(1280, 720)
+      .jpeg({ mozjpeg: true })
+      .toBuffer();
 
-  const image = await sharp(buffer)
-    .resize(1280, 720)
-    .jpeg({ mozjpeg: true })
-    .toBuffer();
-
-  sendImage(res, image);
+    sendImage(res, image);
+  } catch (error) {
+    sendError(res, error, "an error occured while fetching the  thumbnail");
+  }
 });
 
 app.get("/messages", async (req, res) => {
-  const messageHistory = connectedUsers.messages;
-  res.json(messageHistory).status(200);
+  try {
+    const messageHistory = connectedUsers.messages;
+    res.json(messageHistory).status(200);
+  } catch (error) {
+    console.dir(error);
+    sendError(res, error, "an error occured while fetching messages");
+  }
 });
 
 const getCanvasBuffer = () => {
@@ -99,4 +123,8 @@ const sendImage = (res, image) => {
     "Content-Length": image.length,
   });
   res.end(image);
+};
+
+const sendError = (res, error, message) => {
+  res.json({ message, error: error.message }).status(500);
 };
