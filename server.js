@@ -65,39 +65,38 @@ app.get("/canvas", async (req, res) => {
 });
 
 app.get("/image/:anyTimestamp", async (req, res) => {
-  const canvasData = serializeCanvas();
-  const buffer = Buffer.from(
-    canvasData.replace(/^data:image\/png;base64,/, ""),
-    "base64"
-  );
-
-  res.writeHead(200, {
-    "Content-Type": "image/png",
-    "Content-Length": buffer.length,
-  });
-  res.end(buffer);
+  const buffer = getCanvasBuffer();
+  sendImage(res, buffer);
 });
 
 app.get("/thumbnail/:anyTimestamp", async (req, res) => {
-  const canvasData = serializeCanvas(0.5);
-  const buffer = Buffer.from(
-    canvasData.replace(/^data:image\/png;base64,/, ""),
-    "base64"
-  );
+  const buffer = getCanvasBuffer();
 
   const image = await sharp(buffer)
     .resize(1280, 720)
     .jpeg({ mozjpeg: true })
     .toBuffer();
 
-  res.writeHead(200, {
-    "Content-Type": "image/png",
-    "Content-Length": image.length,
-  });
-  res.end(image);
+  sendImage(res, image);
 });
 
 app.get("/messages", async (req, res) => {
   const messageHistory = connectedUsers.messages;
   res.json(messageHistory).status(200);
 });
+
+const getCanvasBuffer = () => {
+  const canvasData = serializeCanvas();
+  return Buffer.from(
+    canvasData.replace(/^data:image\/png;base64,/, ""),
+    "base64"
+  );
+};
+
+const sendImage = (res, image) => {
+  res.writeHead(200, {
+    "Content-Type": "image/png",
+    "Content-Length": image.length,
+  });
+  res.end(image);
+};
