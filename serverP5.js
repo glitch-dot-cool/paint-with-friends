@@ -31,8 +31,8 @@ export const initServerP5 = () => {
 
   p5.createSketch(sketch);
 
-  function serializeCanvas() {
-    return canvas.elt.toDataURL("image/png", 1);
+  function serializeCanvas(quality = 1) {
+    return canvas.elt.toDataURL("image/png", quality);
   }
 
   return serializeCanvas;

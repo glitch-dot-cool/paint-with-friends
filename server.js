@@ -1,5 +1,6 @@
 import express from "express";
 import { Server } from "socket.io";
+import sharp from "sharp";
 import path from "path";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
@@ -75,6 +76,25 @@ app.get("/image/:anyTimestamp", async (req, res) => {
     "Content-Length": buffer.length,
   });
   res.end(buffer);
+});
+
+app.get("/thumbnail/:anyTimestamp", async (req, res) => {
+  const canvasData = serializeCanvas(0.5);
+  const buffer = Buffer.from(
+    canvasData.replace(/^data:image\/png;base64,/, ""),
+    "base64"
+  );
+
+  const image = await sharp(buffer)
+    .resize(1280, 720)
+    .jpeg({ mozjpeg: true })
+    .toBuffer();
+
+  res.writeHead(200, {
+    "Content-Type": "image/png",
+    "Content-Length": image.length,
+  });
+  res.end(image);
 });
 
 app.get("/messages", async (req, res) => {
