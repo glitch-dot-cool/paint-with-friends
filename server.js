@@ -63,7 +63,7 @@ app.get("/canvas", async (req, res) => {
   res.json(serializedCanvasData).status(200);
 });
 
-app.get("/image", async (req, res) => {
+app.get("/image/:anyTimestamp", async (req, res) => {
   const canvasData = serializeCanvas();
   const buffer = Buffer.from(
     canvasData.replace(/^data:image\/png;base64,/, ""),
