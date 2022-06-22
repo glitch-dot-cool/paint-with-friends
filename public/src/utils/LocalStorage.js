@@ -18,6 +18,6 @@ export class LocalStorage {
 
   static delete(key) {
     localStorage.removeItem(key);
-    delete LocalStorage.cache;
+    delete LocalStorage.cache[key];
   }
 }
