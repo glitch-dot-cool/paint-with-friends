@@ -1,6 +1,5 @@
 import express from "express";
 import { Server } from "socket.io";
-import sharp from "sharp";
 import path from "path";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
@@ -9,6 +8,14 @@ import { Connections } from "./Connections.js";
 import { initServerP5 } from "./serverP5.js";
 import { eventEmitter } from "./event.js";
 import { EVENTS } from "./public/src/constants.js";
+import {
+  getCanvasBuffer,
+  sendImage,
+  sendError,
+  invalidateCache,
+  setCache,
+  generateThumbnail,
+} from "./serverUtils.js";
 
 const PORT = 3000;
 
@@ -73,7 +80,7 @@ app.post("/message", async (req, res) => {
   }
 });
 
-app.get("/canvas", async (req, res) => {
+app.get("/canvas", async (_, res) => {
   try {
     const serializedCanvasData = serializeCanvas();
     res.json(serializedCanvasData).status(200);
@@ -82,37 +89,33 @@ app.get("/canvas", async (req, res) => {
   }
 });
 
-app.get("/image/:anyTimestamp", async (req, res) => {
+app.get("/image/:anyTimestamp", async (_, res) => {
   try {
     if (cache.image.shouldFetch) {
-      const buffer = getCanvasBuffer();
-      sendImage(res, buffer);
-
+      const buffer = getCanvasBuffer(serializeCanvas);
       setCache(cache, "image", buffer);
-    } else sendImage(res, cache.image.data);
+    }
+    sendImage(res, cache.image.data);
   } catch (error) {
     sendError(res, error, "an error occured while fetching the canvas image");
   }
 });
 
-app.get("/thumbnail/:anyTimestamp", async (req, res) => {
+app.get("/thumbnail/:anyTimestamp", async (_, res) => {
   try {
     if (cache.thumbnail.shouldFetch) {
-      const buffer = getCanvasBuffer();
-      const image = await sharp(buffer)
-        .resize(1280, 720)
-        .jpeg({ mozjpeg: true })
-        .toBuffer();
-      sendImage(res, image);
+      const buffer = getCanvasBuffer(serializeCanvas);
+      const image = await generateThumbnail(buffer);
 
       setCache(cache, "thumbnail", image);
-    } else sendImage(res, cache.thumbnail.data);
+    }
+    sendImage(res, cache.thumbnail.data);
   } catch (error) {
-    sendError(res, error, "an error occured while fetching the  thumbnail");
+    sendError(res, error, "an error occured while fetching the thumbnail");
   }
 });
 
-app.get("/messages", async (req, res) => {
+app.get("/messages", async (_, res) => {
   try {
     const messageHistory = connectedUsers.messages;
     res.json(messageHistory).status(200);
@@ -121,32 +124,3 @@ app.get("/messages", async (req, res) => {
     sendError(res, error, "an error occured while fetching messages");
   }
 });
-
-const getCanvasBuffer = () => {
-  const canvasData = serializeCanvas();
-  return Buffer.from(
-    canvasData.replace(/^data:image\/png;base64,/, ""),
-    "base64"
-  );
-};
-
-const sendImage = (res, image) => {
-  res.writeHead(200, {
-    "Content-Type": "image/png",
-    "Content-Length": image.length,
-  });
-  res.end(image);
-};
-
-const sendError = (res, error, message) => {
-  res.json({ message, error: error.message }).status(500);
-};
-
-const invalidateCache = (cache) => {
-  cache.image.shouldFetch = true;
-  cache.thumbnail.shouldFetch = true;
-};
-
-const setCache = (cache, key, data) => {
-  cache[key] = { data, shouldFetch: false };
-};
