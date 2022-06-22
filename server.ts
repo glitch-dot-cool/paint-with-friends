@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { Server } from "socket.io";
+import { Server, Socket } from "socket.io";
 import path from "path";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
@@ -41,7 +41,7 @@ const io = new Server(server);
 const connectedUsers = new Connections(io);
 connectedUsers.purgeMessages();
 
-io.sockets.on(EVENTS.NEW_CONNECTION, (socket) => {
+io.sockets.on(EVENTS.NEW_CONNECTION, (socket: Socket) => {
   socket.emit(EVENTS.CONNECTED, socket.id);
   connectedUsers.addConnection(socket.id);
 

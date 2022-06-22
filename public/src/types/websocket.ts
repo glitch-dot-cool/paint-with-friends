@@ -38,3 +38,5 @@ export type Messages = Message[];
 export interface Connections {
   [id: string]: string;
 }
+
+export type Payload = LeanDrawUpdate | Messages | Connections;
