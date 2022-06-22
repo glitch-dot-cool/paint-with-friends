@@ -20,6 +20,11 @@ app.use(express.static(path.join(__dirname, "public")));
 
 const serializeCanvas = initServerP5();
 
+const cache = {
+  thumbnail: { data: null, shouldFetch: true },
+  image: { data: null, shouldFetch: true },
+};
+
 const server = app.listen(PORT, () =>
   console.log(`server listening on port ${PORT}`)
 );
@@ -33,6 +38,7 @@ io.sockets.on(EVENTS.NEW_CONNECTION, (socket) => {
   connectedUsers.addConnection(socket.id);
 
   socket.on(EVENTS.DRAW_UPDATE, (paintProperties) => {
+    invalidateCache(cache);
     socket.broadcast.emit(EVENTS.DRAW_UPDATE, paintProperties);
     eventEmitter.emit(EVENTS.DRAW_UPDATE, paintProperties);
   });
@@ -78,8 +84,12 @@ app.get("/canvas", async (req, res) => {
 
 app.get("/image/:anyTimestamp", async (req, res) => {
   try {
-    const buffer = getCanvasBuffer();
-    sendImage(res, buffer);
+    if (cache.image.shouldFetch) {
+      const buffer = getCanvasBuffer();
+      sendImage(res, buffer);
+
+      setCache(cache, "image", buffer);
+    } else sendImage(res, cache.image.data);
   } catch (error) {
     sendError(res, error, "an error occured while fetching the canvas image");
   }
@@ -87,13 +97,16 @@ app.get("/image/:anyTimestamp", async (req, res) => {
 
 app.get("/thumbnail/:anyTimestamp", async (req, res) => {
   try {
-    const buffer = getCanvasBuffer();
-    const image = await sharp(buffer)
-      .resize(1280, 720)
-      .jpeg({ mozjpeg: true })
-      .toBuffer();
+    if (cache.thumbnail.shouldFetch) {
+      const buffer = getCanvasBuffer();
+      const image = await sharp(buffer)
+        .resize(1280, 720)
+        .jpeg({ mozjpeg: true })
+        .toBuffer();
+      sendImage(res, image);
 
-    sendImage(res, image);
+      setCache(cache, "thumbnail", image);
+    } else sendImage(res, cache.thumbnail.data);
   } catch (error) {
     sendError(res, error, "an error occured while fetching the  thumbnail");
   }
@@ -127,4 +140,13 @@ const sendImage = (res, image) => {
 
 const sendError = (res, error, message) => {
   res.json({ message, error: error.message }).status(500);
+};
+
+const invalidateCache = (cache) => {
+  cache.image.shouldFetch = true;
+  cache.thumbnail.shouldFetch = true;
+};
+
+const setCache = (cache, key, data) => {
+  cache[key] = { data, shouldFetch: false };
 };
