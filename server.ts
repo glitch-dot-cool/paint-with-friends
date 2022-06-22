@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import { Server } from "socket.io";
 import path from "path";
 import { dirname } from "path";
@@ -16,6 +16,7 @@ import {
   setCache,
   generateThumbnail,
 } from "./serverUtils.js";
+import { LeanDrawUpdate } from "./public/src/types/websocket.js";
 
 const PORT = 3000;
 
@@ -44,13 +45,13 @@ io.sockets.on(EVENTS.NEW_CONNECTION, (socket) => {
   socket.emit(EVENTS.CONNECTED, socket.id);
   connectedUsers.addConnection(socket.id);
 
-  socket.on(EVENTS.DRAW_UPDATE, (paintProperties) => {
+  socket.on(EVENTS.DRAW_UPDATE, (paintProperties: LeanDrawUpdate) => {
     invalidateCache(cache);
     socket.broadcast.emit(EVENTS.DRAW_UPDATE, paintProperties);
     eventEmitter.emit(EVENTS.DRAW_UPDATE, paintProperties);
   });
 
-  socket.on(EVENTS.MOUSE_RELEASED, (username) => {
+  socket.on(EVENTS.MOUSE_RELEASED, (username: string) => {
     socket.broadcast.emit(EVENTS.MOUSE_RELEASED, username);
   });
 
@@ -60,7 +61,7 @@ io.sockets.on(EVENTS.NEW_CONNECTION, (socket) => {
   });
 });
 
-app.post("/update-username", async (req, res) => {
+app.post("/update-username", async (req: Request, res: Response) => {
   try {
     const { id, username } = req.body;
     connectedUsers.renameConnection(id, username);
@@ -70,7 +71,7 @@ app.post("/update-username", async (req, res) => {
   }
 });
 
-app.post("/message", async (req, res) => {
+app.post("/message", async (req: Request, res: Response) => {
   try {
     const { id, message } = req.body;
     connectedUsers.message(id, message);
@@ -80,7 +81,7 @@ app.post("/message", async (req, res) => {
   }
 });
 
-app.get("/canvas", async (_, res) => {
+app.get("/canvas", async (_: Request, res: Response) => {
   try {
     const serializedCanvasData = serializeCanvas();
     res.json(serializedCanvasData).status(200);
@@ -89,7 +90,7 @@ app.get("/canvas", async (_, res) => {
   }
 });
 
-app.get("/image/:anyTimestamp", async (_, res) => {
+app.get("/image/:anyTimestamp", async (_: Request, res: Response) => {
   try {
     if (cache.image.shouldFetch) {
       const buffer = getCanvasBuffer(serializeCanvas);
@@ -101,7 +102,7 @@ app.get("/image/:anyTimestamp", async (_, res) => {
   }
 });
 
-app.get("/thumbnail/:anyTimestamp", async (_, res) => {
+app.get("/thumbnail/:anyTimestamp", async (_: Request, res: Response) => {
   try {
     if (cache.thumbnail.shouldFetch) {
       const buffer = getCanvasBuffer(serializeCanvas);
@@ -115,7 +116,7 @@ app.get("/thumbnail/:anyTimestamp", async (_, res) => {
   }
 });
 
-app.get("/messages", async (_, res) => {
+app.get("/messages", async (_: Request, res: Response) => {
   try {
     const messageHistory = connectedUsers.messages;
     res.json(messageHistory).status(200);
