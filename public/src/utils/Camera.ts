@@ -1,4 +1,15 @@
 class Camera {
+  zoomAmount: number;
+  maxZoom: number;
+  minZoom: number;
+  scrollSensitivity: number;
+  offset: { x: number; y: number };
+  canvases: {
+    app: HTMLCanvasElement | null;
+    cursors: HTMLCanvasElement | null;
+  };
+  isActive: boolean;
+
   constructor() {
     this.zoomAmount = 1;
     this.maxZoom = 1;
@@ -12,7 +23,7 @@ class Camera {
     this.isActive = true;
   }
 
-  static scaleByZoomAmount = (coordinate, zoomAmount) => {
+  static scaleByZoomAmount = (coordinate: number, zoomAmount: number) => {
     return coordinate * (1 / zoomAmount);
   };
 
@@ -20,25 +31,25 @@ class Camera {
 
   deactivate = () => (this.isActive = false);
 
-  registerCanvas = (canvas, name) => {
+  registerCanvas = (canvas: HTMLCanvasElement, name: "app" | "cursors") => {
     this.canvases[name] = canvas;
   };
 
-  zoom = (delta) => {
+  zoom = (delta: number) => {
     if (this.isActive) {
       this._setZoom(delta * -1);
       this._applyToCanvases(this._zoomCanvas);
     }
   };
 
-  pan = (movementX, movementY) => {
+  pan = (movementX: number, movementY: number) => {
     if (this.isActive) {
       this._setPan(movementX, movementY);
       this._applyToCanvases(this._panCanvas);
     }
   };
 
-  _setZoom = (delta) => {
+  _setZoom = (delta: number) => {
     const rawUpdatedValue = this.zoomAmount + delta * this.scrollSensitivity;
     const constrained = Math.min(
       Math.max(this.minZoom, rawUpdatedValue),
@@ -48,22 +59,22 @@ class Camera {
     this.zoomAmount = constrained;
   };
 
-  _zoomCanvas = (canvas) => {
+  _zoomCanvas = (canvas: HTMLCanvasElement) => {
     canvas.style.transition = "300ms ease-in-out transform";
     canvas.style.transform = `scale(${this.zoomAmount}) translate(${this.offset.x}px, ${this.offset.y}px)`;
   };
 
-  _setPan = (movementX, movementY) => {
+  _setPan = (movementX: number, movementY: number) => {
     this.offset.x += Camera.scaleByZoomAmount(movementX, this.zoomAmount);
     this.offset.y += Camera.scaleByZoomAmount(movementY, this.zoomAmount);
   };
 
-  _panCanvas = (canvas) => {
+  _panCanvas = (canvas: HTMLCanvasElement) => {
     canvas.style.transition = "none";
     canvas.style.transform = `scale(${this.zoomAmount}) translate(${this.offset.x}px, ${this.offset.y}px)`;
   };
 
-  _applyToCanvases = (transform) => {
+  _applyToCanvases = (transform: (canvas: HTMLCanvasElement) => void) => {
     Object.values(this.canvases).forEach((canvas) => {
       if (canvas) transform(canvas);
     });

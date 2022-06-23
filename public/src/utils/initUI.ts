@@ -1,20 +1,21 @@
 import { state } from "../initialState.js";
 import { GUI_GUTTER, GUI_OFFSET, paintProperties as p } from "../constants.js";
+import { BrushShape } from "../types/paint";
 
-export const initGuiPanels = (s, thisContext) => {
-  const gui = s.createGui("paintbrush", thisContext);
+export const initGuiPanels = (s: p5) => {
+  const gui = s.createGui("paintbrush", s);
   gui.id = "paintbrush-options";
   gui.addObject(state.gui);
 
-  const lfo1Gui = s.createGui("lfo1", thisContext);
+  const lfo1Gui = s.createGui("lfo1", s);
   lfo1Gui.setPosition(GUI_OFFSET);
   lfo1Gui.addObject(state.lfo1.gui);
 
-  const lfo2Gui = s.createGui("lfo2", thisContext);
+  const lfo2Gui = s.createGui("lfo2", s);
   lfo2Gui.setPosition(2 * GUI_OFFSET - GUI_GUTTER);
   lfo2Gui.addObject(state.lfo2.gui);
 
-  const lfo3Gui = s.createGui("lfo3", thisContext);
+  const lfo3Gui = s.createGui("lfo3", s);
   lfo3Gui.setPosition(3 * GUI_OFFSET - 2 * GUI_GUTTER);
   lfo3Gui.addObject(state.lfo3.gui);
 
@@ -27,20 +28,22 @@ export const initGuiPanels = (s, thisContext) => {
 
 const handleVisibleParams = () => {
   // conditionally hide irrevelant properties based on current shape selection
-  const shapeSelector = document.querySelector("#shape");
+  const shapeSelector: HTMLSelectElement | null =
+    document.querySelector("#shape");
 
   // initial configuration
-  const selectElement = shapeSelector.querySelector("select");
-  const currentSelection = selectElement.options[selectElement.selectedIndex];
-  hideUnusedProperties(currentSelection.value);
+  const selectElement = shapeSelector?.querySelector("select");
+  const currentSelection = selectElement?.options[selectElement.selectedIndex];
+  hideUnusedProperties(currentSelection?.value as BrushShape);
 
   // update on changes to shape selection dropdown
-  shapeSelector.addEventListener("change", (e) => {
-    hideUnusedProperties(e.target.value);
+  shapeSelector?.addEventListener("change", (e) => {
+    const value = (e.target as HTMLInputElement).value as BrushShape;
+    hideUnusedProperties(value);
   });
 };
 
-const hideUnusedProperties = (shape) => {
+const hideUnusedProperties = (shape: BrushShape) => {
   switch (shape) {
     case "line":
       setParamVisibility(getUnusedParamsForShape(shape));
@@ -57,7 +60,7 @@ const hideUnusedProperties = (shape) => {
   }
 };
 
-const getUnusedParamsForShape = (shape) => {
+const getUnusedParamsForShape = (shape: BrushShape) => {
   switch (shape) {
     case "line":
       return [p.FILL_COLOR, p.FILL_OPACITY, p.SIZE, p.TEXT];
@@ -69,7 +72,7 @@ const getUnusedParamsForShape = (shape) => {
   }
 };
 
-const setParamVisibility = (hideList) => {
+const setParamVisibility = (hideList: string[]) => {
   const ignore = [p.X, p.Y, p.PREV_X, p.PREV_Y];
 
   // all params minus ignored props
@@ -79,7 +82,8 @@ const setParamVisibility = (hideList) => {
 
   // hide ununsed params
   hideList.forEach((property) => {
-    document.querySelector(`#${property}`).style.display = "none";
+    const element = document.querySelector<HTMLElement>(`#${property}`);
+    if (element) element.style.display = "none";
   });
 
   // iterate array diff and set display to block
@@ -87,6 +91,7 @@ const setParamVisibility = (hideList) => {
 
   // show used params
   diff.forEach((property) => {
-    document.querySelector(`#${property}`).style.display = "block";
+    const element = document.querySelector<HTMLElement>(`#${property}`);
+    if (element) element.style.display = "block";
   });
 };

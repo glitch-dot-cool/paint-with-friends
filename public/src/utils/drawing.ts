@@ -1,13 +1,35 @@
 import { dimensions } from "../constants.js";
+import {
+  BrushShape,
+  CanvasDimensions,
+  MirrorModeParams,
+  Paintbrush,
+  SetupShapeReturnValues,
+  State,
+} from "../types/paint.js";
 
-export const updateDrawing = (p5, paintProperties) => {
+export const updateDrawing = (p5: p5, paintProperties: Paintbrush) => {
   handleColor(p5, paintProperties);
   renderShape(p5, dimensions, paintProperties);
 };
 
 const handleColor = (
-  p5,
-  { fillColor, fillOpacity, strokeColor, strokeOpacity, saturation, brightness }
+  p5: p5,
+  {
+    fillColor,
+    fillOpacity,
+    strokeColor,
+    strokeOpacity,
+    saturation,
+    brightness,
+  }: {
+    fillColor: Paintbrush["fillColor"];
+    fillOpacity: Paintbrush["fillOpacity"];
+    strokeColor: Paintbrush["strokeColor"];
+    strokeOpacity: Paintbrush["strokeOpacity"];
+    saturation: Paintbrush["saturation"];
+    brightness: Paintbrush["brightness"];
+  }
 ) => {
   const strokeHue = Math.floor(p5.hue(strokeColor));
   const stroke = p5.color(`hsb(${strokeHue}, ${saturation}%, ${brightness}%)`);
@@ -21,7 +43,11 @@ const handleColor = (
   p5.fill(fill);
 };
 
-const renderShape = (p5, dimensions, params) => {
+const renderShape = (
+  p5: p5,
+  dimensions: CanvasDimensions,
+  params: Paintbrush
+) => {
   const { x, y, shape, mirrorX, mirrorY, strokeWeight } = params;
   p5.strokeWeight(strokeWeight);
 
@@ -45,9 +71,15 @@ const renderShape = (p5, dimensions, params) => {
 };
 
 const handleMirrorMode = (
-  { fn, defaultArgs, mirrorXArgs, mirrorYArgs, mirrorXAndYArgs },
-  mirrorX,
-  mirrorY
+  {
+    fn,
+    default: defaultArgs,
+    mirrorX: mirrorXArgs,
+    mirrorY: mirrorYArgs,
+    mirrorBoth: mirrorXAndYArgs,
+  }: MirrorModeParams,
+  mirrorX: boolean,
+  mirrorY: boolean
 ) => {
   fn(...defaultArgs);
   if (mirrorX && mirrorY) {
@@ -59,19 +91,19 @@ const handleMirrorMode = (
   }
 };
 
-const setupShape = (p5, shape, params) => {
+const setupShape = (p5: p5, shape: BrushShape, params: Paintbrush) => {
   const args = setupMirrorArgs(shape, params);
 
   return {
     fn: p5[shape].bind(p5),
-    defaultArgs: args.default,
-    mirrorXArgs: args.mirrorX,
-    mirrorYArgs: args.mirrorY,
-    mirrorXAndYArgs: args.mirrorBoth,
+    ...args,
   };
 };
 
-const setupMirrorArgs = (shape, params) => {
+const setupMirrorArgs = (
+  shape: BrushShape,
+  params: Paintbrush
+): SetupShapeReturnValues => {
   const { width, height } = dimensions;
   const { x, y, prevX, prevY, size, text } = params;
 
@@ -102,12 +134,12 @@ const setupMirrorArgs = (shape, params) => {
   }
 };
 
-export const toggleDrawMode = (state) => {
+export const toggleDrawMode = (state: State) => {
   state.isDrawing = !state.isDrawing;
   toggleCursor(state);
 };
 
-export const toggleCursor = (state) => {
+export const toggleCursor = (state: State) => {
   if (state.isDrawing) {
     document.body.style.cursor = "crosshair";
   } else {

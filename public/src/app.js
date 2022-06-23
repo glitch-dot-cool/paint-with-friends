@@ -49,7 +49,7 @@ const app = (s) => {
 
     socket = io.connect(setBaseUrl());
 
-    initGuiPanels(s, this);
+    initGuiPanels(s);
 
     // init separate sketch for rendering cursors
     new p5(initCursors(socket, camera));
