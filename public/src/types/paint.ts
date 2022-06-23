@@ -12,6 +12,8 @@ export interface Paintbrush {
   mirrorY: boolean;
   x: number;
   y: number;
+  prevX: number;
+  prevY: number;
   strokeWeight: number;
   saturation: number;
   brightness: number;
@@ -77,3 +79,22 @@ export interface State {
   isDrawing: boolean;
   hasInitializedMessages: boolean;
 }
+
+export type CanvasDimensions = { width: number; height: number };
+
+type CircleOrSquareMirrorArgs = [x: number, y: number, size: number];
+type LineMirrorArgs = [lastX: number, lastY: number, x: number, y: number];
+type TextMirrorArgs = [text: string, x: number, y: number];
+
+type MirrorArgs = CircleOrSquareMirrorArgs | LineMirrorArgs | TextMirrorArgs;
+
+export type SetupShapeReturnValues = {
+  default: MirrorArgs;
+  mirrorX: MirrorArgs;
+  mirrorY: MirrorArgs;
+  mirrorBoth: MirrorArgs;
+};
+
+export type MirrorModeParams = SetupShapeReturnValues & {
+  fn: p5.line | p5.circle | p5.square | p5.text;
+};
