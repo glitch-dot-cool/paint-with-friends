@@ -3,12 +3,12 @@ import {
   BrushShape,
   CanvasDimensions,
   MirrorModeParams,
-  Paintbrush,
   SetupShapeReturnValues,
   State,
 } from "../types/paint.js";
+import { DrawUpdate } from "../types/websocket.js";
 
-export const updateDrawing = (p5: p5, paintProperties: Paintbrush) => {
+export const updateDrawing = (p5: p5, paintProperties: DrawUpdate) => {
   handleColor(p5, paintProperties);
   renderShape(p5, dimensions, paintProperties);
 };
@@ -23,12 +23,12 @@ const handleColor = (
     saturation,
     brightness,
   }: {
-    fillColor: Paintbrush["fillColor"];
-    fillOpacity: Paintbrush["fillOpacity"];
-    strokeColor: Paintbrush["strokeColor"];
-    strokeOpacity: Paintbrush["strokeOpacity"];
-    saturation: Paintbrush["saturation"];
-    brightness: Paintbrush["brightness"];
+    fillColor: DrawUpdate["fillColor"];
+    fillOpacity: DrawUpdate["fillOpacity"];
+    strokeColor: DrawUpdate["strokeColor"];
+    strokeOpacity: DrawUpdate["strokeOpacity"];
+    saturation: DrawUpdate["saturation"];
+    brightness: DrawUpdate["brightness"];
   }
 ) => {
   const strokeHue = Math.floor(p5.hue(strokeColor));
@@ -46,7 +46,7 @@ const handleColor = (
 const renderShape = (
   p5: p5,
   dimensions: CanvasDimensions,
-  params: Paintbrush
+  params: DrawUpdate
 ) => {
   const { x, y, shape, mirrorX, mirrorY, strokeWeight } = params;
   p5.strokeWeight(strokeWeight);
@@ -91,7 +91,7 @@ const handleMirrorMode = (
   }
 };
 
-const setupShape = (p5: p5, shape: BrushShape, params: Paintbrush) => {
+const setupShape = (p5: p5, shape: BrushShape, params: DrawUpdate) => {
   const args = setupMirrorArgs(shape, params);
 
   return {
@@ -102,7 +102,7 @@ const setupShape = (p5: p5, shape: BrushShape, params: Paintbrush) => {
 
 const setupMirrorArgs = (
   shape: BrushShape,
-  params: Paintbrush
+  params: DrawUpdate
 ): SetupShapeReturnValues => {
   const { width, height } = dimensions;
   const { x, y, prevX, prevY, size, text } = params;

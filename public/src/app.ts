@@ -17,22 +17,32 @@ import { setBaseUrl } from "./utils/setBaseUrl.js";
 import { Camera, camera } from "./utils/Camera.js";
 import { initCursors } from "./cursors.js";
 import { Loader } from "./components/loader.js";
+import { Socket } from "socket.io";
+import { DrawUpdate, LeanDrawUpdate } from "./types/websocket.js";
 
-const app = (s) => {
+type PaintWithFriends = p5 & {
+  initCanvas: (serializedCanvas: string) => void;
+  initLastCoords: () => void;
+  setLastCoords: () => void;
+  paint: () => void;
+};
+
+const app = (s: PaintWithFriends) => {
   const keysPressed = new KeyManager(s);
-  let socket, canvas, font, timeout;
+  let socket: Socket, canvas: HTMLCanvasElement, font: p5.Font, timeout: number;
 
   s.preload = () => {
     Loader.show();
     font = s.loadFont("assets/JetBrainsMonoLight.ttf");
   };
 
-  s.initCanvas = (serializedCanvas) => {
-    canvas = document.querySelector("#app");
+  s.initCanvas = (serializedCanvas: string) => {
+    const canvasElement = document.querySelector<HTMLCanvasElement>("#app");
+    if (canvasElement) canvas = canvasElement;
     const ctx = canvas.getContext("2d");
     const img = new Image();
     img.onload = function () {
-      ctx.drawImage(img, 0, 0);
+      ctx?.drawImage(img, 0, 0);
     };
     img.src = serializedCanvas;
   };
@@ -44,9 +54,12 @@ const app = (s) => {
     s.initCanvas(initialCanvasState);
     camera.registerCanvas(canvas, "app");
 
+    console.log(state);
+
     s.textFont(font);
     s.rectMode(s.CENTER);
 
+    // @ts-ignore - imported via script tag in paint.html
     socket = io.connect(setBaseUrl());
 
     initGuiPanels(s);
@@ -60,8 +73,8 @@ const app = (s) => {
       initUsername(socketID);
     });
 
-    socket.on(EVENTS.DRAW_UPDATE, (leanPaintProperties) => {
-      const paintProperties =
+    socket.on(EVENTS.DRAW_UPDATE, (leanPaintProperties: LeanDrawUpdate) => {
+      const paintProperties: DrawUpdate =
         convertLeanPaintPropertiesToObject(leanPaintProperties);
 
       updateDrawing(s, paintProperties);
@@ -117,6 +130,9 @@ const app = (s) => {
   s.paint = () => {
     if (timeout) cancelAnimationFrame(timeout);
 
+    // todo: rethink this - it causes timing inconsistencies :(
+    // possible solution: track lastFrameCount and compare with p5.frameCount
+    // (if lastFrameCount < current, run the code, otherwise do nothing)
     timeout = requestAnimationFrame(() => {
       s.initLastCoords();
       const paintProperties = setupPaintProperties(s, state, camera.zoomAmount);
@@ -132,7 +148,13 @@ const app = (s) => {
     });
   };
 
-  s.mouseDragged = ({ movementX, movementY }) => {
+  s.mouseDragged = ({
+    movementX,
+    movementY,
+  }: {
+    movementX: number;
+    movementY: number;
+  }) => {
     if (state.isDrawing) {
       s.paint();
     } else {
@@ -140,8 +162,8 @@ const app = (s) => {
     }
   };
 
-  s.mouseWheel = ({ delta }) => {
-    camera.zoom(delta);
+  s.mouseWheel = ({ deltaY }: WheelEvent) => {
+    camera.zoom(deltaY);
   };
 
   s.mousePressed = () => {
@@ -163,8 +185,8 @@ const app = (s) => {
       );
     }
 
-    // reset last coord positions to null to re-trigger init
-    state.lastX = state.lastY = null;
+    // reset last coord positions to re-trigger init
+    state.lastX = state.lastY = 0;
   };
 };
 
