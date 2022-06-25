@@ -1,10 +1,12 @@
 import { BrushShape, Paintbrush } from "./paint";
 
-export interface DrawUpdate extends Paintbrush {
-  username: string;
+export interface DrawUpdate
+  extends Omit<Paintbrush, "fillColor" | "strokeColor"> {
   prevX: number;
   prevY: number;
   text: string;
+  fillColor: string;
+  strokeColor: string;
 }
 
 export type LeanDrawUpdate = [

@@ -1,10 +1,12 @@
+import { DrawUpdate } from "./websocket";
+
 export type BrushShape = "line" | "circle" | "square" | "text";
 
 export interface Paintbrush {
   text: string;
-  fillColor: string;
+  fillColor: p5.Color;
   fillOpacity: number;
-  strokeColor: string;
+  strokeColor: p5.Color;
   strokeOpacity: number;
   size: number;
   shape: BrushShape;
@@ -19,10 +21,18 @@ export interface Paintbrush {
   brightness: number;
 }
 
-export interface GuiParams extends Omit<Paintbrush, "shape" | "x" | "y"> {
+export interface GuiParams
+  extends Omit<
+    DrawUpdate,
+    "shape" | "x" | "y" | "prevX" | "prevY" | "username"
+  > {
   sizeMin: number;
   sizeMax: number;
   shape: BrushShape[];
+}
+
+export interface GuiValues extends Omit<GuiParams, "shape"> {
+  shape: BrushShape;
 }
 
 export type LfoShape =
@@ -32,8 +42,6 @@ export type LfoShape =
   | "saw"
   | "random"
   | "noise";
-
-export type LfoTarget = keyof LfoTargets;
 
 interface LfoTargets {
   fillColor?: boolean;
@@ -48,6 +56,7 @@ interface LfoTargets {
   brightness?: boolean;
 }
 
+export type LfoTarget = keyof LfoTargets;
 export interface LfoParams extends LfoTargets {
   shape: LfoShape[];
   speed: number;
@@ -64,18 +73,22 @@ export interface LfoParams extends LfoTargets {
   amountStep: number;
 }
 
-interface Lfo {
+export interface LfoValues extends Omit<LfoParams, "shape"> {
+  shape: LfoShape;
+}
+
+export interface Lfo {
   value: number;
-  gui: LfoParams;
+  gui: LfoValues;
 }
 
 export interface State {
-  gui: GuiParams;
+  gui: GuiValues;
   lfo1: Lfo;
   lfo2: Lfo;
   lfo3: Lfo;
-  lastX: number | null;
-  lastY: number | null;
+  lastX: number;
+  lastY: number;
   isDrawing: boolean;
   hasInitializedMessages: boolean;
 }
@@ -96,5 +109,5 @@ export type SetupShapeReturnValues = {
 };
 
 export type MirrorModeParams = SetupShapeReturnValues & {
-  fn: p5.line | p5.circle | p5.square | p5.text;
+  fn: p5["line"] | p5["circle"] | p5["square"] | p5["text"];
 };
