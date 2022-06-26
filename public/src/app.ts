@@ -55,8 +55,6 @@ const app = (s: PaintWithFriends) => {
     s.initCanvas(initialCanvasState);
     camera.registerCanvas(canvas, "app");
 
-    console.log(state);
-
     s.textFont(font);
     s.rectMode(s.CENTER);
 

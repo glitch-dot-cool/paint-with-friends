@@ -1,16 +1,29 @@
+import { Socket } from "socket.io";
 import { dimensions, EVENTS } from "./constants.js";
 import { Camera } from "./utils/Camera.js";
 
-export const initCursors = (socket, camera) => {
-  const cursors = (s) => {
-    const users = {};
+type CursorsP5 = p5 & {
+  usernameToColor: (username: string) => string;
+  upsertUser: (username: string, x: number, y: number, color: string) => void;
+  drawCursor: (x: number, y: number, username: string, color: string) => void;
+};
+
+type User = { x: number; y: number; color: string };
+
+type Users = {
+  [username: string]: User;
+};
+
+export const initCursors = (socket: Socket, camera: Camera) => {
+  const cursors = (s: CursorsP5) => {
+    const users: Users = {};
 
     s.setup = () => {
       const canvas = s.createCanvas(dimensions.width, dimensions.height);
       canvas.id("cursors");
       canvas.parent("p5-cursors");
 
-      camera.registerCanvas(document.querySelector("#cursors"), "cursors");
+      camera.registerCanvas(document.querySelector("#cursors")!, "cursors");
 
       s.textFont("JetBrains Mono");
 
@@ -26,11 +39,14 @@ export const initCursors = (socket, camera) => {
     };
 
     s.draw = () => {
-      s.clear();
+      s.clear(0, 0, 0, 0);
 
       Object.keys(users).forEach((username) => {
-        const { x, y, color } = users[username];
-        s.drawCursor(x, y, username, color);
+        const user = users[username];
+        if (user) {
+          const { x, y, color } = user;
+          s.drawCursor(x, y, username, color);
+        }
       });
     };
 
@@ -63,7 +79,7 @@ export const initCursors = (socket, camera) => {
     };
 
     // https://gist.github.com/0x263b/2bdd90886c2036a1ad5bcf06d6e6fb37
-    s.usernameToColor = (username) => {
+    s.usernameToColor = (username: string) => {
       const colors = [
         "#e51c23",
         "#e91e63",
@@ -82,13 +98,14 @@ export const initCursors = (socket, camera) => {
       ];
 
       let hash = 0;
-      if (username?.length === 0) return hash;
+      const defaultColor = colors[0];
+      if (username?.length === 0 && defaultColor) return defaultColor;
       for (let i = 0; i < username.length; i++) {
         hash = username.charCodeAt(i) + ((hash << 5) - hash);
         hash = hash & hash;
       }
       hash = ((hash % colors.length) + colors.length) % colors.length;
-      return colors[hash];
+      return colors[hash] || defaultColor!;
     };
   };
 
