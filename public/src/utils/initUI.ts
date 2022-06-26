@@ -1,17 +1,16 @@
 import { state } from "../initialState.js";
 import { GUI_GUTTER, GUI_OFFSET, paintProperties as p } from "../constants.js";
 import { BrushShape, GuiValues, LfoValues } from "../types/paint";
+import { PaintWithFriends } from "../app.js";
 
-type p5GuiInstance = {
+export type p5GuiInstance = {
   id: string;
   addObject: (params: GuiValues | LfoValues) => void;
   setPosition: (x?: number, y?: number) => void;
   collapse: () => void;
 };
 
-type p5Gui = p5 & { createGui: (name: string, p5: p5) => p5GuiInstance };
-
-export const initGuiPanels = (s: p5Gui) => {
+export const initGuiPanels = (s: PaintWithFriends) => {
   const gui = s.createGui("paintbrush", s);
   gui.id = "paintbrush-options";
   gui.addObject(state.gui);
