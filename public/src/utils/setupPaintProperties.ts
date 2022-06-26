@@ -171,7 +171,6 @@ export const useLfo = (p5: p5, gui: GuiValues, lfo: Lfo): Paintbrush => {
 
   if (saturation) {
     const lfoValue = Waveforms[shape](floor, lfo.value) * amount;
-    console.log(lfoValue, typeof lfoValue);
     values.saturation = lfoValue;
     const input = getLfoTargetDOMNode(
       p.SATURATION,
