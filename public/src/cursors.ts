@@ -79,7 +79,7 @@ export const initCursors = (socket: Socket, camera: Camera) => {
     };
 
     // https://gist.github.com/0x263b/2bdd90886c2036a1ad5bcf06d6e6fb37
-    s.usernameToColor = (username: string) => {
+    s.usernameToColor = (username) => {
       const colors = [
         "#e51c23",
         "#e91e63",

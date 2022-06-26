@@ -25,11 +25,11 @@ export class Loader {
     const container = document.querySelector("#loader-container");
 
     // remove inner loader nodes
-    while (container.firstChild) {
+    while (container?.firstChild) {
       container.removeChild(container.firstChild);
     }
 
-    container.remove();
+    container?.remove();
 
     Loader._unhideMainUi();
   };
@@ -45,7 +45,7 @@ export class Loader {
     });
 
     // unhide other UI elements
-    chat.classList.add("fade-in");
-    connectedUsers.classList.add("fade-in");
+    chat?.classList.add("fade-in");
+    connectedUsers?.classList.add("fade-in");
   };
 }

@@ -1,9 +1,11 @@
 import { LocalStorage } from "../utils/LocalStorage.js";
 
-export const userList = (users) => {
+export const userList = (usernames: string[]) => {
   // grab the existing list & template
-  const ul = document.getElementById("username-list");
-  const template = document.getElementById("connected-users-template");
+  const ul = document.querySelector<HTMLUListElement>("#username-list");
+  const template = document.querySelector<HTMLTemplateElement>(
+    "#connected-users-template"
+  )!;
 
   // create empty copy of list (recreating the initial structure)
   const newList = document.createElement("ul");
@@ -11,7 +13,7 @@ export const userList = (users) => {
   newList.appendChild(template);
 
   // create updated list
-  Object.values(users).forEach((username) => {
+  Object.values(usernames).forEach((username) => {
     const listItem = document.importNode(template.content, true);
     const storedUsername = LocalStorage.get("pwf_username");
     const socketID = LocalStorage.get("pwf_socket");
@@ -23,10 +25,11 @@ export const userList = (users) => {
       text = username;
     }
 
-    listItem.querySelector(".username").innerHTML = text;
+    const usernameElement = listItem.querySelector(".username")!;
+    usernameElement.innerHTML = text;
     newList.appendChild(listItem);
   });
 
   // update list by replacing w/ newly created one
-  ul.replaceWith(newList);
+  ul?.replaceWith(newList);
 };

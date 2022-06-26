@@ -1,4 +1,11 @@
-export const chatMessages = (messages, init = false) => {
+interface Message {
+  sender: string;
+  message: string;
+}
+
+type Messages = Message[];
+
+export const chatMessages = (messages: Messages, init = false) => {
   if (!messages.length) return;
 
   // create new unordered list to replace old one
@@ -7,8 +14,8 @@ export const chatMessages = (messages, init = false) => {
   ul.setAttribute("id", "chat-list");
 
   if (init) {
-    setTimeout(() => (ul.style.opacity = 1), 100);
-  } else ul.style.opacity = 1;
+    setTimeout(() => (ul.style.opacity = "1"), 100);
+  } else ul.style.opacity = "1";
 
   // append list elements for each message
   messages.forEach((message) => {
@@ -17,13 +24,13 @@ export const chatMessages = (messages, init = false) => {
 
   // replace the old list w/ the new one
   const currentList = document.querySelector("#chat-list");
-  currentList.replaceWith(ul);
+  currentList?.replaceWith(ul);
 
   // scroll to bottom
   ul.scrollTop = ul.scrollHeight;
 };
 
-const createMessageMarkup = (message, list) => {
+const createMessageMarkup = (message: Message, list: HTMLUListElement) => {
   const li = document.createElement("li");
   li.classList.add("chat-list-item");
 
