@@ -1,3 +1,4 @@
+// @ts-ignore-nextline: no types for this package, but we need the regular p5 types (see: canvas type)
 import p5 from "node-p5";
 
 import { dimensions } from "./public/src/constants.js";
