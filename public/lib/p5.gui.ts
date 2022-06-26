@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 (function () {
   // list of guis
   var guis = [];
