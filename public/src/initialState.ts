@@ -1,13 +1,18 @@
 import {
   GuiParams,
+  GuiValues,
   LfoParams,
   LfoTarget,
-  Paintbrush,
+  LfoValues,
   State,
 } from "./types/paint.js";
+import { DrawUpdate } from "./types/websocket.js";
 
 // common state variables used by client & server
-const commonState: Omit<Paintbrush, "x" | "y" | "shape"> = {
+const commonState: Omit<
+  DrawUpdate,
+  "x" | "y" | "shape" | "prevX" | "prevY" | "username"
+> = {
   text: "",
   fillColor: "#349beb",
   fillOpacity: 255,
@@ -22,7 +27,10 @@ const commonState: Omit<Paintbrush, "x" | "y" | "shape"> = {
 };
 
 // server state requires initial x/y coords
-export const initialServerState: Omit<Paintbrush, "shape"> = {
+export const initialServerState: Omit<
+  DrawUpdate,
+  "shape" | "prevX" | "prevY" | "username"
+> = {
   ...commonState,
   x: 0,
   y: 0,
@@ -72,12 +80,21 @@ lfoControllableParams.forEach((param) => (lfoParams[param] = false));
 
 // full client-side state object
 export const state: State = {
-  gui: guiParams,
-  lfo1: { gui: { ...lfoParams }, value: 0 },
-  lfo2: { gui: { ...lfoParams }, value: 0 },
-  lfo3: { gui: { ...lfoParams }, value: 0 },
-  lastX: null,
-  lastY: null,
+  /**
+   the unfortunate casting is a result of the way the p5.gui library works:
+   for html select elements, you provide it an array of values (GuiValues/LfoValues)
+   and it generates the UI but transforms the under-the-hood state value to the first option initially.
+   i.e. the "Params" versions of the interfaces *are* what is here, but by the time the p5 app
+   consumes the object, it's taken the shape of the "Values" interfaces. because the latter is how 
+   the object is used in every case other than the initial UI generation, i've opted to handle the 
+   casting in a single location here
+   */
+  gui: guiParams as unknown as GuiValues,
+  lfo1: { gui: { ...(lfoParams as unknown as LfoValues) }, value: 0 },
+  lfo2: { gui: { ...(lfoParams as unknown as LfoValues) }, value: 0 },
+  lfo3: { gui: { ...(lfoParams as unknown as LfoValues) }, value: 0 },
+  lastX: 0,
+  lastY: 0,
   isDrawing: false,
   hasInitializedMessages: false,
 };

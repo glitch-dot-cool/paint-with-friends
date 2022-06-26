@@ -13,8 +13,8 @@ const isMobile = detectMobile();
 if (isMobile) {
   const button = document.querySelector("#enter-button");
   const details = document.querySelector("details");
-  button.remove();
-  details.remove();
+  button?.remove();
+  details?.remove();
 
   const container = document.querySelector("#subcontainer");
   const message = document.createElement("p");
@@ -22,5 +22,5 @@ if (isMobile) {
   message.textContent =
     "Sorry, this application is not designed for mobile devices.";
 
-  container.appendChild(message);
+  container?.appendChild(message);
 }

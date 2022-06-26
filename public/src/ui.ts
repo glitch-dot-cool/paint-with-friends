@@ -4,13 +4,18 @@ import { EmojiButton } from "https://cdn.jsdelivr.net/npm/@joeattardi/emoji-butt
 import { camera } from "./utils/Camera.js";
 
 // username input
-const nameInput = document.querySelector("#name-input");
-const updateUsernameBtn = document.querySelector("#update-username");
-const changeUsernameContainer = document.querySelector("#username-form");
-const changeNameBtn = document.querySelector("#change-username");
+const nameInput = document.querySelector<HTMLInputElement>("#name-input")!;
+const updateUsernameBtn =
+  document.querySelector<HTMLButtonElement>("#update-username")!;
+const changeUsernameContainer =
+  document.querySelector<HTMLFormElement>("#username-form")!;
+const changeNameBtn =
+  document.querySelector<HTMLButtonElement>("#change-username")!;
 
 nameInput.addEventListener("input", (e) => {
-  if (e.target.value.length > 32) {
+  const textContent = (e.target as HTMLInputElement).value;
+
+  if (textContent.length > 32) {
     nameInput.classList.add("error");
     updateUsernameBtn.setAttribute("disabled", "");
   } else {
@@ -19,9 +24,9 @@ nameInput.addEventListener("input", (e) => {
   }
 });
 
-updateUsernameBtn.addEventListener("click", (e) => {
+updateUsernameBtn?.addEventListener("click", (e) => {
   e.preventDefault(); // prevent page refresh on submit
-  const username = nameInput.value;
+  const username = nameInput?.value;
   const socketID = LocalStorage.get("pwf_socket");
   LocalStorage.set("pwf_username", username);
   nameInput.value = "";
@@ -35,11 +40,14 @@ changeNameBtn.addEventListener("click", () => {
 });
 
 // chat input
-const chatInput = document.querySelector("#message-input");
-const sendMessageBtn = document.querySelector("#send-message");
+const chatInput = document.querySelector<HTMLInputElement>("#message-input")!;
+const sendMessageBtn =
+  document.querySelector<HTMLButtonElement>("#send-message")!;
 
 chatInput.addEventListener("input", (e) => {
-  if (e.target.value.length > 500) {
+  const textContent = (e.target as HTMLInputElement).value;
+
+  if (textContent.length > 500) {
     chatInput.classList.add("error");
     sendMessageBtn.setAttribute("disabled", "");
   } else {
@@ -56,12 +64,13 @@ sendMessageBtn.addEventListener("click", (e) => {
   Fetch.post("message", { id: socketID, message });
 });
 
-const messageContainer = document.querySelector("#message-container");
+const messageContainer =
+  document.querySelector<HTMLDivElement>("#message-container")!;
 messageContainer.addEventListener("mousedown", (e) => {
-  const chatList = document.querySelector("#chat-list");
+  const chatList = document.querySelector("#chat-list")!;
   // disabled drawing if chat is visible
   const opacity = window.getComputedStyle(chatList).getPropertyValue("opacity");
-  if (opacity > 0) e.stopPropagation();
+  if (Number(opacity) > 0) e.stopPropagation();
 });
 
 const picker = new EmojiButton({
@@ -72,7 +81,7 @@ const picker = new EmojiButton({
 });
 const trigger = document.querySelector("#emoji-picker");
 
-picker.on("emoji", ({ emoji }) => {
+picker.on("emoji", ({ emoji }: { emoji: string }) => {
   chatInput.value = `${chatInput.value} ${emoji}`;
 });
 
@@ -80,7 +89,7 @@ picker.on("hidden", () => {
   camera.activate();
 });
 
-trigger.addEventListener("click", (e) => {
+trigger?.addEventListener("click", (e) => {
   e.preventDefault();
   picker.togglePicker(trigger);
 

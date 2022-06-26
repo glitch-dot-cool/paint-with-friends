@@ -28,7 +28,14 @@ app.use(express.static(path.join(__dirname, "public")));
 
 const serializeCanvas = initServerP5();
 
-const cache = {
+type ImageCacheEntry = { data: null | Buffer; shouldFetch: boolean };
+
+export type ImageCache = {
+  thumbnail: ImageCacheEntry;
+  image: ImageCacheEntry;
+};
+
+const cache: ImageCache = {
   thumbnail: { data: null, shouldFetch: true },
   image: { data: null, shouldFetch: true },
 };
