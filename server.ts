@@ -16,7 +16,7 @@ import {
   setCache,
   generateThumbnail,
 } from "./serverUtils.js";
-import { LeanDrawUpdate } from "./types";
+import { ImageCache, LeanDrawUpdate } from "./types";
 
 const PORT = 3000;
 
@@ -27,13 +27,6 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 app.use(express.static(path.join(__dirname, "public")));
 
 const serializeCanvas = initServerP5();
-
-type ImageCacheEntry = { data: null | Buffer; shouldFetch: boolean };
-
-export type ImageCache = {
-  thumbnail: ImageCacheEntry;
-  image: ImageCacheEntry;
-};
 
 const cache: ImageCache = {
   thumbnail: { data: null, shouldFetch: true },

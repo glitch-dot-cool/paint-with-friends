@@ -1,6 +1,6 @@
 import { Response } from "express";
 import sharp from "sharp";
-import { ImageCache } from "./server";
+import { ImageCache } from "./types";
 
 export const getCanvasBuffer = (serializeCanvas: () => string) => {
   const canvasData = serializeCanvas();
