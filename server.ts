@@ -16,7 +16,7 @@ import {
   setCache,
   generateThumbnail,
 } from "./serverUtils.js";
-import { LeanDrawUpdate } from "./public/src/types/websocket.js";
+import { LeanDrawUpdate } from "./types";
 
 const PORT = 3000;
 

@@ -1,10 +1,6 @@
 import { Server } from "socket.io";
 import { EVENTS } from "./public/src/constants.js";
-import {
-  Connections as ConnectionsType,
-  Messages,
-  Payload,
-} from "./public/src/types/websocket";
+import { Connections as ConnectionsType, Messages, Payload } from "./types";
 
 export class Connections {
   io: Server;

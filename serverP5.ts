@@ -7,7 +7,7 @@ import { initialServerState } from "./public/src/initialState.js";
 import { eventEmitter } from "./event.js";
 import { EVENTS } from "./public/src/constants.js";
 import { convertLeanPaintPropertiesToObject } from "./public/src/utils/setupPaintProperties.js";
-import { DrawUpdate } from "./public/src/types/websocket.js";
+import { DrawUpdate } from "./types";
 
 export const initServerP5 = () => {
   let paintProperties = initialServerState as DrawUpdate;

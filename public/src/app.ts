@@ -18,7 +18,7 @@ import { Camera, camera } from "./utils/Camera.js";
 import { initCursors } from "./cursors.js";
 import { Loader } from "./components/loader.js";
 import { Socket } from "socket.io";
-import { DrawUpdate, LeanDrawUpdate } from "./types/websocket.js";
+import { DrawUpdate, LeanDrawUpdate } from "../../types";
 
 export type PaintWithFriends = p5 & {
   initCanvas: (serializedCanvas: string) => void;

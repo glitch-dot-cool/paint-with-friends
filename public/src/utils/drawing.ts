@@ -1,12 +1,12 @@
 import { dimensions } from "../constants.js";
 import {
+  DrawUpdate,
   BrushShape,
   CanvasDimensions,
   MirrorModeParams,
   SetupShapeReturnValues,
   State,
-} from "../types/paint.js";
-import { DrawUpdate } from "../types/websocket.js";
+} from "../../../types";
 
 export const updateDrawing = (p5: p5, paintProperties: DrawUpdate) => {
   handleColor(p5, paintProperties);

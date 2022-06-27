@@ -3,13 +3,14 @@ import { paintProperties as p } from "../constants.js";
 import { Camera } from "./Camera.js";
 import { state } from "../initialState.js";
 import {
+  DrawUpdate,
+  LeanDrawUpdate,
   GuiValues,
   Lfo,
   LfoTarget,
   Paintbrush,
   State,
-} from "../types/paint.js";
-import { DrawUpdate, LeanDrawUpdate } from "../types/websocket.js";
+} from "../../../types";
 
 const cache: Record<string, HTMLInputElement | HTMLLabelElement> = {};
 
