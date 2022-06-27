@@ -12,21 +12,13 @@ import { userList } from "./components/userList.js";
 import { initUsername } from "./utils/initUsername.js";
 import { chatMessages } from "./components/chatMessages.js";
 import { KeyManager } from "./utils/KeyManager.js";
-import { initGuiPanels, p5GuiInstance } from "./utils/initUI.js";
+import { initGuiPanels } from "./utils/initUI.js";
 import { setBaseUrl } from "./utils/setBaseUrl.js";
 import { Camera, camera } from "./utils/Camera.js";
 import { initCursors } from "./cursors.js";
 import { Loader } from "./components/loader.js";
 import { Socket } from "socket.io";
-import { DrawUpdate, LeanDrawUpdate } from "./types/websocket.js";
-
-export type PaintWithFriends = p5 & {
-  initCanvas: (serializedCanvas: string) => void;
-  initLastCoords: () => void;
-  setLastCoords: () => void;
-  paint: () => void;
-  createGui: (name: string, p5: p5) => p5GuiInstance;
-};
+import { DrawUpdate, LeanDrawUpdate, PaintWithFriends } from "../../types";
 
 const app = (s: PaintWithFriends) => {
   const keysPressed = new KeyManager(s);

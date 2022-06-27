@@ -1,5 +1,4 @@
-import { DrawUpdate } from "./websocket";
-
+// BASE DRAWING/BRUSH TYPES
 export type BrushShape = "line" | "circle" | "square" | "text";
 
 export interface Paintbrush {
@@ -110,4 +109,72 @@ export type SetupShapeReturnValues = {
 
 export type MirrorModeParams = SetupShapeReturnValues & {
   fn: p5["line"] | p5["circle"] | p5["square"] | p5["text"];
+};
+
+// WEBSOCKET TYPES
+export interface DrawUpdate
+  extends Omit<Paintbrush, "fillColor" | "strokeColor"> {
+  prevX: number;
+  prevY: number;
+  text: string;
+  fillColor: string;
+  strokeColor: string;
+}
+
+export type LeanDrawUpdate = [
+  string,
+  number,
+  number,
+  string,
+  number,
+  string,
+  number,
+  boolean,
+  boolean,
+  BrushShape,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  string
+];
+
+interface Message {
+  sender: string;
+  message: string;
+  id: string;
+}
+
+export type Messages = Message[];
+
+export interface Connections {
+  [id: string]: string;
+}
+
+export type Payload = LeanDrawUpdate | Messages | Connections;
+
+// CUSTOM p5 TYPES
+export type p5GuiInstance = {
+  id: string;
+  addObject: (params: GuiValues | LfoValues) => void;
+  setPosition: (x?: number, y?: number) => void;
+  collapse: () => void;
+};
+
+export type PaintWithFriends = p5 & {
+  initCanvas: (serializedCanvas: string) => void;
+  initLastCoords: () => void;
+  setLastCoords: () => void;
+  paint: () => void;
+  createGui: (name: string, p5: p5) => p5GuiInstance;
+};
+
+// SERVER TYPES
+export type ImageCacheEntry = { data: null | Buffer; shouldFetch: boolean };
+
+export type ImageCache = {
+  thumbnail: ImageCacheEntry;
+  image: ImageCacheEntry;
 };

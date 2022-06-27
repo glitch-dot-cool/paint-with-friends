@@ -1,12 +1,12 @@
 import {
+  DrawUpdate,
   GuiParams,
   GuiValues,
   LfoParams,
   LfoTarget,
   LfoValues,
   State,
-} from "./types/paint.js";
-import { DrawUpdate } from "./types/websocket.js";
+} from "../../types";
 
 // common state variables used by client & server
 const commonState: Omit<
