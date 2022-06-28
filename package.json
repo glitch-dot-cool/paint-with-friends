@@ -10,7 +10,7 @@
     "watch": "tsc -w",
     "clean": "rimraf dist/",
     "copy-files": "copyfiles -u 1 public/**/*.html public/**/*.css public/assets/* dist/public",
-    "build": "npm run clean && tsc && npm run copy-files"
+    "build": "npm run clean && npm run copy-files && tsc"
   },
   "repository": {
     "type": "git",
