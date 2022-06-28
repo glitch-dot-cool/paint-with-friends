@@ -22,7 +22,10 @@ import { DrawUpdate, LeanDrawUpdate, PaintWithFriends } from "../../types";
 
 const app = (s: PaintWithFriends) => {
   const keysPressed = new KeyManager(s);
-  let socket: Socket, canvas: HTMLCanvasElement, font: p5.Font, timeout: number;
+  let socket: Socket,
+    canvas: HTMLCanvasElement,
+    font: p5.Font,
+    lastFrameCount = 0;
 
   s.preload = () => {
     Loader.show();
@@ -119,12 +122,9 @@ const app = (s: PaintWithFriends) => {
   };
 
   s.paint = () => {
-    if (timeout) cancelAnimationFrame(timeout);
-
-    // todo: rethink this - it causes timing inconsistencies :(
-    // possible solution: track lastFrameCount and compare with p5.frameCount
-    // (if lastFrameCount < current, run the code, otherwise do nothing)
-    timeout = requestAnimationFrame(() => {
+    // constrain painting to app framerate (events want to fire as fast as possible, almost always > 60/s)
+    if (s.frameCount > lastFrameCount) {
+      lastFrameCount = s.frameCount;
       s.initLastCoords();
       const paintProperties = setupPaintProperties(s, state, camera.zoomAmount);
       updateDrawing(s, paintProperties);
@@ -136,7 +136,7 @@ const app = (s: PaintWithFriends) => {
         )
       );
       s.setLastCoords();
-    });
+    }
   };
 
   s.mouseDragged = ({
