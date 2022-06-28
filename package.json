@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "npm run build && node ./dist/server.js",
+    "start": "node ./dist/server.js",
     "dev": "npm run watch & nodemon ./dist/server.js",
     "watch": "tsc -w",
     "clean": "rimraf dist/",
