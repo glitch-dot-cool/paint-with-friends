@@ -5,7 +5,13 @@ import {
   convertToLeanPaintProperties,
   convertLeanPaintPropertiesToObject,
 } from "./utils/setupPaintProperties.js";
-import { toggleCursor, updateDrawing } from "./utils/drawing.js";
+import {
+  getFrameRate,
+  getFrametime,
+  throttle,
+  toggleCursor,
+  updateDrawing,
+} from "./utils/drawing.js";
 import { LocalStorage } from "./utils/LocalStorage.js";
 import { Fetch } from "./utils/Fetch.js";
 import { userList } from "./components/userList.js";
@@ -18,14 +24,19 @@ import { Camera, camera } from "./utils/Camera.js";
 import { initCursors } from "./cursors.js";
 import { Loader } from "./components/loader.js";
 import { Socket } from "socket.io";
-import { DrawUpdate, LeanDrawUpdate, PaintWithFriends } from "../../types";
+import {
+  Connections,
+  DrawUpdate,
+  LeanDrawUpdate,
+  PaintWithFriends,
+} from "../../types";
 
 const app = (s: PaintWithFriends) => {
   const keysPressed = new KeyManager(s);
   let socket: Socket,
     canvas: HTMLCanvasElement,
     font: p5.Font,
-    lastFrameCount = 0;
+    throttleRate = 0.01666666666666666666666666666667; // 60fps frametime ;
 
   s.preload = () => {
     Loader.show();
@@ -74,8 +85,9 @@ const app = (s: PaintWithFriends) => {
       updateDrawing(s, paintProperties);
     });
 
-    socket.on(EVENTS.MEMBERS_CHANGED, (users) => {
+    socket.on(EVENTS.MEMBERS_CHANGED, (users: Connections) => {
       userList(users);
+      s.updateThrottleRate(users);
     });
 
     socket.on(EVENTS.MESSAGE, (messages) => {
@@ -122,9 +134,7 @@ const app = (s: PaintWithFriends) => {
   };
 
   s.paint = () => {
-    // constrain painting to app framerate (events want to fire as fast as possible, almost always > 60/s)
-    if (s.frameCount > lastFrameCount) {
-      lastFrameCount = s.frameCount;
+    throttle(() => {
       s.initLastCoords();
       const paintProperties = setupPaintProperties(s, state, camera.zoomAmount);
       updateDrawing(s, paintProperties);
@@ -136,7 +146,7 @@ const app = (s: PaintWithFriends) => {
         )
       );
       s.setLastCoords();
-    }
+    }, throttleRate);
   };
 
   s.mouseDragged = ({
@@ -178,6 +188,14 @@ const app = (s: PaintWithFriends) => {
 
     // reset last coord positions to re-trigger init
     state.lastX = state.lastY = 0;
+  };
+
+  s.updateThrottleRate = (connections: Connections) => {
+    const numUsersDrawing = Object.values(connections).filter(
+      (c) => c.isPainting
+    ).length;
+
+    throttleRate = getFrametime(numUsersDrawing);
   };
 };
 

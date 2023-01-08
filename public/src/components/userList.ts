@@ -1,6 +1,7 @@
+import { Connections } from "../../../types.js";
 import { LocalStorage } from "../utils/LocalStorage.js";
 
-export const userList = (usernames: string[]) => {
+export const userList = (connections: Connections) => {
   // grab the existing list & template
   const ul = document.querySelector<HTMLUListElement>("#username-list");
   const template = document.querySelector<HTMLTemplateElement>(
@@ -13,7 +14,7 @@ export const userList = (usernames: string[]) => {
   newList.appendChild(template);
 
   // create updated list
-  Object.values(usernames).forEach((username) => {
+  Object.values(connections).forEach(({ username }) => {
     const listItem = document.importNode(template.content, true);
     const storedUsername = LocalStorage.get("pwf_username");
     const socketID = LocalStorage.get("pwf_socket");

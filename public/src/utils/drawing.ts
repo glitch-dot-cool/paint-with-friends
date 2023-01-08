@@ -1,4 +1,10 @@
-import { dimensions } from "../constants.js";
+import {
+  dimensions,
+  MAX_FRAMERATE,
+  MIN_FRAMERATE,
+  ONE_SECOND_IN_MS,
+  USER_THROTTLE_THRESHOLD,
+} from "../constants.js";
 import {
   DrawUpdate,
   BrushShape,
@@ -145,4 +151,32 @@ export const toggleCursor = (state: State) => {
   } else {
     document.body.style.cursor = "grab";
   }
+};
+
+export const getFrameRate = (min: number, max: number, value: number) => {
+  if (value <= min) return max;
+
+  const scaled = max - (value * (value * 0.5) - min);
+
+  if (scaled < MIN_FRAMERATE) return MIN_FRAMERATE;
+  return Math.floor(scaled);
+};
+
+export const getFrametime = (numUsersDrawing: number) => {
+  return (
+    ONE_SECOND_IN_MS /
+    getFrameRate(USER_THROTTLE_THRESHOLD, MAX_FRAMERATE, numUsersDrawing)
+  );
+};
+
+let throttlePause = false;
+export const throttle = (callback: () => void, ms: number) => {
+  if (throttlePause) return;
+
+  throttlePause = true;
+
+  setTimeout(() => {
+    callback();
+    throttlePause = false;
+  }, ms);
 };

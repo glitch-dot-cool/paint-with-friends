@@ -14,7 +14,7 @@ export class Connections {
   }
 
   addConnection = (id: string) => {
-    this.connections[id] = id;
+    this.connections[id] = { username: id, isPainting: false };
     this.broadcast(EVENTS.MEMBERS_CHANGED, this.connections);
   };
 
@@ -24,14 +24,27 @@ export class Connections {
   };
 
   renameConnection = (id: string, name: string) => {
-    this.connections[id] = name;
+    this.connections[id] = {
+      username: name,
+      isPainting: this.connections[id]?.isPainting || false,
+    };
     this._renameSenderInMessageHistory(id, name);
     this.broadcast(EVENTS.MEMBERS_CHANGED, this.connections);
     this.io.emit(EVENTS.MESSAGE, this.messages);
   };
 
+  updatePaintStatus = (id: string, isPainting: boolean) => {
+    if (this.connections[id]?.isPainting === isPainting) return;
+
+    this.connections[id] = {
+      username: this.connections[id]?.username || id,
+      isPainting,
+    };
+    this.broadcast(EVENTS.MEMBERS_CHANGED, this.connections);
+  };
+
   message = (id: string, message: string) => {
-    const sender = this.connections[id];
+    const sender = this.connections[id]?.username;
     this._limitMessages();
     if (sender) this.messages.push({ sender, message, id });
     this.broadcast(EVENTS.MESSAGE, this.messages);

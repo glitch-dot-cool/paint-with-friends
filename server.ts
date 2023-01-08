@@ -49,10 +49,12 @@ io.sockets.on(EVENTS.NEW_CONNECTION, (socket: Socket) => {
     invalidateCache(cache);
     socket.broadcast.emit(EVENTS.DRAW_UPDATE, paintProperties);
     eventEmitter.emit(EVENTS.DRAW_UPDATE, paintProperties);
+    connectedUsers.updatePaintStatus(paintProperties[0], true);
   });
 
   socket.on(EVENTS.MOUSE_RELEASED, (username: string) => {
     socket.broadcast.emit(EVENTS.MOUSE_RELEASED, username);
+    connectedUsers.updatePaintStatus(username, false);
   });
 
   socket.on(EVENTS.DISCONNECT, () => {

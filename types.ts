@@ -150,7 +150,10 @@ interface Message {
 export type Messages = Message[];
 
 export interface Connections {
-  [id: string]: string;
+  [id: string]: {
+    username: string;
+    isPainting: boolean;
+  };
 }
 
 export type Payload = LeanDrawUpdate | Messages | Connections;
@@ -169,6 +172,7 @@ export type PaintWithFriends = p5 & {
   setLastCoords: () => void;
   paint: () => void;
   createGui: (name: string, p5: p5) => p5GuiInstance;
+  updateThrottleRate: (connections: Connections) => void;
 };
 
 // SERVER TYPES
