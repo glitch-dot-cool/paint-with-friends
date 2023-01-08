@@ -6,7 +6,6 @@ import {
   convertLeanPaintPropertiesToObject,
 } from "./utils/setupPaintProperties.js";
 import {
-  getFrameRate,
   getFrametime,
   throttle,
   toggleCursor,
