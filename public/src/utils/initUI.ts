@@ -63,7 +63,7 @@ const hideUnusedProperties = (shape: BrushShape) => {
 const getUnusedParamsForShape = (shape: BrushShape) => {
   switch (shape) {
     case "line":
-      return [p.FILL_COLOR, p.FILL_OPACITY, p.SIZE, p.TEXT];
+      return [p.FILL_HUE, p.FILL_OPACITY, p.SIZE, p.TEXT];
     case "circle":
     case "square":
       return [p.TEXT];

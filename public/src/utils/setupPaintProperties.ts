@@ -43,8 +43,8 @@ export const setupPaintProperties = (
   return {
     x: Camera.scaleByZoomAmount(getLfoValue(lfos, gui, "x"), zoomAmount),
     y: Camera.scaleByZoomAmount(getLfoValue(lfos, gui, "y"), zoomAmount),
-    fillColor: getLfoColorValue(p5, gui, lfos, "fillColor"),
-    strokeColor: getLfoColorValue(p5, gui, lfos, "strokeColor"),
+    fillHue: getLfoValue(lfos, gui, "fillHue"),
+    strokeHue: getLfoValue(lfos, gui, "strokeHue"),
     size: getLfoValue(lfos, gui, "size"),
     fillOpacity: getLfoValue(lfos, gui, "fillOpacity"),
     strokeOpacity: getLfoValue(lfos, gui, "strokeOpacity"),
@@ -72,10 +72,7 @@ const getLfoValue = (
     if (lfo[parameter]) {
       lfoCount++;
 
-      const param = parameter as Exclude<
-        LfoTarget,
-        "fillColor" | "strokeColor"
-      >;
+      const param = parameter as Exclude<LfoTarget, "fillHue" | "strokeHue">;
       runningValue += lfo[param];
     }
   }
@@ -88,39 +85,6 @@ const getLfoValue = (
   return lfoCount > 0 ? runningValue / lfoCount : gui[param];
 };
 
-const getLfoColorValue = (
-  p5: p5,
-  gui: GuiValues,
-  lfos: Paintbrush[],
-  parameter: "fillColor" | "strokeColor"
-): string => {
-  let lfoCount = 0;
-  let colorsArray = [0, 0, 0];
-
-  for (const lfo of lfos) {
-    if (lfo[parameter]) {
-      lfoCount++;
-
-      const param = parameter as "fillColor" | "strokeColor";
-      // @ts-ignore - levels *is* a property of p5.Color, I think there's an issue w/ @types/p5
-      const levels: [number, number, number, number] = lfo[param].levels;
-
-      // sum rgb values from lfos
-      for (let i = 0; i < 3; i++) {
-        colorsArray[i] += levels[i as 0 | 1 | 2];
-      }
-
-      colorsArray = colorsArray.map((colorChannel) =>
-        p5.map(colorChannel, 0, 255 * lfoCount, 0, 255)
-      );
-    }
-  }
-
-  return lfoCount > 0
-    ? p5.color(colorsArray).toString("#rrggbb")
-    : gui[parameter];
-};
-
 export const useLfo = (p5: p5, gui: GuiValues, lfo: Lfo): Paintbrush => {
   const {
     speed,
@@ -129,8 +93,8 @@ export const useLfo = (p5: p5, gui: GuiValues, lfo: Lfo): Paintbrush => {
     fillOpacity,
     strokeOpacity,
     size,
-    fillColor,
-    strokeColor,
+    fillHue,
+    strokeHue,
     floor,
     x,
     y,
@@ -150,8 +114,8 @@ export const useLfo = (p5: p5, gui: GuiValues, lfo: Lfo): Paintbrush => {
     fillOpacity ||
     strokeOpacity ||
     size ||
-    fillColor ||
-    strokeColor ||
+    fillHue ||
+    strokeHue ||
     x ||
     y ||
     strokeWeight ||
@@ -201,18 +165,15 @@ export const useLfo = (p5: p5, gui: GuiValues, lfo: Lfo): Paintbrush => {
     input.value = lfoValue.toString();
   }
 
-  if (fillColor) {
+  if (fillHue) {
     // scale amount to 360 (degrees) for rotating through HSL colorspace
     const lfoValue = Waveforms[shape](floor, lfo.value) * (amount * 3.6);
-    const rainbow = useRainbow(p5, lfoValue);
-    values.fillColor = rainbow;
-    const label = getLfoTargetDOMNode(
-      p.FILL_COLOR,
-      "label"
-    ) as HTMLInputElement;
+    const rainbow = useRainbow(lfoValue);
+    values.fillHue = rainbow;
+    const label = getLfoTargetDOMNode(p.FILL_HUE, "label") as HTMLInputElement;
     label.style.backgroundColor = rainbow.toString();
     // update gui color to last value from lfo
-    gui.fillColor = rainbow.toString();
+    gui.fillHue = rainbow;
   }
 
   if (strokeOpacity) {
@@ -225,16 +186,16 @@ export const useLfo = (p5: p5, gui: GuiValues, lfo: Lfo): Paintbrush => {
     input.value = lfoValue.toString();
   }
 
-  if (strokeColor) {
+  if (strokeHue) {
     const lfoValue = Waveforms[shape](floor, lfo.value) * (amount * 3.6);
-    const rainbow = useRainbow(p5, lfoValue);
-    values.strokeColor = rainbow;
+    const rainbow = useRainbow(lfoValue);
+    values.strokeHue = rainbow;
     const label = getLfoTargetDOMNode(
-      p.STROKE_COLOR,
+      p.STROKE_HUE,
       "label"
     ) as HTMLInputElement;
     label.style.backgroundColor = rainbow.toString();
-    gui.strokeColor = rainbow.toString();
+    gui.strokeHue = rainbow;
   }
 
   if (size) {
@@ -259,10 +220,9 @@ export const useLfo = (p5: p5, gui: GuiValues, lfo: Lfo): Paintbrush => {
   return values as Paintbrush;
 };
 
-const useRainbow = (p5: p5, lfoValue: number) => {
+const useRainbow = (lfoValue: number) => {
   const hue = Math.floor(lfoValue);
-  // saturation & brightness will be overridden by global paintbrush setting
-  return p5.color(`hsb(${hue}, 100%, 100%)`);
+  return hue;
 };
 
 // Converts paint properties object to an ordered array to reduce payload size.
@@ -274,9 +234,9 @@ export const convertToLeanPaintProperties = (
     username,
     paintProperties.x,
     paintProperties.y,
-    paintProperties.fillColor,
+    paintProperties.fillHue,
     paintProperties.fillOpacity,
-    paintProperties.strokeColor,
+    paintProperties.strokeHue,
     paintProperties.strokeOpacity,
     paintProperties.mirrorX,
     paintProperties.mirrorY,
@@ -299,9 +259,9 @@ export const convertLeanPaintPropertiesToObject = (
   return {
     x: leanPaintProperties[1],
     y: leanPaintProperties[2],
-    fillColor: leanPaintProperties[3],
+    fillHue: leanPaintProperties[3],
     fillOpacity: leanPaintProperties[4],
-    strokeColor: leanPaintProperties[5],
+    strokeHue: leanPaintProperties[5],
     strokeOpacity: leanPaintProperties[6],
     mirrorX: leanPaintProperties[7],
     mirrorY: leanPaintProperties[8],

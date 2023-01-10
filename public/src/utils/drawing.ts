@@ -22,26 +22,24 @@ export const updateDrawing = (p5: p5, paintProperties: DrawUpdate) => {
 const handleColor = (
   p5: p5,
   {
-    fillColor,
+    fillHue,
     fillOpacity,
-    strokeColor,
+    strokeHue,
     strokeOpacity,
     saturation,
     brightness,
   }: {
-    fillColor: DrawUpdate["fillColor"];
+    fillHue: DrawUpdate["fillHue"];
     fillOpacity: DrawUpdate["fillOpacity"];
-    strokeColor: DrawUpdate["strokeColor"];
+    strokeHue: DrawUpdate["strokeHue"];
     strokeOpacity: DrawUpdate["strokeOpacity"];
     saturation: DrawUpdate["saturation"];
     brightness: DrawUpdate["brightness"];
   }
 ) => {
-  const strokeHue = Math.floor(p5.hue(strokeColor));
   const stroke = p5.color(`hsb(${strokeHue}, ${saturation}%, ${brightness}%)`);
   stroke.setAlpha(strokeOpacity);
 
-  const fillHue = Math.floor(p5.hue(fillColor));
   const fill = p5.color(`hsb(${fillHue}, ${saturation}%, ${brightness}%)`);
   fill.setAlpha(fillOpacity);
 

@@ -1,6 +1,6 @@
 export const paintProperties = {
-  FILL_COLOR: "fillColor",
-  STROKE_COLOR: "strokeColor",
+  FILL_HUE: "fillHue",
+  STROKE_HUE: "strokeHue",
   FILL_OPACITY: "fillOpacity",
   STROKE_OPACITY: "strokeOpacity",
   SIZE: "size",

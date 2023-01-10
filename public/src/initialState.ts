@@ -14,9 +14,9 @@ const commonState: Omit<
   "x" | "y" | "shape" | "prevX" | "prevY" | "username"
 > = {
   text: "",
-  fillColor: "#349beb",
+  fillHue: 0,
   fillOpacity: 255,
-  strokeColor: "#349beb",
+  strokeHue: 0,
   strokeOpacity: 255,
   saturation: 100,
   brightness: 100,
@@ -42,6 +42,8 @@ const guiParams: GuiParams = {
   ...commonState,
   sizeMin: 5,
   sizeMax: 300,
+  fillHueMax: 255,
+  strokeHueMax: 255,
 };
 
 // params for generating LFO UI panels
@@ -63,10 +65,9 @@ const lfoParams: LfoParams = {
 
 // params that can be controlled via LFO
 const lfoControllableParams: LfoTarget[] = [
-  "fillColor",
+  "fillHue",
   "fillOpacity",
-  "strokeColor",
-  "strokeColor",
+  "strokeHue",
   "strokeWeight",
   "size",
   "x",

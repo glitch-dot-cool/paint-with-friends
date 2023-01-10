@@ -3,9 +3,9 @@ export type BrushShape = "line" | "circle" | "square" | "text";
 
 export interface Paintbrush {
   text: string;
-  fillColor: p5.Color;
+  fillHue: number;
   fillOpacity: number;
-  strokeColor: p5.Color;
+  strokeHue: number;
   strokeOpacity: number;
   size: number;
   shape: BrushShape;
@@ -28,6 +28,8 @@ export interface GuiParams
   sizeMin: number;
   sizeMax: number;
   shape: BrushShape[];
+  fillHueMax: number;
+  strokeHueMax: number;
 }
 
 export interface GuiValues extends Omit<GuiParams, "shape"> {
@@ -43,9 +45,9 @@ export type LfoShape =
   | "noise";
 
 interface LfoTargets {
-  fillColor?: boolean;
+  fillHue?: boolean;
   fillOpacity?: boolean;
-  strokeColor?: boolean;
+  strokeHue?: boolean;
   strokeOpacity?: boolean;
   strokeWeight?: boolean;
   size?: boolean;
@@ -117,17 +119,17 @@ export interface DrawUpdate
   prevX: number;
   prevY: number;
   text: string;
-  fillColor: string;
-  strokeColor: string;
+  fillHue: number;
+  strokeHue: number;
 }
 
 export type LeanDrawUpdate = [
   string,
   number,
   number,
-  string,
   number,
-  string,
+  number,
+  number,
   number,
   boolean,
   boolean,
