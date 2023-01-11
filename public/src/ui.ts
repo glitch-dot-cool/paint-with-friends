@@ -3,7 +3,7 @@ import { EmojiButton } from "https://cdn.jsdelivr.net/npm/@joeattardi/emoji-butt
 import { Fetch } from "./utils/Fetch.js";
 import { LocalStorage } from "./utils/LocalStorage.js";
 import { camera } from "./utils/Camera.js";
-import { paintProperties as p } from "./constants.js";
+import { EVENTS, paintProperties as p } from "./constants.js";
 import { PaintProperties, ParameterCallback } from "../../types";
 import { state } from "./initialState.js";
 
@@ -16,49 +16,78 @@ type DomElements = {
 
 export const domElements = {} as DomElements;
 
-export const getDomElements = (domElements: DomElements) => {
-  const params = [
-    {
-      param: p.FILL_HUE,
-      callback: ({ e, label, input }: ParameterCallback<number>) => {
-        const value = Math.floor(e.detail);
-        const color = `hsl(${value}, ${state.gui.saturation}%, ${state.gui.brightness}%)`;
-        label.style.color = color;
-        input.value = `${value}`;
-      },
+const params = [
+  {
+    param: p.FILL_HUE,
+    callback: ({ e, label, input }: ParameterCallback<number>) => {
+      const value = Math.floor(e.detail);
+      const color = `hsl(${value}, ${state.gui.saturation}%, ${state.gui.brightness}%)`;
+      label.style.color = color;
+      label.textContent = `${p.FILL_HUE}: ${value}`;
+      input.value = `${value}`;
     },
-    {
-      param: p.FILL_OPACITY,
-      callback: () => {},
+  },
+  {
+    param: p.STROKE_HUE,
+    callback: ({ e, label, input }: ParameterCallback<number>) => {
+      const value = e.detail;
+      const color = `hsl(${value}, ${state.gui.saturation}%, ${state.gui.brightness}%)`;
+      label.style.color = color;
+      label.textContent = `${p.STROKE_HUE}: ${value}`;
+      input.value = `${value}`;
     },
-    {
-      param: p.STROKE_HUE,
-      callback: ({ e, label, input }: ParameterCallback<number>) => {
-        const value = e.detail;
-        const color = `hsl(${value}, ${state.gui.saturation}%, ${state.gui.brightness}%)`;
-        label.style.color = color;
-        input.value = `${value}`;
-      },
+  },
+  {
+    param: p.FILL_OPACITY,
+    callback: ({ e, label }: ParameterCallback<number>) => {
+      label.textContent = `${p.FILL_HUE}: ${Math.floor(e.detail)}`;
     },
-    { param: p.STROKE_OPACITY, callback: () => {} },
-    { param: p.STROKE_WEIGHT, callback: () => {} },
-    { param: p.SIZE, callback: () => {} },
-    { param: p.SATURATION, callback: () => {} },
-    { param: p.BRIGHTNESS, callback: () => {} },
-  ];
+  },
+  {
+    param: p.STROKE_OPACITY,
+    callback: ({ e, label }: ParameterCallback<number>) => {
+      label.textContent = `${p.STROKE_OPACITY}: ${Math.floor(e.detail)}`;
+    },
+  },
+  {
+    param: p.STROKE_WEIGHT,
+    callback: ({ e, label }: ParameterCallback<number>) => {
+      label.textContent = `${p.STROKE_WEIGHT}: ${Math.floor(e.detail)}`;
+    },
+  },
+  {
+    param: p.SIZE,
+    callback: ({ e, label }: ParameterCallback<number>) => {
+      label.textContent = `${p.SIZE}: ${Math.floor(e.detail)}`;
+    },
+  },
+  {
+    param: p.SATURATION,
+    callback: ({ e, label }: ParameterCallback<number>) => {
+      label.textContent = `${p.SATURATION}: ${Math.floor(e.detail)}`;
+    },
+  },
+  {
+    param: p.BRIGHTNESS,
+    callback: ({ e, label }: ParameterCallback<number>) => {
+      label.textContent = `${p.BRIGHTNESS}: ${Math.floor(e.detail)}`;
+    },
+  },
+];
 
+export const getDomElements = (domElements: DomElements) => {
   params.forEach(({ param, callback }) => {
     const input = document.querySelector<HTMLInputElement>(`#${param} input`)!;
     const label = document.querySelector<HTMLLabelElement>(`#${param}_label`)!;
 
-    input.addEventListener("paramChanged", (e: CustomEvent) => {
+    input.addEventListener(EVENTS.PARAM_CHANGED, (e: CustomEvent) => {
       callback({ e, input, label });
     });
 
     // forward manual changes to inputs to custom event listener
     input.addEventListener("input", (e) => {
       input.dispatchEvent(
-        new CustomEvent("paramChanged", {
+        new CustomEvent(EVENTS.PARAM_CHANGED, {
           detail: (e.target as HTMLInputElement).value,
         })
       );

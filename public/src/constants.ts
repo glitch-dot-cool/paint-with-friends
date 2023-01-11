@@ -27,7 +27,8 @@ export const EVENTS = {
   MEMBERS_CHANGED: "membersChanged",
   MESSAGE: "message",
   MOUSE_RELEASED: "mouseReleased",
-};
+  PARAM_CHANGED: "paramChanged",
+} as const;
 
 const GUI_WIDTH = 200;
 export const GUI_GUTTER = 20;

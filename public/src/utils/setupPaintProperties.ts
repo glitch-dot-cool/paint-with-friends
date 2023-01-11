@@ -9,7 +9,7 @@ import {
   Paintbrush,
   State,
 } from "../../../types";
-import { paintProperties as p } from "../constants.js";
+import { EVENTS, paintProperties as p } from "../constants.js";
 import { domElements } from "../ui.js";
 
 export const setupPaintProperties = (
@@ -123,6 +123,7 @@ export const useLfo = (p5: p5, gui: GuiValues, lfo: Lfo): Paintbrush => {
     values.saturation = lfoValue;
     domElements[p.SATURATION].input.value = lfoValue.toString();
     gui.saturation = lfoValue;
+    dispatchUpdate(domElements.saturation.input, lfoValue);
   }
 
   if (brightness) {
@@ -130,6 +131,7 @@ export const useLfo = (p5: p5, gui: GuiValues, lfo: Lfo): Paintbrush => {
     values.brightness = lfoValue;
     domElements[p.BRIGHTNESS].input.value = lfoValue.toString();
     gui.brightness = lfoValue;
+    dispatchUpdate(domElements.brightness.input, lfoValue);
   }
 
   if (fillOpacity) {
@@ -138,6 +140,7 @@ export const useLfo = (p5: p5, gui: GuiValues, lfo: Lfo): Paintbrush => {
     values.fillOpacity = lfoValue;
     domElements[p.FILL_OPACITY].input.value = lfoValue.toString();
     gui.fillOpacity = lfoValue;
+    dispatchUpdate(domElements.fillOpacity.input, lfoValue);
   }
 
   if (fillHue) {
@@ -146,9 +149,7 @@ export const useLfo = (p5: p5, gui: GuiValues, lfo: Lfo): Paintbrush => {
     const hue = getHue(lfoValue);
     values.fillHue = hue;
     gui.fillHue = hue;
-    domElements.fillHue.input.dispatchEvent(
-      new CustomEvent("paramChanged", { detail: hue })
-    );
+    dispatchUpdate(domElements.fillHue.input, hue);
   }
 
   if (strokeOpacity) {
@@ -156,6 +157,7 @@ export const useLfo = (p5: p5, gui: GuiValues, lfo: Lfo): Paintbrush => {
     values.strokeOpacity = lfoValue;
     domElements[p.STROKE_OPACITY].input.value = lfoValue.toString();
     gui.strokeOpacity = lfoValue;
+    dispatchUpdate(domElements.strokeOpacity.input, lfoValue);
   }
 
   if (strokeHue) {
@@ -163,10 +165,7 @@ export const useLfo = (p5: p5, gui: GuiValues, lfo: Lfo): Paintbrush => {
     const hue = getHue(lfoValue);
     values.strokeHue = hue;
     gui.strokeHue = hue;
-
-    domElements.strokeHue.input.dispatchEvent(
-      new CustomEvent("paramChanged", { detail: hue })
-    );
+    dispatchUpdate(domElements.strokeHue.input, hue);
   }
 
   if (size) {
@@ -175,12 +174,14 @@ export const useLfo = (p5: p5, gui: GuiValues, lfo: Lfo): Paintbrush => {
       ((amount * state.gui.sizeMax) / amount);
     values.size = value;
     domElements[p.SIZE].input.value = value.toString();
+    dispatchUpdate(domElements.size.input, value);
   }
 
   if (strokeWeight) {
     const value = Waveforms[shape](floor, lfo.value) * amount;
     values.strokeWeight = value;
     domElements[p.STROKE_WEIGHT].input.value = value.toString();
+    dispatchUpdate(domElements.strokeWeight.input, value);
   }
 
   return values as Paintbrush;
@@ -189,4 +190,8 @@ export const useLfo = (p5: p5, gui: GuiValues, lfo: Lfo): Paintbrush => {
 const getHue = (lfoValue: number) => {
   const hue = Math.floor(lfoValue);
   return hue;
+};
+
+const dispatchUpdate = (element: HTMLInputElement, value: number | string) => {
+  element.dispatchEvent(new CustomEvent("paramChanged", { detail: value }));
 };
