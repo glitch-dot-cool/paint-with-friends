@@ -137,6 +137,7 @@ export const useLfo = (p5: p5, gui: GuiValues, lfo: Lfo): Paintbrush => {
     const lfoValue = Waveforms[shape](floor, lfo.value) * (amount * 2.55);
     values.fillOpacity = lfoValue;
     domElements[p.FILL_OPACITY].input.value = lfoValue.toString();
+    gui.fillOpacity = lfoValue;
   }
 
   if (fillHue) {
@@ -154,6 +155,7 @@ export const useLfo = (p5: p5, gui: GuiValues, lfo: Lfo): Paintbrush => {
     const lfoValue = Waveforms[shape](floor, lfo.value) * (amount * 2.55);
     values.strokeOpacity = lfoValue;
     domElements[p.STROKE_OPACITY].input.value = lfoValue.toString();
+    gui.strokeOpacity = lfoValue;
   }
 
   if (strokeHue) {
