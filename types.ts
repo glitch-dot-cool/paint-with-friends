@@ -1,3 +1,8 @@
+import { paintProperties } from "./public/src/constants.js";
+
+export type PaintProperties =
+  typeof paintProperties[keyof typeof paintProperties];
+
 // BASE DRAWING/BRUSH TYPES
 export type BrushShape = "line" | "circle" | "square" | "text";
 
@@ -112,6 +117,12 @@ export type SetupShapeReturnValues = {
 export type MirrorModeParams = SetupShapeReturnValues & {
   fn: p5["line"] | p5["circle"] | p5["square"] | p5["text"];
 };
+
+export interface ParameterCallback<T> {
+  e: CustomEvent<T>;
+  input: HTMLInputElement;
+  label: HTMLLabelElement;
+}
 
 // WEBSOCKET TYPES
 export interface DrawUpdate

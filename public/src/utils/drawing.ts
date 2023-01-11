@@ -37,10 +37,10 @@ const handleColor = (
     brightness: DrawUpdate["brightness"];
   }
 ) => {
-  const stroke = p5.color(`hsb(${strokeHue}, ${saturation}%, ${brightness}%)`);
+  const stroke = p5.color(`hsl(${strokeHue}, ${saturation}%, ${brightness}%)`);
   stroke.setAlpha(strokeOpacity);
 
-  const fill = p5.color(`hsb(${fillHue}, ${saturation}%, ${brightness}%)`);
+  const fill = p5.color(`hsl(${fillHue}, ${saturation}%, ${brightness}%)`);
   fill.setAlpha(fillOpacity);
 
   p5.stroke(stroke);

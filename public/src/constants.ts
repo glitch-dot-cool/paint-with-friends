@@ -15,7 +15,7 @@ export const paintProperties = {
   SATURATION: "saturation",
   BRIGHTNESS: "brightness",
   TEXT: "text",
-};
+} as const;
 
 export const dimensions = { width: 3840, height: 2160 }; // 4k
 

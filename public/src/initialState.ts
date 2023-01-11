@@ -19,7 +19,7 @@ const commonState: Omit<
   strokeHue: 0,
   strokeOpacity: 255,
   saturation: 100,
-  brightness: 100,
+  brightness: 50,
   size: 15,
   strokeWeight: 1,
   mirrorX: false,
@@ -42,8 +42,8 @@ const guiParams: GuiParams = {
   ...commonState,
   sizeMin: 5,
   sizeMax: 300,
-  fillHueMax: 255,
-  strokeHueMax: 255,
+  fillHueMax: 360,
+  strokeHueMax: 360,
 };
 
 // params for generating LFO UI panels

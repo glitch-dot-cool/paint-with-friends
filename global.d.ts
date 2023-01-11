@@ -8,4 +8,7 @@ declare global {
   interface Window {
     p5: typeof module;
   }
+  interface HTMLElementEventMap {
+    paramChanged: CustomEvent<number>;
+  }
 }

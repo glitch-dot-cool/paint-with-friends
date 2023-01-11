@@ -1,6 +1,6 @@
 import { state } from "../initialState.js";
 import { GUI_GUTTER, GUI_OFFSET, paintProperties as p } from "../constants.js";
-import { BrushShape, PaintWithFriends } from "../../../types";
+import { BrushShape, PaintWithFriends, PaintProperties } from "../../../types";
 
 export const initGuiPanels = (s: PaintWithFriends) => {
   const gui = s.createGui("paintbrush", s);
@@ -73,7 +73,12 @@ const getUnusedParamsForShape = (shape: BrushShape) => {
 };
 
 const setParamVisibility = (hideList: string[]) => {
-  const ignore = [p.X, p.Y, p.PREV_X, p.PREV_Y];
+  const ignore: Array<Partial<PaintProperties>> = [
+    p.X,
+    p.Y,
+    p.PREV_X,
+    p.PREV_Y,
+  ];
 
   // all params minus ignored props
   const paintProperties = Object.values(p).filter(

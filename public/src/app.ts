@@ -1,10 +1,10 @@
 import { state } from "./initialState.js";
 import { dimensions, EVENTS } from "./constants.js";
+import { setupPaintProperties } from "./utils/setupPaintProperties.js";
 import {
-  setupPaintProperties,
   convertToLeanPaintProperties,
   convertLeanPaintPropertiesToObject,
-} from "./utils/setupPaintProperties.js";
+} from "./utils/typeConverters.js";
 import {
   getFrametime,
   throttle,
@@ -23,6 +23,7 @@ import { Camera, camera } from "./utils/Camera.js";
 import { initCursors } from "./cursors.js";
 import { Loader } from "./components/loader.js";
 import { Socket } from "socket.io";
+import { domElements, getDomElements } from "./ui.js";
 import {
   Connections,
   DrawUpdate,
@@ -67,6 +68,9 @@ const app = (s: PaintWithFriends) => {
     socket = io.connect(setBaseUrl());
 
     initGuiPanels(s);
+
+    // populate dynamically created DOM elements
+    getDomElements(domElements);
 
     // init separate sketch for rendering cursors
     new p5(initCursors(socket, camera));
