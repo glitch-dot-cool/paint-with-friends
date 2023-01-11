@@ -169,9 +169,9 @@ export const useLfo = (p5: p5, gui: GuiValues, lfo: Lfo): Paintbrush => {
   }
 
   if (size) {
+    // scale value up to maxSize
     const value =
-      Waveforms[shape](floor, lfo.value) *
-      ((amount * state.gui.sizeMax) / amount);
+      Waveforms[shape](floor, lfo.value) * (amount * state.gui.sizeMax * 0.01);
     values.size = value;
     domElements[p.SIZE].input.value = value.toString();
     dispatchUpdate(domElements.size.input, value);
@@ -193,5 +193,7 @@ const getHue = (lfoValue: number) => {
 };
 
 const dispatchUpdate = (element: HTMLInputElement, value: number | string) => {
-  element.dispatchEvent(new CustomEvent("paramChanged", { detail: value }));
+  element.dispatchEvent(
+    new CustomEvent(EVENTS.PARAM_CHANGED, { detail: value })
+  );
 };
