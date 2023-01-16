@@ -238,3 +238,9 @@ canvas {
 .qs_color_label {
   border: 1px solid var(--gray4) !important;
 }
+
+/* hide brightness/saturation controls */
+#paintbrush #saturation,
+#paintbrush #brightness {
+  display: none !important;
+}

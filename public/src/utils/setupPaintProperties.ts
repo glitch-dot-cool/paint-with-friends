@@ -39,6 +39,9 @@ export const setupPaintProperties = (
   const lfo3 = useLfo(p5, state.gui, state.lfo3);
   // pack lfos in reverse order so subsequent LFOs override previous ones
   const lfos = [lfo3, lfo2, lfo1];
+  // brightness/saturation should only be overridden if set via LFO
+  const shouldUseIntrinsicBrightness = !lfos.some((lfo) => lfo.brightness);
+  const shouldUseIntrinsicSaturation = !lfos.some((lfo) => lfo.saturation);
 
   return {
     x: Camera.scaleByZoomAmount(getLfoValue(lfos, gui, "x"), zoomAmount),
@@ -57,6 +60,8 @@ export const setupPaintProperties = (
     saturation: getLfoValue(lfos, gui, "saturation"),
     brightness: getLfoValue(lfos, gui, "brightness"),
     text: gui.text,
+    shouldUseIntrinsicBrightness,
+    shouldUseIntrinsicSaturation,
   };
 };
 
@@ -288,6 +293,8 @@ export const convertToLeanPaintProperties = (
     paintProperties.saturation,
     paintProperties.brightness,
     paintProperties.text,
+    paintProperties.shouldUseIntrinsicBrightness,
+    paintProperties.shouldUseIntrinsicSaturation,
   ];
 };
 
@@ -313,5 +320,7 @@ export const convertLeanPaintPropertiesToObject = (
     saturation: leanPaintProperties[14],
     brightness: leanPaintProperties[15],
     text: leanPaintProperties[16],
+    shouldUseIntrinsicBrightness: leanPaintProperties[17],
+    shouldUseIntrinsicSaturation: leanPaintProperties[18],
   };
 };

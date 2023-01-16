@@ -28,6 +28,8 @@ const handleColor = (
     strokeOpacity,
     saturation,
     brightness,
+    shouldUseIntrinsicBrightness,
+    shouldUseIntrinsicSaturation,
   }: {
     fillColor: DrawUpdate["fillColor"];
     fillOpacity: DrawUpdate["fillOpacity"];
@@ -35,14 +37,40 @@ const handleColor = (
     strokeOpacity: DrawUpdate["strokeOpacity"];
     saturation: DrawUpdate["saturation"];
     brightness: DrawUpdate["brightness"];
+    shouldUseIntrinsicBrightness: DrawUpdate["shouldUseIntrinsicBrightness"];
+    shouldUseIntrinsicSaturation: DrawUpdate["shouldUseIntrinsicSaturation"];
   }
 ) => {
+  const derivedStrokeBrightness = Math.floor(p5.brightness(strokeColor));
+  const strokeBrightness = shouldUseIntrinsicBrightness
+    ? derivedStrokeBrightness
+    : brightness;
+
+  const derivedStrokeSaturation = Math.floor(p5.saturation(strokeColor));
+  const strokeSaturation = shouldUseIntrinsicSaturation
+    ? derivedStrokeSaturation
+    : saturation;
+
   const strokeHue = Math.floor(p5.hue(strokeColor));
-  const stroke = p5.color(`hsb(${strokeHue}, ${saturation}%, ${brightness}%)`);
+  const stroke = p5.color(
+    `hsb(${strokeHue}, ${strokeSaturation}%, ${strokeBrightness}%)`
+  );
   stroke.setAlpha(strokeOpacity);
 
+  const derivedFillBrightness = p5.brightness(fillColor);
+  const fillBrightness = shouldUseIntrinsicBrightness
+    ? derivedFillBrightness
+    : brightness;
+
+  const derivedFillSaturation = p5.saturation(fillColor);
+  const fillSaturation = shouldUseIntrinsicSaturation
+    ? derivedFillSaturation
+    : saturation;
+
   const fillHue = Math.floor(p5.hue(fillColor));
-  const fill = p5.color(`hsb(${fillHue}, ${saturation}%, ${brightness}%)`);
+  const fill = p5.color(
+    `hsb(${fillHue}, ${fillSaturation}%, ${fillBrightness}%)`
+  );
   fill.setAlpha(fillOpacity);
 
   p5.stroke(stroke);

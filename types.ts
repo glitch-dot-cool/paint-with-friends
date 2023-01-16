@@ -119,6 +119,8 @@ export interface DrawUpdate
   text: string;
   fillColor: string;
   strokeColor: string;
+  shouldUseIntrinsicBrightness: boolean;
+  shouldUseIntrinsicSaturation: boolean;
 }
 
 export type LeanDrawUpdate = [
@@ -138,7 +140,9 @@ export type LeanDrawUpdate = [
   number,
   number,
   number,
-  string
+  string,
+  boolean,
+  boolean
 ];
 
 interface Message {
