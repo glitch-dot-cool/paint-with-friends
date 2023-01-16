@@ -138,18 +138,24 @@ const app = (s: PaintWithFriends) => {
 
   s.paint = () => {
     throttle(() => {
-      s.initLastCoords();
-      const paintProperties = setupPaintProperties(s, state, camera.zoomAmount);
-      updateDrawing(s, paintProperties);
-      socket.emit(
-        EVENTS.DRAW_UPDATE,
-        convertToLeanPaintProperties(
-          paintProperties,
-          LocalStorage.get("pwf_username"),
-          LocalStorage.get("pwf_socket")
-        )
-      );
-      s.setLastCoords();
+      if (s.mouseIsPressed) {
+        s.initLastCoords();
+        const paintProperties = setupPaintProperties(
+          s,
+          state,
+          camera.zoomAmount
+        );
+        updateDrawing(s, paintProperties);
+        socket.emit(
+          EVENTS.DRAW_UPDATE,
+          convertToLeanPaintProperties(
+            paintProperties,
+            LocalStorage.get("pwf_username"),
+            LocalStorage.get("pwf_socket")
+          )
+        );
+        s.setLastCoords();
+      }
     }, throttleRate);
   };
 
