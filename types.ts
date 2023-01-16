@@ -23,7 +23,14 @@ export interface Paintbrush {
 export interface GuiParams
   extends Omit<
     DrawUpdate,
-    "shape" | "x" | "y" | "prevX" | "prevY" | "username"
+    | "shape"
+    | "x"
+    | "y"
+    | "prevX"
+    | "prevY"
+    | "username"
+    | "shouldUseIntrinsicBrightness"
+    | "shouldUseIntrinsicSaturation"
   > {
   sizeMin: number;
   sizeMax: number;

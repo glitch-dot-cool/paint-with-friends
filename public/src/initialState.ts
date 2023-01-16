@@ -11,7 +11,14 @@ import {
 // common state variables used by client & server
 const commonState: Omit<
   DrawUpdate,
-  "x" | "y" | "shape" | "prevX" | "prevY" | "username"
+  | "x"
+  | "y"
+  | "shape"
+  | "prevX"
+  | "prevY"
+  | "username"
+  | "shouldUseIntrinsicBrightness"
+  | "shouldUseIntrinsicSaturation"
 > = {
   text: "",
   fillColor: "#349beb",
@@ -29,7 +36,12 @@ const commonState: Omit<
 // server state requires initial x/y coords
 export const initialServerState: Omit<
   DrawUpdate,
-  "shape" | "prevX" | "prevY" | "username"
+  | "shape"
+  | "prevX"
+  | "prevY"
+  | "username"
+  | "shouldUseIntrinsicBrightness"
+  | "shouldUseIntrinsicSaturation"
 > = {
   ...commonState,
   x: 0,
