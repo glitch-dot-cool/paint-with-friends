@@ -1,17 +1,24 @@
 import { Socket } from "socket.io";
+import { LeanDrawUpdate } from "../../types.js";
 import { dimensions, EVENTS } from "./constants.js";
 import { Camera } from "./utils/Camera.js";
 
 type CursorsP5 = p5 & {
   usernameToColor: (username: string) => string;
-  upsertUser: (username: string, x: number, y: number, color: string) => void;
+  upsertUser: (
+    socketId: string,
+    username: string,
+    x: number,
+    y: number,
+    color: string
+  ) => void;
   drawCursor: (x: number, y: number, username: string, color: string) => void;
 };
 
-type User = { x: number; y: number; color: string };
+type User = { x: number; y: number; color: string; username: string };
 
 type Users = {
-  [username: string]: User;
+  [userId: string]: User;
 };
 
 export const initCursors = (socket: Socket, camera: Camera) => {
@@ -27,31 +34,31 @@ export const initCursors = (socket: Socket, camera: Camera) => {
 
       s.textFont("JetBrains Mono");
 
-      socket.on(EVENTS.DRAW_UPDATE, (data) => {
-        const [username, x, y] = data;
+      socket.on(EVENTS.DRAW_UPDATE, (data: LeanDrawUpdate) => {
+        const [username, socketId, x, y] = data;
         const color = s.usernameToColor(username);
-        s.upsertUser(username, x, y, color);
+        s.upsertUser(socketId, username, x, y, color);
       });
 
-      socket.on(EVENTS.MOUSE_RELEASED, (user) => {
-        delete users[user];
+      socket.on(EVENTS.MOUSE_RELEASED, (userId: string) => {
+        delete users[userId];
       });
     };
 
     s.draw = () => {
       s.clear(0, 0, 0, 0);
 
-      Object.keys(users).forEach((username) => {
-        const user = users[username];
+      Object.keys(users).forEach((userId) => {
+        const user = users[userId];
         if (user) {
-          const { x, y, color } = user;
+          const { x, y, color, username } = user;
           s.drawCursor(x, y, username, color);
         }
       });
     };
 
-    s.upsertUser = (username, x, y, color) => {
-      users[username] = { x, y, color };
+    s.upsertUser = (socketId, username, x, y, color) => {
+      users[socketId] = { x, y, color, username };
     };
 
     s.drawCursor = (x, y, username, color) => {

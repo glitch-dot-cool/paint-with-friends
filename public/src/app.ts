@@ -141,7 +141,8 @@ const app = (s: PaintWithFriends) => {
         EVENTS.DRAW_UPDATE,
         convertToLeanPaintProperties(
           paintProperties,
-          LocalStorage.get("pwf_username") || LocalStorage.get("pwf_socket")
+          LocalStorage.get("pwf_username"),
+          LocalStorage.get("pwf_socket")
         )
       );
       s.setLastCoords();
@@ -179,10 +180,7 @@ const app = (s: PaintWithFriends) => {
       document.body.style.cursor = "grab";
     } else {
       // if done drawing, clear the cursors
-      socket.emit(
-        EVENTS.MOUSE_RELEASED,
-        LocalStorage.get("pwf_username") || LocalStorage.get("pwf_socket")
-      );
+      socket.emit(EVENTS.MOUSE_RELEASED, LocalStorage.get("pwf_socket"));
     }
 
     // reset last coord positions to re-trigger init

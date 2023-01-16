@@ -132,6 +132,7 @@ export interface DrawUpdate
 
 export type LeanDrawUpdate = [
   string,
+  string,
   number,
   number,
   string,
