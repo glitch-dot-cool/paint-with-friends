@@ -1,3 +1,5 @@
+import { animateableLfoParams } from "./public/src/constants";
+
 // BASE DRAWING/BRUSH TYPES
 export type BrushShape = "line" | "circle" | "square" | "text";
 
@@ -82,6 +84,15 @@ export interface LfoParams extends LfoTargets {
 export interface LfoValues extends Omit<LfoParams, "shape"> {
   shape: LfoShape;
 }
+
+export type LfoDomElements = {
+  [key in AnimatableLfoParams]: {
+    input: HTMLInputElement;
+    label: HTMLLabelElement;
+  };
+};
+
+export type AnimatableLfoParams = typeof animateableLfoParams[number];
 
 export interface Lfo {
   value: number;

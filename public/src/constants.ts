@@ -15,7 +15,16 @@ export const paintProperties = {
   SATURATION: "saturation",
   BRIGHTNESS: "brightness",
   TEXT: "text",
-};
+} as const;
+
+export const animateableLfoParams = [
+  paintProperties.FILL_COLOR,
+  paintProperties.FILL_OPACITY,
+  paintProperties.STROKE_COLOR,
+  paintProperties.STROKE_OPACITY,
+  paintProperties.STROKE_WEIGHT,
+  paintProperties.SIZE,
+] as const;
 
 export const dimensions = { width: 3840, height: 2160 }; // 4k
 

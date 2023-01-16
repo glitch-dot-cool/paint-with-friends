@@ -6,7 +6,7 @@ import { updateDrawing } from "./public/src/utils/drawing.js";
 import { initialServerState } from "./public/src/initialState.js";
 import { eventEmitter } from "./event.js";
 import { EVENTS } from "./public/src/constants.js";
-import { convertLeanPaintPropertiesToObject } from "./public/src/utils/setupPaintProperties.js";
+import { convertLeanPaintPropertiesToObject } from "./public/src/utils/typeConverters.js";
 import { DrawUpdate } from "./types";
 
 export const initServerP5 = () => {

@@ -1,10 +1,10 @@
 import { state } from "./initialState.js";
 import { dimensions, EVENTS } from "./constants.js";
+import { setupPaintProperties } from "./utils/setupPaintProperties.js";
 import {
-  setupPaintProperties,
   convertToLeanPaintProperties,
   convertLeanPaintPropertiesToObject,
-} from "./utils/setupPaintProperties.js";
+} from "./utils/typeConverters.js";
 import {
   getFrametime,
   throttle,
@@ -29,13 +29,14 @@ import {
   LeanDrawUpdate,
   PaintWithFriends,
 } from "../../types";
+import { getLfoDomElements, lfoDomElements } from "./ui.js";
 
 const app = (s: PaintWithFriends) => {
   const keysPressed = new KeyManager(s);
   let socket: Socket,
     canvas: HTMLCanvasElement,
     font: p5.Font,
-    throttleRate = 0.01666666666666666666666666666667; // 60fps frametime ;
+    throttleRate = 0.01667; // 60fps frametime
 
   s.preload = () => {
     Loader.show();
@@ -67,6 +68,9 @@ const app = (s: PaintWithFriends) => {
     socket = io.connect(setBaseUrl());
 
     initGuiPanels(s);
+
+    // populate references to dynamically created DOM elements
+    getLfoDomElements(lfoDomElements);
 
     // init separate sketch for rendering cursors
     new p5(initCursors(socket, camera));

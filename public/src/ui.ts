@@ -3,6 +3,21 @@ import { EmojiButton } from "https://cdn.jsdelivr.net/npm/@joeattardi/emoji-butt
 import { Fetch } from "./utils/Fetch.js";
 import { LocalStorage } from "./utils/LocalStorage.js";
 import { camera } from "./utils/Camera.js";
+import { animateableLfoParams, paintProperties as p } from "./constants.js";
+import { LfoDomElements } from "../../types.js";
+
+export const lfoDomElements = {} as LfoDomElements;
+
+export const getLfoDomElements = (lfoDomElements: LfoDomElements) => {
+  animateableLfoParams.forEach((param) => {
+    const input = document.querySelector<HTMLInputElement>(`#${param} input`)!;
+    const label = document.querySelector<HTMLLabelElement>(`#${param} label`)!;
+
+    lfoDomElements[param] = { input, label };
+  });
+
+  return lfoDomElements;
+};
 
 // username input
 const nameInput = document.querySelector<HTMLInputElement>("#name-input")!;
