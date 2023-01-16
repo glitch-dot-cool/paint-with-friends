@@ -1,10 +1,8 @@
 import { Waveforms } from "./Waveforms.js";
-import { paintProperties as p } from "../constants.js";
 import { Camera } from "./Camera.js";
 import { state } from "../initialState.js";
 import {
   DrawUpdate,
-  LeanDrawUpdate,
   GuiValues,
   Lfo,
   LfoTarget,

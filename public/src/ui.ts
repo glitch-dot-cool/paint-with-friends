@@ -3,7 +3,7 @@ import { EmojiButton } from "https://cdn.jsdelivr.net/npm/@joeattardi/emoji-butt
 import { Fetch } from "./utils/Fetch.js";
 import { LocalStorage } from "./utils/LocalStorage.js";
 import { camera } from "./utils/Camera.js";
-import { animateableLfoParams, paintProperties as p } from "./constants.js";
+import { animateableLfoParams } from "./constants.js";
 import { LfoDomElements } from "../../types.js";
 
 export const lfoDomElements = {} as LfoDomElements;

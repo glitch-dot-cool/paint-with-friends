@@ -142,7 +142,7 @@ export interface DrawUpdate
 }
 
 export type LeanDrawUpdate = [
-  string,
+  string | undefined,
   string,
   number,
   number,

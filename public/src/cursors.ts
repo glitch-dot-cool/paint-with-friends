@@ -36,8 +36,8 @@ export const initCursors = (socket: Socket, camera: Camera) => {
 
       socket.on(EVENTS.DRAW_UPDATE, (data: LeanDrawUpdate) => {
         const [username, socketId, x, y] = data;
-        const color = s.usernameToColor(username);
-        s.upsertUser(socketId, username, x, y, color);
+        const color = s.usernameToColor(username || socketId);
+        s.upsertUser(socketId, username || socketId, x, y, color);
       });
 
       socket.on(EVENTS.MOUSE_RELEASED, (userId: string) => {
