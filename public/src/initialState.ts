@@ -66,7 +66,7 @@ const lfoControllableParams: LfoTarget[] = [
   "fillColor",
   "fillOpacity",
   "strokeColor",
-  "strokeColor",
+  "strokeOpacity",
   "strokeWeight",
   "size",
   "x",
