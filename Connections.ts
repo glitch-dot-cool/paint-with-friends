@@ -45,7 +45,12 @@ export class Connections {
       username: this.connections[id]?.username || id,
       isPainting,
     };
-    this.broadcast(EVENTS.USER_DRAW_STATUS_UPDATED, this.connections);
+
+    const numUsersDrawing = Object.values(this.connections).filter(
+      (c) => c.isPainting
+    ).length;
+
+    this.broadcast(EVENTS.USER_DRAW_STATUS_UPDATED, numUsersDrawing);
   };
 
   message = (id: string, message: string) => {

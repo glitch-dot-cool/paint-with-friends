@@ -92,8 +92,8 @@ const app = (s: PaintWithFriends) => {
       userList(users);
     });
 
-    socket.on(EVENTS.USER_DRAW_STATUS_UPDATED, (users: Connections) => {
-      s.updateThrottleRate(users);
+    socket.on(EVENTS.USER_DRAW_STATUS_UPDATED, (numUsersDrawing: number) => {
+      s.updateThrottleRate(numUsersDrawing);
     });
 
     socket.on(EVENTS.MESSAGE, (messages) => {
@@ -200,11 +200,7 @@ const app = (s: PaintWithFriends) => {
     state.lastX = state.lastY = 0;
   };
 
-  s.updateThrottleRate = (connections: Connections) => {
-    const numUsersDrawing = Object.values(connections).filter(
-      (c) => c.isPainting
-    ).length;
-
+  s.updateThrottleRate = (numUsersDrawing: number) => {
     throttleRate = getFrametime(numUsersDrawing);
   };
 };

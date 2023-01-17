@@ -179,7 +179,7 @@ export interface Connections {
   };
 }
 
-export type Payload = LeanDrawUpdate | Messages | Connections;
+export type Payload = LeanDrawUpdate | Messages | Connections | number;
 
 // CUSTOM p5 TYPES
 export type p5GuiInstance = {
@@ -195,7 +195,7 @@ export type PaintWithFriends = p5 & {
   setLastCoords: () => void;
   paint: () => void;
   createGui: (name: string, p5: p5) => p5GuiInstance;
-  updateThrottleRate: (connections: Connections) => void;
+  updateThrottleRate: (numUsersDrawing: number) => void;
 };
 
 // SERVER TYPES
