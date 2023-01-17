@@ -43,7 +43,7 @@ const GUI_WIDTH = 200;
 export const GUI_GUTTER = 20;
 export const GUI_OFFSET = 0 + 2 * GUI_GUTTER + GUI_WIDTH;
 
-export const MIN_FRAMERATE = 24;
+export const MIN_FRAMERATE = 15;
 export const MAX_FRAMERATE = 60;
-export const USER_THROTTLE_THRESHOLD = 4; // throttling begins when > this # of users are currently painting
 export const ONE_SECOND_IN_MS = 1_000;
+export const DESIRED_UPDATE_RATE = 240; // per second

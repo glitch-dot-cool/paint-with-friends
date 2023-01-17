@@ -1,9 +1,9 @@
 import {
+  DESIRED_UPDATE_RATE,
   dimensions,
   MAX_FRAMERATE,
   MIN_FRAMERATE,
   ONE_SECOND_IN_MS,
-  USER_THROTTLE_THRESHOLD,
 } from "../constants.js";
 import {
   DrawUpdate,
@@ -181,20 +181,17 @@ export const toggleCursor = (state: State) => {
   }
 };
 
-export const getFrameRate = (min: number, max: number, value: number) => {
-  if (value <= min) return max;
-
-  const scaled = max - (value * (value * 0.5) - min);
-
-  if (scaled < MIN_FRAMERATE) return MIN_FRAMERATE;
-  return Math.floor(scaled);
+export const getFrametime = (numUsersDrawing: number) => {
+  return ONE_SECOND_IN_MS / getFrameRate(numUsersDrawing);
 };
 
-export const getFrametime = (numUsersDrawing: number) => {
-  return (
-    ONE_SECOND_IN_MS /
-    getFrameRate(USER_THROTTLE_THRESHOLD, MAX_FRAMERATE, numUsersDrawing)
-  );
+const getFrameRate = (numUsersDrawing: number) => {
+  if (numUsersDrawing * MAX_FRAMERATE < DESIRED_UPDATE_RATE)
+    return MAX_FRAMERATE;
+
+  const derivedFrametime = DESIRED_UPDATE_RATE / numUsersDrawing;
+
+  return derivedFrametime < MIN_FRAMERATE ? MIN_FRAMERATE : derivedFrametime;
 };
 
 let throttlePause = false;
