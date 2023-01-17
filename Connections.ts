@@ -1,6 +1,11 @@
 import { Server } from "socket.io";
 import { EVENTS } from "./public/src/constants.js";
-import { Connections as ConnectionsType, Messages, Payload } from "./types";
+import {
+  Connections as ConnectionsType,
+  Event,
+  Messages,
+  Payload,
+} from "./types";
 
 export class Connections {
   io: Server;
@@ -40,7 +45,7 @@ export class Connections {
       username: this.connections[id]?.username || id,
       isPainting,
     };
-    this.broadcast(EVENTS.MEMBERS_CHANGED, this.connections);
+    this.broadcast(EVENTS.USER_DRAW_STATUS_UPDATED, this.connections);
   };
 
   message = (id: string, message: string) => {
@@ -50,7 +55,7 @@ export class Connections {
     this.broadcast(EVENTS.MESSAGE, this.messages);
   };
 
-  broadcast = (channel: string, payload: Payload) => {
+  broadcast = (channel: Event, payload: Payload) => {
     this.io.emit(channel, payload);
   };
 

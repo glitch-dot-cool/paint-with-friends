@@ -90,6 +90,9 @@ const app = (s: PaintWithFriends) => {
 
     socket.on(EVENTS.MEMBERS_CHANGED, (users: Connections) => {
       userList(users);
+    });
+
+    socket.on(EVENTS.USER_DRAW_STATUS_UPDATED, (users: Connections) => {
       s.updateThrottleRate(users);
     });
 

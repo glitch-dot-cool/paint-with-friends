@@ -1,4 +1,4 @@
-import { animateableLfoParams } from "./public/src/constants";
+import { animateableLfoParams, EVENTS } from "./public/src/constants";
 
 // BASE DRAWING/BRUSH TYPES
 export type BrushShape = "line" | "circle" | "square" | "text";
@@ -205,3 +205,8 @@ export type ImageCache = {
   thumbnail: ImageCacheEntry;
   image: ImageCacheEntry;
 };
+
+// EVENTS
+
+export type EventKeys = keyof typeof EVENTS;
+export type Event = typeof EVENTS[EventKeys];

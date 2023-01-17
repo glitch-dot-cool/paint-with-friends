@@ -36,7 +36,8 @@ export const EVENTS = {
   MEMBERS_CHANGED: "membersChanged",
   MESSAGE: "message",
   MOUSE_RELEASED: "mouseReleased",
-};
+  USER_DRAW_STATUS_UPDATED: "userDrawStatusUpdated",
+} as const;
 
 const GUI_WIDTH = 200;
 export const GUI_GUTTER = 20;
